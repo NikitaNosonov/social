@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './MainPage.style'
-import PostItem from "./PostItem/PostItem";
+import PostItem from "./postItem/PostItem";
 
 const MainPage = () => {
     return (
@@ -11,7 +11,6 @@ const MainPage = () => {
             <S.PostsContainer>
                 <PostItem/>
             </S.PostsContainer>
-
         </S.MainPage>
     );
 };

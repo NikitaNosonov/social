@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { NavLink as RouterLink } from "react-router-dom";
 
-
 export const Nav = styled.div`
     margin-left: 125px;
-    padding-top: 20px;
-`
+    padding-top: 20px;`
 
 export const NavLink = styled(RouterLink)`
     text-decoration: none;
@@ -23,5 +21,4 @@ export const NavLink = styled(RouterLink)`
         color: #e8e7e7;
         transform: scale(1);
         border-radius: 5px;
-    }
-`
+    }`

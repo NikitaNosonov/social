@@ -6,5 +6,4 @@ export const App = styled.div`
     height: auto;
     background: #262D35;
     display: flex;
-    flex-direction: column;
-`
+    flex-direction: column;`
