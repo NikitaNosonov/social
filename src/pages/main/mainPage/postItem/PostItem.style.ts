@@ -33,6 +33,6 @@ export const TableCell1 = styled(TableCell)`
 
 export const Btn1 = styled(Button)`
     && {
-        align-self: flex-start;
+        align-self: flex-end;
         margin-top: auto;
     }`

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './NavBar.style'
-import * as R from '../../routes/routes'
+import * as R from '../../routes/Routes'
 
 const NavBar = () => {
     return (
