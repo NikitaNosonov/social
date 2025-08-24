@@ -38,3 +38,7 @@ export const ProfileButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;`
+
+export const ModalEditProfile = styled.div`
+    background: #1d4670;
+    color: #d5d5d5;`

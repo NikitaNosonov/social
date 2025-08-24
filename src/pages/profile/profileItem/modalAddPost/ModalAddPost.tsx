@@ -4,12 +4,13 @@ import * as S from "./ModalAddPost.style"
 import {Post} from "../../../../types/postType";
 import PostStore from "../../../../store/postStore";
 import PostService from "../../../../services/postService";
+import {observer} from "mobx-react-lite";
 
 interface ModalAddPostProps {
-    setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void
+    setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
 }
 
-const ModalAddPost = ({setModalAddPost}: ModalAddPostProps) => {
+const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) => {
     const [post, setPost] = React.useState<Post>({
         id: PostStore.posts.length + 1,
         description: "",
@@ -67,6 +68,6 @@ const ModalAddPost = ({setModalAddPost}: ModalAddPostProps) => {
             </S.ButtonContainer>
         </div>
     );
-};
+});
 
 export default ModalAddPost;

@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
 import * as S from './ProfileItem.style';
-import photo from '../../../Снимок экрана 2025-05-30 в 20.57.52.png'
 import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import * as R from "../../../routes/Routes";
 import {useNavigate} from "react-router-dom";
+import {observer} from "mobx-react-lite";
 import PostStore from "../../../store/postStore";
-import postStore from "../../../store/postStore";
 import Spinner from "../../../components/Spinner";
 import ModalAddPost from "./modalAddPost/ModalAddPost";
+import PostService from "../../../services/postService";
 
-const ProfileItem = () => {
+const ProfileItem = observer(() => {
     const navigate = useNavigate();
     const [modalAddPost, setModalAddPost] = React.useState(false);
 
@@ -36,20 +36,32 @@ const ProfileItem = () => {
                 <S.ProfileItemButton onClick={() => setModalAddPost(true)}>Добавить пост</S.ProfileItemButton>
                 <S.Underline/>
                 <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
-                {postStore.posts.map(post => (<S.ProfileItemPostContainer>
+                {PostStore.posts.map(post => (<S.ProfileItemPostContainer>
                     <S.ProfileItemPhoto src={post.photo}/>
                     <S.ProfileItemText>{post.description}</S.ProfileItemText>
                     <S.ProfileItemBtnContainer>
-                        <Button variant="contained" color="primary" type="submit"
+                        <Button variant="contained"
+                                color="primary"
+                                type="submit"
                                 size="small">Редактировать</Button>
-                        <Button variant="contained" color="primary" type="submit" size="small"
+                        <Button variant="contained"
+                                color="primary"
+                                type="submit"
+                                size="small"
                                 onClick={() => navigate(`/${R.commentRoute}`)}>Прокомментировать</Button>
-                        <Button variant="contained" color="error" type="submit" size="small">Удалить</Button>
+                        <Button variant="contained"
+                                color="error"
+                                type="submit"
+                                size="small"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            PostService.deletePost(post.id)
+                        }}>Удалить</Button>
                     </S.ProfileItemBtnContainer>
                 </S.ProfileItemPostContainer>))}
             </S.ProfileItem>
         )
     );
-};
+});
 
 export default ProfileItem;

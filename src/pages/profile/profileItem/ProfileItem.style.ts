@@ -59,5 +59,5 @@ export const ProfileItemBtnContainer = styled.div`
     margin: 0 10px;`
 
 export const ModalAddPost = styled.div`
-    background: #154b8e;
+    background: #1d4670;
     color: #d5d5d5;`

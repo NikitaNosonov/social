@@ -15,6 +15,13 @@ class PostService {
             .select();
         console.log(data);
     }
+
+    deletePost = async (postId: number | null) => {
+        const {data} = await supabase
+            .from('posts')
+            .delete()
+            .eq('id', postId)
+    }
 }
 
 export default new PostService();

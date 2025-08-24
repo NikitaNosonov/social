@@ -7,9 +7,10 @@ import * as R from "../../../../routes/Routes";
 import {Post} from "../../../../types/postType";
 import PostStore from "../../../../store/postStore";
 import Spinner from "../../../../components/Spinner";
+import {observer} from "mobx-react-lite";
 
 
-const PostItem = () => {
+const PostItem = observer(() => {
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -50,6 +51,6 @@ const PostItem = () => {
             </>
         )
     );
-};
+});
 
 export default PostItem;
