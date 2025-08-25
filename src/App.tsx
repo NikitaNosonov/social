@@ -4,11 +4,11 @@ import {router} from "./routes/Routes";
 import {RouterProvider} from "react-router-dom";
 
 function App() {
-  return (
-      <S.App>
-        <RouterProvider router={router}/>
-      </S.App>
-  );
+    return (
+        <S.App>
+            <RouterProvider router={router}/>
+        </S.App>
+    );
 }
 
 export default App;

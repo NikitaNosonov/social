@@ -8,7 +8,7 @@ import EditProfile from "./modalEditProfile/EditProfile";
 
 const ProfileInfo = observer(() => {
     useEffect(() => {
-        UserStore.getUser()
+        UserStore.getUserById(1)
     })
 
     const [isEditProfile, setIsEditProfile] = useState(false);

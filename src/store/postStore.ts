@@ -4,6 +4,7 @@ import PostService from "../services/postService";
 
 class PostStore {
     public posts: Post[] = [];
+    public postById?: Post;
 
     constructor() {
         makeAutoObservable(this);
@@ -16,6 +17,14 @@ class PostStore {
             this.posts = data || []
         })
     });
+
+    getPostById = action(async (id: number | null) => {
+        const data = await PostService.getPostById(id);
+
+        runInAction(() => {
+            this.postById = data || null;
+        })
+    })
 }
 
 export default new PostStore();

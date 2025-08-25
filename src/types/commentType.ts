@@ -2,8 +2,8 @@ import {User} from "./userType";
 import {Post} from "./postType";
 
 export interface Comment {
-    id: number;
+    id: number | null;
     text: string;
-    user_id: User;
-    post_id: Post;
+    user_id: number | null;
+    post_id: number | null;
 }

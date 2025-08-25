@@ -10,6 +10,15 @@ class PostService {
         return data;
     }
 
+    getPostById = async (id: number | null) => {
+        let {data} = await supabase
+            .from('posts')
+            .select('*')
+            .eq('id', id)
+            .single();
+        return data;
+    }
+
     addPost = async (post: Post) => {
         const {data} = await supabase
             .from('posts')

@@ -5,5 +5,5 @@ export interface Post {
     id: number | null;
     photo: string;
     description: string;
-    user_id : number;
+    user_id : number | null;
 }

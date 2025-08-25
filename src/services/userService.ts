@@ -4,9 +4,18 @@ import nonAvatar from "../нетфото.jpg"
 
 class UserService {
 
-    getUser = async (): Promise<User | null> => {
-        let {data} = await supabase.from('users').select('*').limit(1);
-        return data?.[0] || null;
+    getUserById = async (id: number | null) => {
+        const dat = supabase.auth.signInWithPassword({email: 'nikitanosonov93@gmail.com', password: '111111'});
+        console.log('dsadasd', dat);
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('session', session);
+        let {data} = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', id)
+            .single()
+
+        return data;
     }
 
     editUser = async (user: User | null) => {

@@ -17,9 +17,14 @@ const PostItem = observer(() => {
         PostStore.getPosts()
     }, []);
 
+    const switchingToCommentPage = (postId: number | null) => {
+        navigate(`/${R.commentRoute}`)
+        localStorage.setItem('postId', String(postId))
+    }
+
     return (
         PostStore.posts.length === 0 ? (
-            <Spinner size={60} color="secondary" />
+            <Spinner size={60} color="secondary"/>
         ) : (
             <>
                 {PostStore.posts.map((post) => (
@@ -37,9 +42,7 @@ const PostItem = observer(() => {
                                                 variant="contained"
                                                 color="primary"
                                                 size="small"
-                                                onClick={() => navigate(`/${R.commentRoute}`)}
-                                            >
-                                                Прокомментировать
+                                                onClick={() => switchingToCommentPage(post.id || null)}>Прокомментировать
                                             </S.Btn1>
                                         </S.TableCell1>
                                     </TableRow>

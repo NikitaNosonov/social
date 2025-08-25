@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Input} from "@mui/material";
+import {Button, Input} from "@mui/material";
 
 export const CommentPage = styled.div`
     background: #344E69;
@@ -17,10 +17,11 @@ export const CommentPage = styled.div`
 export const ContentContainer = styled.div`
     margin-bottom: 25px;
     display: flex;
-    flex-direction: row;`
+    flex-direction: row;
+    max-height: 40vh`
 
 export const ContentPhoto = styled.img`
-    width: 400px;
+    max-width: 320px;
     align-self: center;`
 
 export const ContentText = styled.p`
@@ -32,14 +33,17 @@ export const ContentText = styled.p`
 export const CommentContainer = styled.div`
     min-width: 65vw;
     max-width: 65vw;
-    min-height: 30vh;
-    max-height: 30vh;
+    min-height: 32vh;
+    max-height: 32vh;
     background: #283d51;
     color: white;
     padding: 10px;
-    border-radius: 5px;`
+    border-radius: 5px;
+    overflow: auto;`
 
-
+export const InputContainer = styled.div`
+    display: flex;
+    margin-top: 20px;`
 
 export const InputComment = styled(Input)`
     && {
@@ -61,4 +65,11 @@ export const InputComment = styled(Input)`
         &.MuiInput-underline:hover:not(.Mui-disabled):before {
             display: none;
         }
+    }`
+
+export const ButtonComment =styled(Button)`
+    && {
+        margin-left: 10px;
+        width: 23.5vh;
+        height: 6vh;
     }`

@@ -29,6 +29,11 @@ const ProfileItem = observer(() => {
         setPostId(post.id);
     }
 
+    const switchingToCommentPage = (postId: number | null) => {
+        navigate(`/${R.commentRoute}`)
+        localStorage.setItem('postId', String(postId))
+    }
+
     return (
         PostStore.posts.length === 0 ? (
             <Spinner size={60} color="secondary"/>
@@ -57,17 +62,18 @@ const ProfileItem = observer(() => {
                                         type="submit"
                                         size="small"
                                         onClick={(e) => editPost(post, e)}>Редактировать</Button>
-                                <Button variant="contained"
-                                        color="primary"
-                                        type="submit"
-                                        size="small"
-                                        onClick={() => navigate(`/${R.commentRoute}`)}>Прокомментировать</Button>
+                                {/*<Button variant="contained"*/}
+                                {/*        color="primary"*/}
+                                {/*        type="submit"*/}
+                                {/*        size="small"*/}
+                                {/*        onClick={() => switchingToCommentPage(post.id)}>Прокомментировать</Button>*/}
                                 <Button variant="contained"
                                         color="error"
                                         type="submit"
                                         size="small"
                                         onClick={(e) => {
                                             e.preventDefault();
+                                            console.log(post.id)
                                             PostService.deletePost(post.id)
                                         }}>Удалить</Button>
                             </S.ProfileItemBtnContainer>
