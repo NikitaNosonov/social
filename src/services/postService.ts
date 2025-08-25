@@ -1,5 +1,7 @@
 import supabase from "../supabaseClient";
 import {Post} from "../types/postType";
+import {User} from "../types/userType";
+import nonAvatar from "../нетфото.jpg";
 
 
 class PostService {
@@ -21,6 +23,16 @@ class PostService {
             .from('posts')
             .delete()
             .eq('id', postId)
+    }
+
+    editPost = async (post: Post | null) => {
+        const {data} = await supabase
+            .from('posts')
+            .update({
+                photo: post?.photo,
+                description: post?.description
+            })
+            .eq('id', post?.id);
     }
 }
 

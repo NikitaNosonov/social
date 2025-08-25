@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import * as S from './ModalEditProfile.style'
+import * as S from './EditProfile.style'
 import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
 import {Button} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import UserService from "../../../../services/userService";
 
-interface ModalEditProfileProps {
-    setModalEditProfile?: (value: (((prevState: boolean) => boolean) | boolean)) => void
+interface EditProfileProps {
+    setIsEditProfile?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
 
-const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEditProfile}) => {
+const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) => {
     const [profileEdit, setProfileEdit] = useState<User | null>(UserStore.user || null);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
 
@@ -22,6 +22,13 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
             });
         }
         setIsAddPhoto(true);
+    }
+
+    const editUser = () => {
+        UserService.editUser(profileEdit)
+        if (setIsEditProfile) {
+            setIsEditProfile(false)
+        }
     }
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,8 +48,9 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
     };
 
     return (
-        <div>
+        <S.ProfileInfo>
             <S.Input
+                size="small"
                 value={profileEdit?.name}
                 type="text"
                 placeholder="Имя"
@@ -51,6 +59,7 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
                 }}
             />
             <S.Input
+                size="small"
                 value={profileEdit?.surname}
                 type="text"
                 placeholder="Фамилия"
@@ -59,6 +68,7 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
                 }}
             />
             <S.Input
+                size="small"
                 value={profileEdit?.city}
                 type="text"
                 placeholder="Город"
@@ -67,6 +77,7 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
                 }}
             />
             <S.Input
+                size="small"
                 value={profileEdit?.age}
                 type="number"
                 placeholder="Возраст"
@@ -77,7 +88,7 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
             <S.ButtonContainer>
                 {!isAddPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => editPhoto()}>Добавить фото</Button> : <input
+                            onClick={() => editPhoto()}>Изменить фото</Button> : <input
                         type="file"
                         name="image"
                         id="file"
@@ -85,15 +96,10 @@ const ModalEditProfile: React.FC<ModalEditProfileProps> = observer(({setModalEdi
                         onChange={e => onChange(e)}
                     />}
                 <Button variant="contained" color="primary" type="submit" size="small"
-                        onClick={() => {
-                            UserService.editUser(profileEdit)
-                            if (setModalEditProfile) {
-                                setModalEditProfile(false)
-                            }
-                        }}>Редактировать</Button>
+                        onClick={() => editUser()}>Завершить редактирование</Button>
             </S.ButtonContainer>
-        </div>
+        </S.ProfileInfo>
     );
 });
 
-export default ModalEditProfile;
+export default EditProfile;

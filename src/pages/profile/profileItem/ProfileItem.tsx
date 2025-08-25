@@ -8,14 +8,24 @@ import PostStore from "../../../store/postStore";
 import Spinner from "../../../components/Spinner";
 import ModalAddPost from "./modalAddPost/ModalAddPost";
 import PostService from "../../../services/postService";
+import {Post} from "../../../types/postType";
+import EditPost from "./editPost/EditPost";
 
 const ProfileItem = observer(() => {
     const navigate = useNavigate();
     const [modalAddPost, setModalAddPost] = React.useState(false);
+    const [isEditPost, setIsEditPost] = React.useState(false);
+    const [editedPost, setEditedPost] = React.useState<Post | null>(null);
 
     useEffect(() => {
         PostStore.getPosts()
     })
+
+    const editPost = (post: Post, event: React.MouseEvent) => {
+        event.preventDefault();
+        setIsEditPost(true);
+        setEditedPost({...post});
+    }
 
     return (
         PostStore.posts.length === 0 ? (
@@ -36,28 +46,31 @@ const ProfileItem = observer(() => {
                 <S.ProfileItemButton onClick={() => setModalAddPost(true)}>Добавить пост</S.ProfileItemButton>
                 <S.Underline/>
                 <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
-                {PostStore.posts.map(post => (<S.ProfileItemPostContainer>
-                    <S.ProfileItemPhoto src={post.photo}/>
-                    <S.ProfileItemText>{post.description}</S.ProfileItemText>
-                    <S.ProfileItemBtnContainer>
-                        <Button variant="contained"
-                                color="primary"
-                                type="submit"
-                                size="small">Редактировать</Button>
-                        <Button variant="contained"
-                                color="primary"
-                                type="submit"
-                                size="small"
-                                onClick={() => navigate(`/${R.commentRoute}`)}>Прокомментировать</Button>
-                        <Button variant="contained"
-                                color="error"
-                                type="submit"
-                                size="small"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            PostService.deletePost(post.id)
-                        }}>Удалить</Button>
-                    </S.ProfileItemBtnContainer>
+                {PostStore.posts.map(post => (<S.ProfileItemPostContainer key={post.id}>
+                    {!isEditPost ? <> <S.ProfileItemPhoto src={post.photo}/>
+                            <S.ProfileItemText>{post.description}</S.ProfileItemText>
+                            <S.ProfileItemBtnContainer>
+                                <Button variant="contained"
+                                        color="primary"
+                                        type="submit"
+                                        size="small"
+                                        onClick={(e) => editPost(post, e)}>Редактировать</Button>
+                                <Button variant="contained"
+                                        color="primary"
+                                        type="submit"
+                                        size="small"
+                                        onClick={() => navigate(`/${R.commentRoute}`)}>Прокомментировать</Button>
+                                <Button variant="contained"
+                                        color="error"
+                                        type="submit"
+                                        size="small"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            PostService.deletePost(post.id)
+                                        }}>Удалить</Button>
+                            </S.ProfileItemBtnContainer>
+                        </> :
+                        <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost} setIsEditPost={setIsEditPost}/>}
                 </S.ProfileItemPostContainer>))}
             </S.ProfileItem>
         )

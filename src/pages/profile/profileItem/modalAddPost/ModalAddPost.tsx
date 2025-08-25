@@ -47,6 +47,8 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) =
     return (
         <div>
             <S.Input
+                minRows={3}
+                maxRows={6}
                 value={post.description}
                 type="text"
                 placeholder="Описание"

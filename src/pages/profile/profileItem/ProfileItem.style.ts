@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {TextField} from "@mui/material";
 
 export const ProfileItem = styled.div`
     display: flex;
@@ -59,5 +60,5 @@ export const ProfileItemBtnContainer = styled.div`
     margin: 0 10px;`
 
 export const ModalAddPost = styled.div`
-    background: #1d4670;
+    background: #395475;
     color: #d5d5d5;`
