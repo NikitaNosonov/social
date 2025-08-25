@@ -16,6 +16,7 @@ const ProfileItem = observer(() => {
     const [modalAddPost, setModalAddPost] = React.useState(false);
     const [isEditPost, setIsEditPost] = React.useState(false);
     const [editedPost, setEditedPost] = React.useState<Post | null>(null);
+    const [postId, setPostId] = React.useState<number | null>(null);
 
     useEffect(() => {
         PostStore.getPosts()
@@ -25,6 +26,7 @@ const ProfileItem = observer(() => {
         event.preventDefault();
         setIsEditPost(true);
         setEditedPost({...post});
+        setPostId(post.id);
     }
 
     return (
@@ -69,8 +71,8 @@ const ProfileItem = observer(() => {
                                             PostService.deletePost(post.id)
                                         }}>Удалить</Button>
                             </S.ProfileItemBtnContainer>
-                        </> :
-                        <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost} setIsEditPost={setIsEditPost}/>}
+                        </> : postId === post.id ?
+                        <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost} setIsEditPost={setIsEditPost}/> : null}
                 </S.ProfileItemPostContainer>))}
             </S.ProfileItem>
         )
