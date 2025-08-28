@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ProfilePage = styled.div`
-    margin-left: 50px;
+    margin-left: 10px;
     margin-top: 30px;
     display: flex;
     gap: 20px;`

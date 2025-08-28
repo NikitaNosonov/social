@@ -16,7 +16,6 @@ const RegisterPage = () => {
         surname: "",
         city: "",
         user_id: "",
-        role: "user",
         avatar: avatar
     })
 

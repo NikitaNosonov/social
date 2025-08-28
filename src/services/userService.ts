@@ -31,6 +31,7 @@ class UserService {
     }
 
     editUser = async (user: Partial<User>) => {
+        console.log(user)
         const {data} = await supabase
             .from('users')
             .update({
@@ -38,6 +39,8 @@ class UserService {
                 surname: user?.surname,
                 city: user?.city,
                 avatar: user?.avatar || nonAvatar,
+                role: user?.role,
+                unlocked: user?.unlocked,
             })
             .eq('id', user?.id);
 

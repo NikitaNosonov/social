@@ -9,4 +9,5 @@ export interface User  {
     role: 'user' | 'moderator' | 'admin';
     user_id: any;
     avatar: string;
+    unlocked: boolean;
 }

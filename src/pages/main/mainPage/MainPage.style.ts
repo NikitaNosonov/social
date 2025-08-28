@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MainPage = styled.div`
-    margin-left: 50px;
+    margin-left: 10px;
     width: 67vw;
     padding-top: 30px;
 `

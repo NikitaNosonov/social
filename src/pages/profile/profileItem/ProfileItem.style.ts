@@ -74,7 +74,11 @@ export const Icon = styled(IconButton)`
     }`
 
 export const Delete = styled(DeleteIcon)`
-    color: var(--color-text);`
+    color: var(--color-text);
+
+    &:hover {
+        var(--background-add-button-hover);
+    }`
 
 export const Edit = styled(EditIcon)`
     color: var(--color-text);`

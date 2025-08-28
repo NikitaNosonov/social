@@ -5,12 +5,14 @@ import ProfilePage from "../pages/profile/ProfilePage";
 import CommentPage from "../pages/comments/commentPage/CommentPage";
 import LoginPage from "../pages/login/loginPage/LoginPage";
 import RegisterPage from "../pages/login/registerPage/RegisterPage";
+import ListUsersPage from "../pages/listUsers/listUsersPage/ListUsersPage";
 
 export const mainRoute = '/feed';
 export const profileRoute = '/profile';
 export const commentRoute = 'comment';
 export const loginRoute = '/login';
 export const registerRoute = '/register';
+export const listUsersRoute = '/users';
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: commentRoute,
                 element: <CommentPage/>
+            },
+            {
+                path: listUsersRoute,
+                element: <ListUsersPage/>
             }
         ],
     },
