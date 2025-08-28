@@ -1,34 +1,47 @@
 import supabase from "../supabaseClient";
 import {User} from "../types/userType";
 import nonAvatar from "../нетфото.jpg"
+import {Post} from "../types/postType";
 
 class UserService {
 
-    getUserById = async (id: number | null) => {
-        const dat = supabase.auth.signInWithPassword({email: 'nikitanosonov93@gmail.com', password: '111111'});
-        console.log('dsadasd', dat);
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('session', session);
+    getUserById = async () => {
+        const session = await supabase.auth.getSession()
         let {data} = await supabase
             .from('users')
             .select('*')
-            .eq('id', id)
+            .eq('user_id', session.data.session?.user.id)
             .single()
-
         return data;
     }
 
-    editUser = async (user: User | null) => {
+    getUsers = async () => {
+        const {data} = await supabase
+            .from('users')
+            .select('*')
+        return data;
+    }
+
+    addUser = async (user: Partial<User>) => {
+        const {data} = await supabase
+            .from('users')
+            .insert([user])
+            .select();
+        console.log(data);
+    }
+
+    editUser = async (user: Partial<User>) => {
         const {data} = await supabase
             .from('users')
             .update({
                 name: user?.name,
                 surname: user?.surname,
                 city: user?.city,
-                age: user?.age,
                 avatar: user?.avatar || nonAvatar,
             })
             .eq('id', user?.id);
+
+        return data;
     }
 }
 

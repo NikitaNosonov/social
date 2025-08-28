@@ -7,7 +7,7 @@ export const Input = styled(TextField)`
         margin-bottom: 10px;
         display: flex;
         justify-content: center;
-        background: #d5d5d5;
+        background: var(--background-input);
         border-radius: 10px;
     }
 `

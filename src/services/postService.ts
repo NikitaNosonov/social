@@ -6,7 +6,9 @@ import nonAvatar from "../нетфото.jpg";
 
 class PostService {
     getPosts = async () => {
-        let {data} = await supabase.from('posts').select('*');
+        let {data} = await supabase
+            .from('posts')
+            .select('*');
         return data;
     }
 
@@ -42,6 +44,8 @@ class PostService {
                 description: post?.description
             })
             .eq('id', post?.id);
+
+        return data;
     }
 }
 

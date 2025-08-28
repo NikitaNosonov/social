@@ -1,11 +1,14 @@
 import styled from 'styled-components';
-import {TextField} from "@mui/material";
+import {IconButton} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export const ProfileItem = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background: #344E69;
+    background: var(--background-container);
     border-radius: 25px;
     min-width: 39vw;
     margin-left: calc(24vw + 30px);
@@ -18,24 +21,24 @@ export const ProfileItemButton = styled.button`
     font-size: 15px;
     padding: 10px 25px;
     margin: 0 50px;
-    background: #3a5673;
+    background: var(--background-add-button);
     border: none;
-    color: #bdbdbd;
+    color: var(--color-title);
     transition: all 500ms ease;
     border-radius: 15px;
 
     &:hover {
         transform: scale(1.05);
-        background: #406183;
+        background: var(--background-add-button-hover);
     }`
 
 export const ProfileItemTitle = styled.h2`
-    color: #dfdfdf;
+    color: var(--color-title);
     text-align: center`
 
 export const Underline = styled.hr`
     width: 100%;
-    background-color: #223459;
+    background-color: var(--color-underline);
     border: none;
     height: 2px;`
 
@@ -49,16 +52,29 @@ export const ProfileItemPhoto = styled.img`
     align-self: center;`
 
 export const ProfileItemText = styled.p`
-    color: #d5d5d5;
+    color: var(--color-text);
     font-size: 14px;
     padding: 5px 10px;`
 
 export const ProfileItemBtnContainer = styled.div`
     display: flex;
     gap: 20px;
-    background: #344E69;
+    background: var(--background-container);
     margin: 0 10px;`
 
 export const ModalAddPost = styled.div`
-    background: #395475;
-    color: #d5d5d5;`
+    background: var(--background-modal);
+    color: var(--color-text);`
+
+export const Icon = styled(IconButton)`
+    background: var(--background-add-button-hover);
+
+    &:hover {
+        background: var(--background-add-button-hover);
+    }`
+
+export const Delete = styled(DeleteIcon)`
+    color: var(--color-text);`
+
+export const Edit = styled(EditIcon)`
+    color: var(--color-text);`

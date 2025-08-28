@@ -12,7 +12,7 @@ export const SearchContainer = styled.div`
     align-items: center;
     min-height: 10vh;
     border-radius: 25px;
-    background: #344E69;`
+    background: var(--background-container);`
 
 export const SearchInput = styled.input`
     background: white;
@@ -33,4 +33,4 @@ export const PostsContainer = styled.div`
     margin-top: 15px;
     border-radius: 45px;
     min-height: 0;
-    background: #344E69;`
+    background: var(--background-container);`

@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --background: #262D35;
+  --background-container: #344E69;
+  --background-modal: #395475;
+  --background-comment-container: #283d51;
+  --background-add-button: #3a5673;
+  --background-add-button-hover: #406183;
+  --background-input: #d5d5d5;
+  --color-underline: #223459;
+  --color-title: #ededed;
+  --color-text: #d5d5d5;
+  --color-text-hover: coral;
+}

@@ -1,22 +1,30 @@
-import {createBrowserRouter} from "react-router-dom";
-import NavBarLayout from "../pages/navBar/NavBarLayout";
+import {createBrowserRouter, Navigate} from "react-router-dom";
+import NavBarLayout from "../components/navBar/NavBarLayout";
 import MainPage from "../pages/main/mainPage/MainPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import CommentPage from "../pages/comments/commentPage/CommentPage";
 import LoginPage from "../pages/login/loginPage/LoginPage";
+import RegisterPage from "../pages/login/registerPage/RegisterPage";
 
 export const mainRoute = '/feed';
 export const profileRoute = '/profile';
 export const commentRoute = 'comment';
 export const loginRoute = '/login';
+export const registerRoute = '/register';
 
 export const router = createBrowserRouter([
     {
-        path: loginRoute,
-        element: <LoginPage/>
+        path: '/',
+        element: <Navigate to={loginRoute} replace />,
     },
     {
-        path: '/',
+        path: loginRoute,
+        element: <LoginPage/>},
+    {
+        path: registerRoute,
+        element: <RegisterPage/>
+    },
+    {
         element: <NavBarLayout/>,
         children: [
             {

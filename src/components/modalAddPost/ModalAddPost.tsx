@@ -1,9 +1,9 @@
 import React from 'react';
 import {Button} from "@mui/material";
 import * as S from "./ModalAddPost.style"
-import {Post} from "../../../../types/postType";
-import PostStore from "../../../../store/postStore";
-import PostService from "../../../../services/postService";
+import {Post} from "../../types/postType";
+import PostStore from "../../store/postStore";
+import PostService from "../../services/postService";
 import {observer} from "mobx-react-lite";
 
 interface ModalAddPostProps {
@@ -41,7 +41,7 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) =
         if (setModalAddPost) {
             setModalAddPost(false);
         }
-        PostService.addPost(post)
+        PostStore.setPosts(post)
     }
 
     return (

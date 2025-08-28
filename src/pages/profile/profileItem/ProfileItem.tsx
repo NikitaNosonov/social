@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
 import * as S from './ProfileItem.style';
-import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import * as R from "../../../routes/Routes";
+import {Button, Dialog, DialogContent, DialogTitle, IconButton} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import PostStore from "../../../store/postStore";
-import Spinner from "../../../components/Spinner";
-import ModalAddPost from "./modalAddPost/ModalAddPost";
-import PostService from "../../../services/postService";
+import ModalAddPost from "../../../components/modalAddPost/ModalAddPost";
 import {Post} from "../../../types/postType";
 import EditPost from "./editPost/EditPost";
 
@@ -15,12 +13,12 @@ const ProfileItem = observer(() => {
     const navigate = useNavigate();
     const [modalAddPost, setModalAddPost] = React.useState(false);
     const [isEditPost, setIsEditPost] = React.useState(false);
-    const [editedPost, setEditedPost] = React.useState<Post | null>(null);
+    const [editedPost, setEditedPost] = React.useState<Post>();
     const [postId, setPostId] = React.useState<number | null>(null);
 
     useEffect(() => {
         PostStore.getPosts()
-    })
+    }, [])
 
     const editPost = (post: Post, event: React.MouseEvent) => {
         event.preventDefault();
@@ -29,15 +27,8 @@ const ProfileItem = observer(() => {
         setPostId(post.id);
     }
 
-    const switchingToCommentPage = (postId: number | null) => {
-        navigate(`/${R.commentRoute}`)
-        localStorage.setItem('postId', String(postId))
-    }
-
     return (
-        PostStore.posts.length === 0 ? (
-            <Spinner size={60} color="secondary"/>
-        ) : (<S.ProfileItem>
+        <S.ProfileItem>
                 <div onClick={() => {
                     setModalAddPost(false)
                 }}>
@@ -55,33 +46,24 @@ const ProfileItem = observer(() => {
                 <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
                 {PostStore.posts.map(post => (<S.ProfileItemPostContainer key={post.id}>
                     {!isEditPost ? <> <S.ProfileItemPhoto src={post.photo}/>
-                            <S.ProfileItemText>{post.description}</S.ProfileItemText>
-                            <S.ProfileItemBtnContainer>
-                                <Button variant="contained"
-                                        color="primary"
-                                        type="submit"
-                                        size="small"
-                                        onClick={(e) => editPost(post, e)}>Редактировать</Button>
-                                {/*<Button variant="contained"*/}
-                                {/*        color="primary"*/}
-                                {/*        type="submit"*/}
-                                {/*        size="small"*/}
-                                {/*        onClick={() => switchingToCommentPage(post.id)}>Прокомментировать</Button>*/}
-                                <Button variant="contained"
-                                        color="error"
-                                        type="submit"
-                                        size="small"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            console.log(post.id)
-                                            PostService.deletePost(post.id)
-                                        }}>Удалить</Button>
-                            </S.ProfileItemBtnContainer>
-                        </> : postId === post.id ?
-                        <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost} setIsEditPost={setIsEditPost}/> : null}
+                        <S.ProfileItemText>{post.description}</S.ProfileItemText>
+                        <S.ProfileItemBtnContainer>
+                            <S.Icon onClick={(e) => editPost(post, e)}>
+                                <S.Edit/>
+                            </S.Icon>
+                            <IconButton onClick={(e) => {
+                                        e.preventDefault();
+                                        PostStore.deletePostById(post.id)
+                                    }}>
+                                <S.Delete/>
+                            </IconButton>
+                        </S.ProfileItemBtnContainer>
+                    </> : postId === post.id ?
+                        <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost}
+                                  setIsEditPost={setIsEditPost}/> : null}
                 </S.ProfileItemPostContainer>))}
             </S.ProfileItem>
-        )
+
     );
 });
 

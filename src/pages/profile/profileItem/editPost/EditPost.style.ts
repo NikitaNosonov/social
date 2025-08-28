@@ -9,7 +9,7 @@ export const Input = styled(TextField)`
         display: flex;
         justify-content: center;
         border-radius: 10px;
-        background: #d5d5d5
+        background: var(--background-input)
     }
 `
 

@@ -8,6 +8,7 @@ class CommentService {
             .from('comments')
             .select('*')
             .eq('post_id', postId)
+        console.log(data)
         return data || [];
     }
 
@@ -18,6 +19,13 @@ class CommentService {
             .select()
             .single();
         return data;
+    }
+
+    deleteComment = async (commentId: number | null) => {
+        const {data} = await supabase
+            .from('comments')
+            .delete()
+            .eq('id', commentId)
     }
 }
 

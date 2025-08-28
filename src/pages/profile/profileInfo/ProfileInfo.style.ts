@@ -4,7 +4,7 @@ export const ProfileInfo = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background: #344E69;
+    background: var(--background-container);
     border-radius: 25px;
     min-width: 24vw;
     position: fixed;
@@ -21,7 +21,7 @@ export const ProfileName = styled.h2`
     font-family: "Roboto", sans-serif;
     font-weight: 600;
     font-size: 18px;
-    color: #bdbdbd;
+    color: var(--color-title);
     text-align: center;
     margin: 10px;`
 
@@ -29,7 +29,7 @@ export const ProfileNameText = styled.p`
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: #bdbdbd;
+    color: var(--color-title);
     text-align: center;
     margin: 3px;`
 
@@ -38,7 +38,3 @@ export const ProfileButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;`
-
-export const ModalEditProfile = styled.div`
-    background: #1d4670;
-    color: #d5d5d5;`

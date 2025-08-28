@@ -11,7 +11,7 @@ interface EditProfileProps {
 }
 
 const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) => {
-    const [profileEdit, setProfileEdit] = useState<User | null>(UserStore.user || null);
+    const [profileEdit, setProfileEdit] = useState<Partial<User>>(UserStore.user);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
 
     const editPhoto = () => {
@@ -24,8 +24,9 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
         setIsAddPhoto(true);
     }
 
-    const editUser = () => {
-        UserService.editUser(profileEdit)
+    const editUser = async () => {
+        await UserStore.setUser(profileEdit)
+        await UserStore.user
         if (setIsEditProfile) {
             setIsEditProfile(false)
         }
@@ -74,15 +75,6 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
                 placeholder="Город"
                 onChange={e => {
                     if (profileEdit) setProfileEdit({...profileEdit, city: e.target.value})
-                }}
-            />
-            <S.Input
-                size="small"
-                value={profileEdit?.age}
-                type="number"
-                placeholder="Возраст"
-                onChange={e => {
-                    if (profileEdit) setProfileEdit({...profileEdit, age: parseInt(e.target.value)})
                 }}
             />
             <S.ButtonContainer>

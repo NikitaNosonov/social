@@ -5,7 +5,7 @@ export const ProfileInfo = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background: #344E69;
+    background: var(--background-container);
     border-radius: 25px;
     min-width: 21.9vw;
     position: fixed;
@@ -19,7 +19,7 @@ export const Input = styled(TextField)`
         margin-bottom: 10px;
         display: flex;
         justify-content: center;
-        background: #d5d5d5;
+        background: var(--background-input);
         border-radius: 10px;
     }
 `

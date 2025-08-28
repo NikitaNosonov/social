@@ -1,15 +1,13 @@
 import React from 'react';
 import * as S from './CommentPage.style'
 import PostStore from "../../../store/postStore";
-import {useLocation} from "react-router-dom";
-import CommentStore from "../../../store/commentStore";
+import SendIcon from '@mui/icons-material/Send';
 import {observer} from "mobx-react-lite";
 import {Comment} from "../../../types/commentType";
-import CommentService from "../../../services/commentService";
 import UserStore from "../../../store/userStore";
 import Spinner from "../../../components/Spinner";
-import {Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import CommentItem from "./commentItem/CommentItem";
+import CommentStore from "../../../store/commentStore";
 
 const CommentPage = observer(() => {
     const postIdString = localStorage.getItem('postId');
@@ -24,11 +22,13 @@ const CommentPage = observer(() => {
 
     const getData = () => {
         setComment({id: Date.now(), text: "", post_id: postId, user_id: userId})
-        PostStore.getPostById(postId).then(() => CommentStore.getComments(postId || null))
+        PostStore.getPostById(postId)
+            .then(() => CommentStore.getComments(postId || null))
+            .then(() => CommentStore.comments)
     }
 
     React.useEffect(() => {
-        getData()
+        getData();
     }, []);
 
     return ((!PostStore.postById || UserStore.user === null) ?
@@ -46,14 +46,13 @@ const CommentPage = observer(() => {
                                     type="text"
                                     placeholder="Напишите комментарий"
                                     onChange={e => setComment({...comment, text: e.target.value})}/>
-                    <S.ButtonComment variant="contained"
-                                     color="success"
-                                     size="small"
-                                     onClick={() => CommentStore.addComments(comment).then(() => getData())}>Оставить
-                        комментарий</S.ButtonComment>
+                    <S.BtnSendContainer>
+                        <SendIcon onClick={() => CommentStore.setComments(comment).then(() => getData())}/>
+                    </S.BtnSendContainer>
                 </S.InputContainer>
             </S.CommentPage>
-    );
+    )
+        ;
 });
 
 export default CommentPage;

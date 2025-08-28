@@ -1,10 +1,17 @@
 import React from 'react';
 import * as S from './PostItem.style'
-import {Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
-import photo from "../../../../Снимок экрана 2025-05-30 в 20.57.52.png";
-import {data, useNavigate} from "react-router-dom";
+import {
+    Button,
+    CircularProgress,
+    IconButton,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow
+} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import * as R from "../../../../routes/Routes";
-import {Post} from "../../../../types/postType";
 import PostStore from "../../../../store/postStore";
 import Spinner from "../../../../components/Spinner";
 import {observer} from "mobx-react-lite";
@@ -33,18 +40,19 @@ const PostItem = observer(() => {
                             <Table>
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell style={{border: 'none'}}>
-                                            <S.PostItemPhoto src={post.photo}/>
-                                        </TableCell>
                                         <S.TableCell1>
                                             <S.PostItemText>{post.description}</S.PostItemText>
-                                            <S.Btn1
-                                                variant="contained"
-                                                color="primary"
-                                                size="small"
-                                                onClick={() => switchingToCommentPage(post.id || null)}>Прокомментировать
-                                            </S.Btn1>
+                                            <S.IconContainer>
+                                                <S.CommnetIcon onClick={() => switchingToCommentPage(post.id || null)}/>
+                                                <S.Delete onClick={(e) => {
+                                                    e.preventDefault();
+                                                    PostStore.deletePostById(post.id)
+                                                }}/>
+                                            </S.IconContainer>
                                         </S.TableCell1>
+                                            <S.PhotoContainer>
+                                                <S.PostItemPhoto src={post.photo}/>
+                                            </S.PhotoContainer>
                                     </TableRow>
                                 </TableBody>
                             </Table>

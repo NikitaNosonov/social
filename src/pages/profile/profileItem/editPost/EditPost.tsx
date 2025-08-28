@@ -3,15 +3,14 @@ import * as S from './EditPost.style'
 import {Post} from "../../../../types/postType";
 import {Button} from "@mui/material";
 import PostStore from "../../../../store/postStore";
-import PostService from "../../../../services/postService";
 
 interface EditPostProps {
-    editedPost?: Post | null,
-    setEditedPost?: (value: (((prevState: (Post | null)) => (Post | null)) | Post | null)) => void,
-    setIsEditPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void
+    editedPost?: Post | undefined,
+    setIsEditPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
+    setEditedPost?: (value: (((prevState: (Post | undefined)) => (Post | undefined)) | Post | undefined)) => void
 }
 
-const EditPost: React.FC<EditPostProps> = ({editedPost, setEditedPost, setIsEditPost}) => {
+const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost}) => {
     const [isEditPhoto, setIsEditPhoto] = useState(false);
 
     const editPhoto = () => {
@@ -19,7 +18,9 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setEditedPost, setIsEdit
     }
 
     const editPost = () => {
-        PostService.editPost(editedPost || null)
+        if (editedPost) {
+            PostStore.setPostById(editedPost)
+        }
         if (setIsEditPost) {
             setIsEditPost(false)
         }
@@ -54,7 +55,7 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setEditedPost, setIsEdit
                 onChange={e => setEditedPost ? setEditedPost(editedPost ? {
                     ...editedPost,
                     description: e.target.value
-                } : null) : null}/>
+                } : undefined) : null}/>
             <S.ButtonContainer>
                 {!isEditPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"
