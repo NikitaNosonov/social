@@ -25,6 +25,7 @@ const Login: React.FC = () => {
         }
         else {
             UserStore.getUsers();
+            localStorage.getItem("userRole")
             navigate(R.profileRoute)
         }
     }

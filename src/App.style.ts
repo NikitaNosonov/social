@@ -2,33 +2,34 @@ import styled from "styled-components";
 import {createGlobalStyle} from 'styled-components';
 
 export const GlobalStyleDark = createGlobalStyle`
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-  }
-  
-  :root {
-    --background: #262D35;
-    --background-container: #344E69;
-    --background-modal: #395475;
-    --background-comment-container: #283d51;
-    --background-add-button: #3a5673;
-    --background-add-button-hover: #406183;
-    --background-input: #d5d5d5;
-    --color-underline: #223459;
-    --color-title: #ededed;
-    --color-text: #d5d5d5;
-    --color-text-hover: coral;
-  }`
+    code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+    }
+
+    :root {
+        --background: #262D35;
+        --background-container: #344E69;
+        --background-modal: #395475;
+        --background-comment-container: #283d51;
+        --background-add-button: #3a5673;
+        --background-add-button-hover: #406183;
+        --background-input: #d5d5d5;
+        --color-underline: #223459;
+        --color-title: #ededed;
+        --color-text: #d5d5d5;
+        --color-navLink-text-hover: #353f4a;
+        --color-text-hover: coral;
+    }`
 
 export const GlobalStyleLight = createGlobalStyle`
     body {

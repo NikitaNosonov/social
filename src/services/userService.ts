@@ -46,7 +46,8 @@ class UserService {
 
     editUser = async (user: Partial<User>) => {
         try {
-            const {data} = await supabase
+            console.log(user)
+            const {data, error, status, count} = await supabase
                 .from('users')
                 .update({
                     name: user?.name,
@@ -56,9 +57,15 @@ class UserService {
                     role: user?.role,
                     unlocked: user?.unlocked,
                 })
-                .eq('id', user?.id);
+                .eq('id', user?.id)
+                .select()
+                .limit(1)
 
-            return data;
+            console.log('✅ Supabase status:', status);
+            console.log('📊 Response data:', data);
+            console.log('❌ Error:', error);
+            console.log('🔢 Affected rows:', count);
+            return data ;
         } catch (error) {
             console.error("Error fetching edit user by id.", error);
             return null

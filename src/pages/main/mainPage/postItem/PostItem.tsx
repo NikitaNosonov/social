@@ -9,6 +9,7 @@ import {observer} from "mobx-react-lite";
 import {Post} from "../../../../types/postType";
 import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType"
+import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
 
 interface PostItemProps {
     posts?: Post[]
@@ -54,10 +55,11 @@ const PostItem: React.FC<PostItemProps> = observer(({posts}) => {
                                             <S.IconContainer>
                                                 <S.CommnetIcon
                                                     onClick={() => switchingToCommentPage(post.id || null)}/>
-                                                <S.Delete onClick={(e) => {
+                                                <AdditionalFeaturesModerator>
+                                                    <S.Delete onClick={(e) => {
                                                     e.preventDefault();
                                                     PostStore.deletePostById(post.id)
-                                                }}/>
+                                                }}/></AdditionalFeaturesModerator>
                                             </S.IconContainer>
                                         </S.TableCell1>
                                         <S.PhotoContainer>

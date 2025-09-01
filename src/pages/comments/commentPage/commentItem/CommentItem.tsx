@@ -3,10 +3,23 @@ import CommentStore from "../../../../store/commentStore";
 import {IconButton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import * as S from "./CommentItem.style";
 import UserStore from "../../../../store/userStore";
+import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
+import {Comment} from "../../../../types/commentType"
 
 const CommentItem = () => {
+    const postId = Number(localStorage.getItem('postId'));
+    const [comments, setComments] = React.useState<Comment[]>([]);
+
     useEffect(() => {
-        CommentStore.getComments
+        const fetchComments = async () => {
+            await CommentStore.getComments(postId)
+                .then(() => {
+                    console.log(CommentStore.comments)
+                    setComments(CommentStore.comments)
+                    comments.map((comment) => findUserByCommentId(comment.user_id))
+                })
+        }
+        fetchComments()
     }, [])
 
     const findUserByCommentId = (userId: number | null) => {
@@ -15,7 +28,7 @@ const CommentItem = () => {
 
     return (
         <>
-            {CommentStore.comments.map((comment) => {
+            {comments.map((comment) => {
                 const user = findUserByCommentId(comment.user_id);
                 return (
                     <TableContainer key={comment.id}>
@@ -29,14 +42,17 @@ const CommentItem = () => {
                                         <S.NameProfile>{user?.name} {user?.surname}</S.NameProfile>
                                         <S.Comment>{comment.text}</S.Comment>
                                     </TableCell>
-                                    <S.TableCell2>
-                                        <IconButton>
-                                            <S.DeleteButton onClick={(e) => {
-                                                e.preventDefault();
-                                                CommentStore.deleteComment(comment.id || null)
-                                            }}/>
-                                        </IconButton>
-                                    </S.TableCell2>
+                                    <AdditionalFeaturesModerator>
+                                        <S.TableCell2>
+                                            <IconButton>
+                                                <S.DeleteButton onClick={async (e) => {
+                                                    e.preventDefault();
+                                                    await CommentStore.deleteComment(comment.id || null);
+                                                    await CommentStore.getComments(postId);
+                                                }}/>
+                                            </IconButton>
+                                        </S.TableCell2>
+                                    </AdditionalFeaturesModerator>
                                 </TableRow>
                             </TableBody>
                         </Table>

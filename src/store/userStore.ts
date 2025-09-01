@@ -20,8 +20,7 @@ class UserStore {
     }
 
     setUser(user: Partial<User>) {
-        UserService.editUser(user);
-        this._user = user;
+        UserService.editUser(user).then(() => this._user = user);
     }
 
     async getUserById() {
@@ -31,6 +30,7 @@ class UserStore {
             this._user = data || null;
             localStorage.setItem('userId', String(this._user.id))
             localStorage.setItem('userRole', String(this._user.role))
+            localStorage.setItem('unlockedAccount', String(this._user.unlocked))
         })
     };
 

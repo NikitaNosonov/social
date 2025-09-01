@@ -9,7 +9,6 @@ class CommentService {
                 .from('comments')
                 .select('*')
                 .eq('post_id', postId)
-            console.log(data)
             return data || [];
         } catch (error) {
             console.error("Error fetching post by id.", error);

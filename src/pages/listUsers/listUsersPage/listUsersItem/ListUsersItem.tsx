@@ -5,30 +5,31 @@ import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
 
 const ListUsersItem = () => {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<Partial<User>[]>([]);
 
-    const upRole = async (user: User) => {
+    const upRole = async (user: Partial<User>) => {
         const updatedUser = {...user, role: 'moderator' as const};
 
         await UserStore.setUser(updatedUser);
+        console.log(updatedUser);
         setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
     }
 
-    const downRole = async (user: User) => {
+    const downRole = async (user: Partial<User>) => {
         const updatedUser = {...user, role: 'user' as const};
 
         await UserStore.setUser(updatedUser);
         setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
     }
 
-    const lockedUser = async (user: User) => {
+    const lockedUser = async (user: Partial<User>) => {
         const updatedUser = {...user, unlocked: false};
 
         await UserStore.setUser(updatedUser);
         setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u))
     }
 
-    const unlockedUser = async (user: User) => {
+    const unlockedUser = async (user: Partial<User>) => {
         const updatedUser = {...user, unlocked: true};
 
         await UserStore.setUser(updatedUser);
@@ -54,25 +55,25 @@ const ListUsersItem = () => {
                         <S.TableCell1></S.TableCell1>
                     </TableRow>
                     {users.map((user) => (
-                        (user.role !== 'admin') ?
-                            <TableRow key={user.id}>
-                                <S.TableCell2>{user.name}</S.TableCell2>
-                                <S.TableCell2>{user.surname}</S.TableCell2>
-                                <S.TableCell2>{user.city}</S.TableCell2>
-                                <S.TableCell2>{user.role}</S.TableCell2>
+                        (user?.role !== 'admin') ?
+                            <TableRow key={user?.id}>
+                                <S.TableCell2>{user?.name}</S.TableCell2>
+                                <S.TableCell2>{user?.surname}</S.TableCell2>
+                                <S.TableCell2>{user?.city}</S.TableCell2>
+                                <S.TableCell2>{user?.role}</S.TableCell2>
                                 <S.TableCell2>
-                                    {user.unlocked ?
+                                    {user?.unlocked ?
                                         <S.Btn onClick={(e) => {
                                             e.preventDefault();
                                             lockedUser(user);
                                         }}>Заблокировать</S.Btn> :
                                         <S.Btn onClick={(e) => {
                                             e.preventDefault();
-                                            unlockedUser(user)
+                                            unlockedUser(user);
                                         }}>Разблокировать</S.Btn>}
                                 </S.TableCell2>
                                 <S.TableCell2>
-                                    {(user.role !== 'moderator') ?
+                                    {(user?.role !== 'moderator') ?
                                         <S.Btn onClick={(e) => {
                                             e.preventDefault();
                                             upRole(user);
