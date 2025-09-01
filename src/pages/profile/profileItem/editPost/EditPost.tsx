@@ -5,7 +5,7 @@ import {Button} from "@mui/material";
 import PostStore from "../../../../store/postStore";
 
 interface EditPostProps {
-    editedPost?: Post | undefined,
+    editedPost?: Post,
     setIsEditPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
     setEditedPost?: (value: (((prevState: (Post | undefined)) => (Post | undefined)) | Post | undefined)) => void
 }

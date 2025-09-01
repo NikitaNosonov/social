@@ -7,26 +7,23 @@ class PostStore {
     private _postById: Post | null = null;
 
     constructor() {
-        makeAutoObservable(this, {
-            setPosts: action,
-            setPostById: action
-        });
+        makeAutoObservable(this);
     }
 
     get posts(): Post[] {
         return this._posts;
     }
 
-    get postById(): Post | null{
+    get postById(): Post | null {
         return this._postById;
     }
 
-    setPosts = action((post: Post) => {
+    setPosts(post: Post) {
         PostService.addPost(post);
         this._posts = [...this._posts, post]
-    })
+    }
 
-    setPostById = action((post: Post) => {
+    setPostById(post: Post) {
         PostService.editPost(post);
         const postIndex = this._posts.findIndex(p => p.id === post.id);
 
@@ -36,25 +33,26 @@ class PostStore {
                 post,
                 ...this._posts.slice(postIndex + 1)
             ];
-        }    })
+        }
+    }
 
-    getPosts = action(async () => {
+    async getPosts() {
         const data = await PostService.getPosts();
 
         runInAction(() => {
             this._posts = data || [];
         })
-    });
+    };
 
-    getPostById = action(async (id: number | null) => {
+    async getPostById(id: number | null) {
         const data = await PostService.getPostById(id);
 
         runInAction(() => {
             this._postById = data || null;
         })
-    })
+    };
 
-    deletePostById = action(async (id: number | null) => {
+    async deletePostById(id: number | null) {
         await PostService.deletePost(id);
         const postIndex = this._posts.findIndex(p => p.id === id);
 
@@ -62,7 +60,15 @@ class PostStore {
             this._posts.splice(postIndex, 1);
             return this._posts
         })
-    })
+    };
+
+    async searchPosts(descr: string) {
+        const data = await PostService.searchPost(descr);
+
+        runInAction(() => {
+            this._posts = data || [];
+        })
+    }
 }
 
 export default new PostStore();

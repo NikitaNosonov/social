@@ -8,9 +8,7 @@ class UserStore {
     private _allUsers: User[] = [];
 
     constructor() {
-        makeAutoObservable(this, {
-            setUser: action
-        });
+        makeAutoObservable(this);
     }
 
     get allUsers() {
@@ -21,27 +19,28 @@ class UserStore {
         return this._user;
     }
 
-    setUser = action((user: Partial<User>) => {
+    setUser(user: Partial<User>) {
         UserService.editUser(user);
         this._user = user;
-    })
+    }
 
-    getUserById = action(async () => {
+    async getUserById() {
         const data = await UserService.getUserById();
 
         runInAction(() => {
             this._user = data || null;
             localStorage.setItem('userId', String(this._user.id))
+            localStorage.setItem('userRole', String(this._user.role))
         })
-    });
+    };
 
-    getUsers = action(async () => {
+    async getUsers() {
         const data = await UserService.getUsers();
 
         runInAction(() => {
             this._allUsers = data || [];
         })
-    })
+    }
 }
 
 export default new UserStore();

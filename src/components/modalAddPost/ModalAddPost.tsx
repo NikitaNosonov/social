@@ -15,7 +15,7 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) =
         id: PostStore.posts.length + 1,
         description: "",
         photo: "",
-        user_id: 1
+        user_id: Number(localStorage.getItem("userId")),
     });
 
     const [isAddPhoto, setIsAddPhoto] = React.useState<boolean>(false)

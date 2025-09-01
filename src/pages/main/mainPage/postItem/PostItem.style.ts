@@ -31,12 +31,25 @@ export const PostItemText = styled.p`
     text-align: justify;
     max-height: 350px;`
 
+export const AvatarComment = styled.img`
+    border-radius: 50%;
+    width: 3vw;
+    margin-right: 10px`
+
 export const TableCell1 = styled(TableCell)`
     && {
         border: none;
         display: flex;
         flex-direction: column;
         height: 34vh;
+    }`
+
+export const TableCell2 = styled(TableCell)`
+    && {
+        border: none;
+        display: flex;
+        height: 5vh;
+        flex-direction: row;
     }`
 
 export const Btn1 = styled(Button)`

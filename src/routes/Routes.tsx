@@ -6,6 +6,8 @@ import CommentPage from "../pages/comments/commentPage/CommentPage";
 import LoginPage from "../pages/login/loginPage/LoginPage";
 import RegisterPage from "../pages/login/registerPage/RegisterPage";
 import ListUsersPage from "../pages/listUsers/listUsersPage/ListUsersPage";
+import RoleGuards from "../guards/roleGuards";
+import AuthGuards from "../guards/authGuards";
 
 export const mainRoute = '/feed';
 export const profileRoute = '/profile';
@@ -17,11 +19,12 @@ export const listUsersRoute = '/users';
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <Navigate to={loginRoute} replace />,
+        element: <Navigate to={loginRoute} replace/>,
     },
     {
         path: loginRoute,
-        element: <LoginPage/>},
+        element: <LoginPage/>
+    },
     {
         path: registerRoute,
         element: <RegisterPage/>
@@ -31,19 +34,19 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: mainRoute,
-                element: <MainPage/>
+                element: <AuthGuards><MainPage/></AuthGuards>
             },
             {
                 path: profileRoute,
-                element: <ProfilePage/>
+                element: <AuthGuards><ProfilePage/></AuthGuards>
             },
             {
                 path: commentRoute,
-                element: <CommentPage/>
+                element: <AuthGuards><CommentPage/></AuthGuards>
             },
             {
                 path: listUsersRoute,
-                element: <ListUsersPage/>
+                element: <RoleGuards><ListUsersPage/></RoleGuards>
             }
         ],
     },

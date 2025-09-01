@@ -20,14 +20,15 @@ const ProfileInfo = observer(() => {
 
     const logout = () => {
         CredentialService.logout()
-        .then(() => {localStorage.clear()})
+            .then(() => {
+                localStorage.clear()
+            })
         navigate(R.loginRoute)
     }
 
-    return (
-        !UserStore.user ? (
-            <Spinner size={60} color="secondary"/>
-        ) : isEditProfile ? (
+    if (!UserStore.user) return (
+        <Spinner size={60} color="secondary"/>)
+    return (isEditProfile ? (
             <EditProfile setIsEditProfile={setIsEditProfile}/>
         ) : (
             <S.ProfileInfo>

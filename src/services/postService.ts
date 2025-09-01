@@ -1,51 +1,88 @@
 import supabase from "../supabaseClient";
 import {Post} from "../types/postType";
-import {User} from "../types/userType";
-import nonAvatar from "../нетфото.jpg";
-
 
 class PostService {
     getPosts = async () => {
-        let {data} = await supabase
-            .from('posts')
-            .select('*');
-        return data;
+        try {
+            let {data} = await supabase
+                .from('posts')
+                .select('*');
+            return data;
+        } catch (error) {
+            console.error("Error fetching get posts.", error);
+            return null;
+        }
     }
 
     getPostById = async (id: number | null) => {
-        let {data} = await supabase
-            .from('posts')
-            .select('*')
-            .eq('id', id)
-            .single();
-        return data;
+        try {
+            let {data} = await supabase
+                .from('posts')
+                .select('*')
+                .eq('id', id)
+                .single();
+            return data;
+        } catch (error) {
+            console.error("Error fetching get post by id.", error);
+            return null;
+        }
     }
 
+    searchPost = async (search: string) => {
+        try {
+            const {data} = await supabase
+                .from('posts')
+                .select('*')
+                .ilike('description', `%${search}%`)
+                .limit(50);
+            console.log(data)
+            return data;
+        } catch (error) {
+            console.error("Error searching.", error);
+            return null;
+        }
+    }
+
+
     addPost = async (post: Post) => {
-        const {data} = await supabase
-            .from('posts')
-            .insert([post])
-            .select();
-        console.log(data);
+        try {
+            await supabase
+                .from('posts')
+                .insert([post])
+                .select();
+        } catch (error) {
+            console.error("Error fetching add post.", error);
+            return null;
+        }
     }
 
     deletePost = async (postId: number | null) => {
-        const {data} = await supabase
-            .from('posts')
-            .delete()
-            .eq('id', postId)
+        try {
+            await supabase
+                .from('posts')
+                .delete()
+                .eq('id', postId)
+        } catch (error) {
+            console.error("Error fetching delete post by id.", error);
+            return null;
+        }
     }
 
     editPost = async (post: Post | null) => {
-        const {data} = await supabase
-            .from('posts')
-            .update({
-                photo: post?.photo,
-                description: post?.description
-            })
-            .eq('id', post?.id);
+        try {
+            const {data} = await supabase
+                .from('posts')
+                .update({
+                    photo: post?.photo,
+                    description: post?.description
+                })
+                .eq('id', post?.id);
 
-        return data;
+            return data;
+        } catch (error) {
+            console.error('Error fetching edit post by id', error);
+            return null;
+        }
     }
 }
 

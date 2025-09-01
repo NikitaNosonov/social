@@ -4,28 +4,43 @@ import {Comment} from "../types/commentType";
 class CommentService {
 
     getCommentByPostId = async (postId: number | null) => {
-        let {data} = await supabase
-            .from('comments')
-            .select('*')
-            .eq('post_id', postId)
-        console.log(data)
-        return data || [];
+        try {
+            let {data} = await supabase
+                .from('comments')
+                .select('*')
+                .eq('post_id', postId)
+            console.log(data)
+            return data || [];
+        } catch (error) {
+            console.error("Error fetching post by id.", error);
+            return null;
+        }
     }
 
     addComment = async (comment: Comment) => {
-        const {data} = await supabase
-            .from('comments')
-            .insert([comment])
-            .select()
-            .single();
-        return data;
+        try {
+            const {data} = await supabase
+                .from('comments')
+                .insert([comment])
+                .select()
+                .single();
+            return data;
+        } catch (error) {
+            console.error("Error fetching add comment", error);
+            return null;
+        }
     }
 
     deleteComment = async (commentId: number | null) => {
-        const {data} = await supabase
-            .from('comments')
-            .delete()
-            .eq('id', commentId)
+        try {
+            await supabase
+                .from('comments')
+                .delete()
+                .eq('id', commentId)
+        } catch (error) {
+            console.error("Error fetching delete comment by id.", error);
+            return null;
+        }
     }
 }
 

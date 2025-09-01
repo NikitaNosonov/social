@@ -1,10 +1,8 @@
 import React, {useEffect} from 'react';
 import CommentStore from "../../../../store/commentStore";
-import {Button, IconButton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
+import {IconButton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import * as S from "./CommentItem.style";
 import UserStore from "../../../../store/userStore";
-import {Comment} from "../../../../types/commentType"
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const CommentItem = () => {
     useEffect(() => {

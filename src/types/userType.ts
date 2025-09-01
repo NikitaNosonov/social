@@ -1,5 +1,4 @@
-import {Post} from './postType'
-import {Comment} from './commentType'
+
 
 export interface User  {
     id?: number | null;
@@ -7,7 +6,7 @@ export interface User  {
     surname: string;
     city: string;
     role: 'user' | 'moderator' | 'admin';
-    user_id: any;
+    user_id: string;
     avatar: string;
     unlocked: boolean;
 }

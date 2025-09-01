@@ -31,28 +31,29 @@ const CommentPage = observer(() => {
         getData();
     }, []);
 
-    return ((!PostStore.postById || UserStore.user === null) ?
-            <Spinner/> :
-            <S.CommentPage>
-                <S.ContentContainer>
-                    <S.ContentPhoto src={PostStore.postById?.photo}/>
-                    <S.ContentText>{PostStore.postById?.description}</S.ContentText>
-                </S.ContentContainer>
-                <S.CommentContainer>
-                    <CommentItem/>
-                </S.CommentContainer>
-                <S.InputContainer>
-                    <S.InputComment value={comment.text}
-                                    type="text"
-                                    placeholder="Напишите комментарий"
-                                    onChange={e => setComment({...comment, text: e.target.value})}/>
-                    <S.BtnSendContainer>
-                        <SendIcon onClick={() => CommentStore.setComments(comment).then(() => getData())}/>
-                    </S.BtnSendContainer>
-                </S.InputContainer>
-            </S.CommentPage>
+    if (!PostStore.postById || UserStore.user === null) return (
+        <Spinner size={60} color="secondary"/>
     )
-        ;
+    return (
+        <S.CommentPage>
+            <S.ContentContainer>
+                <S.ContentPhoto src={PostStore.postById?.photo}/>
+                <S.ContentText>{PostStore.postById?.description}</S.ContentText>
+            </S.ContentContainer>
+            <S.CommentContainer>
+                <CommentItem/>
+            </S.CommentContainer>
+            <S.InputContainer>
+                <S.InputComment value={comment.text}
+                                type="text"
+                                placeholder="Напишите комментарий"
+                                onChange={e => setComment({...comment, text: e.target.value})}/>
+                <S.BtnSendContainer>
+                    <SendIcon onClick={() => CommentStore.setComments(comment).then(() => getData())}/>
+                </S.BtnSendContainer>
+            </S.InputContainer>
+        </S.CommentPage>
+    );
 });
 
 export default CommentPage;

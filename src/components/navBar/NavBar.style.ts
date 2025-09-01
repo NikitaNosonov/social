@@ -15,12 +15,11 @@ export const NavLink = styled(RouterLink)`
     font-family: "Roboto", sans-serif;
     font-weight: 600;
     font-size: 18px;
-    color: #DADADA;
+    color: var(--color-text);
     transition: all 500ms ease;
 
     &:hover {
-        background: #3e4657;
-        color: #e8e7e7;
+        background: var(--color-navLink-text-hover);
         transform: scale(1);
         border-radius: 5px;
     }`
@@ -31,8 +30,7 @@ export const NavLinkAdmContainer = styled.div`
     margin-top: 20px;
     border-top: 1px solid var(--color-text);
     &:hover {
-        background: #3e4657;
-        color: #e8e7e7;
+        background: var(--color-navLink-text-hover);
         transform: scale(1);
         border-radius: 5px;}`
 
@@ -47,8 +45,7 @@ export const NavLinkAdm = styled(RouterLink)`
     transition: all 500ms ease;
 
     &:hover {
-        background: #3e4657;
-        color: #e8e7e7;
+        background: var(--color-navLink-text-hover);
         transform: scale(1);
         border-radius: 5px;
     }`

@@ -6,45 +6,63 @@ import {Post} from "../types/postType";
 class UserService {
 
     getUserById = async () => {
-        const session = await supabase.auth.getSession()
-        let {data} = await supabase
-            .from('users')
-            .select('*')
-            .eq('user_id', session.data.session?.user.id)
-            .single()
-        return data;
+        try {
+            const session = await supabase.auth.getSession()
+            let {data} = await supabase
+                .from('users')
+                .select('*')
+                .eq('user_id', session.data.session?.user.id)
+                .single()
+            return data;
+        } catch (error) {
+            console.error("Error fetching get user by id.", error)
+            return null;
+        }
     }
 
     getUsers = async () => {
-        const {data} = await supabase
-            .from('users')
-            .select('*')
-        return data;
+        try {
+            const {data} = await supabase
+                .from('users')
+                .select('*')
+            return data;
+        } catch (error) {
+            console.error("Error fetching get users.", error);
+            return null;
+        }
     }
 
     addUser = async (user: Partial<User>) => {
-        const {data} = await supabase
-            .from('users')
-            .insert([user])
-            .select();
-        console.log(data);
+        try {
+            await supabase
+                .from('users')
+                .insert([user])
+                .select();
+        } catch (error) {
+            console.error("Error fetching add user.", error);
+            return null;
+        }
     }
 
     editUser = async (user: Partial<User>) => {
-        console.log(user)
-        const {data} = await supabase
-            .from('users')
-            .update({
-                name: user?.name,
-                surname: user?.surname,
-                city: user?.city,
-                avatar: user?.avatar || nonAvatar,
-                role: user?.role,
-                unlocked: user?.unlocked,
-            })
-            .eq('id', user?.id);
+        try {
+            const {data} = await supabase
+                .from('users')
+                .update({
+                    name: user?.name,
+                    surname: user?.surname,
+                    city: user?.city,
+                    avatar: user?.avatar || nonAvatar,
+                    role: user?.role,
+                    unlocked: user?.unlocked,
+                })
+                .eq('id', user?.id);
 
-        return data;
+            return data;
+        } catch (error) {
+            console.error("Error fetching edit user by id.", error);
+            return null
+        }
     }
 }
 
