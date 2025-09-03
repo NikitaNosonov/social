@@ -13,12 +13,11 @@ class CommentStore {
         return this._comments
     }
 
-    async getComments(postId: number | null){
-        const data = await CommentService.getCommentByPostId(postId);
+    async getComments(postId: number | null, page: number, pageSize: number){
+        const data = await CommentService.getCommentByPostId(postId, page, pageSize);
 
         runInAction(() => {
             this._comments = data || []
-            return this._comments
         })
     };
 

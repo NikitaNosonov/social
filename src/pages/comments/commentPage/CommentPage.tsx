@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import * as S from './CommentPage.style'
 import PostStore from "../../../store/postStore";
 import SendIcon from '@mui/icons-material/Send';
@@ -10,26 +10,26 @@ import CommentItem from "./commentItem/CommentItem";
 import CommentStore from "../../../store/commentStore";
 
 const CommentPage = observer(() => {
-    const postIdString = localStorage.getItem('postId');
-    const postId = postIdString ? parseInt(postIdString) : null;
-    const userId = parseInt(localStorage.getItem('userId') || '0');
-    const [comment, setComment] = React.useState<Comment>({
+    const postId = Number(localStorage.getItem('postId'));
+    const userId = Number(localStorage.getItem('userId'));
+    const [refreshComments, setRefreshComments] = useState(0);
+
+    const [comment, setComment] = useState<Comment>({
         id: Date.now(),
         text: "",
         post_id: postId,
         user_id: userId
     });
 
-    const getData = () => {
-        setComment({id: Date.now(), text: "", post_id: postId, user_id: userId})
+    useEffect(() => {
         PostStore.getPostById(postId)
-            .then(() => CommentStore.getComments(postId || null))
-            .then(() => CommentStore.comments)
-    }
+    }, [postId]);
 
-    React.useEffect(() => {
-        getData();
-    }, []);
+    const addComment = async () => {
+        await CommentStore.setComments(comment)
+        setComment({id: Date.now(), text: "", post_id: postId, user_id: userId})
+        setRefreshComments(prev => prev + 1);
+    }
 
     if (!PostStore.postById || UserStore.user === null) return (
         <Spinner size={60} color="secondary"/>
@@ -41,7 +41,7 @@ const CommentPage = observer(() => {
                 <S.ContentText>{PostStore.postById?.description}</S.ContentText>
             </S.ContentContainer>
             <S.CommentContainer>
-                <CommentItem/>
+                <CommentItem postId={postId} refreshComments={refreshComments} setRefreshComments={setRefreshComments} />
             </S.CommentContainer>
             <S.InputContainer>
                 <S.InputComment value={comment.text}
@@ -49,7 +49,7 @@ const CommentPage = observer(() => {
                                 placeholder="Напишите комментарий"
                                 onChange={e => setComment({...comment, text: e.target.value})}/>
                 <S.BtnSendContainer>
-                    <SendIcon onClick={() => CommentStore.setComments(comment).then(() => getData())}/>
+                    <SendIcon onClick={() => addComment()}/>
                 </S.BtnSendContainer>
             </S.InputContainer>
         </S.CommentPage>

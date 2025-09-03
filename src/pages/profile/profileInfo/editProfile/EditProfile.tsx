@@ -4,7 +4,7 @@ import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
 import {Button} from "@mui/material";
 import {observer} from "mobx-react-lite";
-import UserService from "../../../../services/userService";
+import InputError from "../../../../components/inputError/InputError";
 
 interface EditProfileProps {
     setIsEditProfile?: (value: (((prevState: boolean) => boolean) | boolean)) => void
@@ -13,6 +13,7 @@ interface EditProfileProps {
 const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) => {
     const [profileEdit, setProfileEdit] = useState<Partial<User>>(UserStore.user);
     const [isAddPhoto, setIsAddPhoto] = useState(false);
+    const [errorSt, setErrorSt] = useState(false);
 
     const editPhoto = () => {
         if (profileEdit) {
@@ -25,10 +26,14 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
     }
 
     const editUser = async () => {
-        await UserStore.setUser(profileEdit)
-        await UserStore.user
-        if (setIsEditProfile) {
-            setIsEditProfile(false)
+        if (profileEdit.name === '' || profileEdit.surname === '' || profileEdit.city === '') {
+            setErrorSt(true);
+        } else {
+            await UserStore.setUser(profileEdit)
+            await UserStore.user
+            if (setIsEditProfile) {
+                setIsEditProfile(false)
+            }
         }
     }
 
@@ -50,33 +55,36 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
 
     return (
         <S.ProfileInfo>
-            <S.Input
+            <InputError errorSt={errorSt}><S.Input
                 size="small"
                 value={profileEdit?.name}
                 type="text"
                 placeholder="Имя"
                 onChange={e => {
+                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, name: e.target.value})
                 }}
-            />
-            <S.Input
+            /></InputError>
+            <InputError errorSt={errorSt}><S.Input
                 size="small"
                 value={profileEdit?.surname}
                 type="text"
                 placeholder="Фамилия"
                 onChange={e => {
+                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, surname: e.target.value})
                 }}
-            />
-            <S.Input
+            /></InputError>
+            <InputError errorSt={errorSt}><S.Input
                 size="small"
                 value={profileEdit?.city}
                 type="text"
                 placeholder="Город"
                 onChange={e => {
+                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, city: e.target.value})
                 }}
-            />
+            /></InputError>
             <S.ButtonContainer>
                 {!isAddPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"

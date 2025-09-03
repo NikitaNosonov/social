@@ -5,10 +5,14 @@ import UserStore from "../../../store/userStore";
 import {observer} from "mobx-react-lite";
 import {Post} from "../../../types/postType";
 import PostStore from "../../../store/postStore";
+import {Button} from "@mui/material";
 
 const MainPage = observer(() => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(4);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         UserStore.getUserById().then(() => console.log(UserStore.user?.id))
@@ -20,7 +24,7 @@ const MainPage = observer(() => {
                     if (search) {
                         PostStore.searchPosts(search).then(() => setPosts(PostStore.posts));
                     } else {
-                        PostStore.getPosts().then(() => setPosts(PostStore.posts));
+                        PostStore.getPosts(page, pageSize).then(() => setPosts(PostStore.posts));
                     }
                 } catch (error) {
                     console.error('Ошибка поиска', error);
@@ -28,7 +32,13 @@ const MainPage = observer(() => {
             }
         )
         return () => clearTimeout(timer);
-    }, [search]);
+    }, [search || pageSize]);
+
+    const nextPosts = () => {
+        setLoading(false);
+        setPageSize(pageSize + 5);
+        PostStore.getPosts(page, pageSize).then(() => setLoading(true));
+    }
 
     return (
         <S.MainPage>
@@ -40,7 +50,7 @@ const MainPage = observer(() => {
                     onChange={(e) => setSearch(e.target.value)}/>
             </S.SearchContainer>
             <S.PostsContainer>
-                <PostItem posts={posts}/>
+                <PostItem posts={posts} nextPosts={nextPosts} loading={loading}/>
             </S.PostsContainer>
         </S.MainPage>
     );

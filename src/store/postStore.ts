@@ -36,13 +36,13 @@ class PostStore {
         }
     }
 
-    async getPosts() {
-        const data = await PostService.getPosts();
+    async getPosts(page: number, pageSize: number) {
+        const data = await PostService.getPostsByMainPage(page, pageSize);
 
         runInAction(() => {
             this._posts = data || [];
         })
-    };
+    }
 
     async getPostById(id: number | null) {
         const data = await PostService.getPostById(id);

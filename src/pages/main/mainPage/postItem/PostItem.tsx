@@ -8,14 +8,16 @@ import Spinner from "../../../../components/Spinner";
 import {observer} from "mobx-react-lite";
 import {Post} from "../../../../types/postType";
 import UserStore from "../../../../store/userStore";
-import {User} from "../../../../types/userType"
 import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
+import {ProfileItemButton} from "../../../profile/profileItem/ProfileItem.style"
 
 interface PostItemProps {
-    posts?: Post[]
+    posts?: Post[],
+    nextPosts?: () => void,
+    loading?: boolean
 }
 
-const PostItem: React.FC<PostItemProps> = observer(({posts}) => {
+const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,9 +59,9 @@ const PostItem: React.FC<PostItemProps> = observer(({posts}) => {
                                                     onClick={() => switchingToCommentPage(post.id || null)}/>
                                                 <AdditionalFeaturesModerator>
                                                     <S.Delete onClick={(e) => {
-                                                    e.preventDefault();
-                                                    PostStore.deletePostById(post.id)
-                                                }}/></AdditionalFeaturesModerator>
+                                                        e.preventDefault();
+                                                        PostStore.deletePostById(post.id)
+                                                    }}/></AdditionalFeaturesModerator>
                                             </S.IconContainer>
                                         </S.TableCell1>
                                         <S.PhotoContainer>
@@ -72,6 +74,8 @@ const PostItem: React.FC<PostItemProps> = observer(({posts}) => {
                     </S.PostItem>
                 );
             })}
+            {(!loading) ? <Spinner size={60} color="secondary"/> :
+                <ProfileItemButton onClick={() => nextPosts ? nextPosts() : null}>Загрузить еще</ProfileItemButton>}
         </>
     );
 });

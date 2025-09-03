@@ -1,24 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button} from "@mui/material";
 import * as S from "./ModalAddPost.style"
 import {Post} from "../../types/postType";
 import PostStore from "../../store/postStore";
 import PostService from "../../services/postService";
 import {observer} from "mobx-react-lite";
+import InputError from "../inputError/InputError";
 
 interface ModalAddPostProps {
     setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
+    setRefresh?: (value: (((prevState: number) => number) | number)) => void
 }
 
-const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) => {
-    const [post, setPost] = React.useState<Post>({
-        id: PostStore.posts.length + 1,
+const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, setRefresh}) => {
+    const [post, setPost] = useState<Post>({
+        id: Date.now(),
         description: "",
         photo: "",
         user_id: Number(localStorage.getItem("userId")),
     });
 
-    const [isAddPhoto, setIsAddPhoto] = React.useState<boolean>(false)
+    const [isAddPhoto, setIsAddPhoto] = useState<boolean>(false)
+    const [errorSt, setErrorSt] = useState<boolean>(false)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -37,23 +40,32 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost}) =
         }
     };
 
-    const addPost = () => {
-        if (setModalAddPost) {
-            setModalAddPost(false);
+    const addPost = async () => {
+        if (post.description === '') {
+            setErrorSt(true);
         }
-        PostStore.setPosts(post)
+        else {
+            setErrorSt(false);
+            if (setModalAddPost) {
+                setModalAddPost(false);
+            }
+            await PostStore.setPosts(post)
+            if (setRefresh) {
+                setRefresh(prev => prev + 1)
+            }
+        }
     }
 
     return (
         <div>
-            <S.Input
+            <InputError errorSt={errorSt}><S.Input
                 minRows={3}
                 maxRows={6}
                 value={post.description}
                 type="text"
                 placeholder="Описание"
                 onChange={e => setPost({...post, description: e.target.value})}
-            />
+            /></InputError>
             <S.ButtonContainer>
                 {!isAddPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"

@@ -6,6 +6,7 @@ import supabase from "../supabaseClient";
 class UserStore {
     private _user: Partial<User> = {};
     private _allUsers: User[] = [];
+    private _usersPage: User[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -13,6 +14,10 @@ class UserStore {
 
     get allUsers() {
         return this._allUsers;
+    }
+
+    get usersPage() {
+        return this._usersPage;
     }
 
     get user(): Partial<User> {
@@ -39,6 +44,14 @@ class UserStore {
 
         runInAction(() => {
             this._allUsers = data || [];
+        })
+    }
+
+    async getUsersPage(page: number, pageSize: number) {
+        const data = await UserService.getUsersByPagination(page, pageSize)
+
+        runInAction(() => {
+            this._usersPage = data || [];
         })
     }
 }

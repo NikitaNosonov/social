@@ -1,25 +1,28 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as S from './ProfileItem.style';
-import {Button, Dialog, DialogContent, DialogTitle, IconButton} from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import {useNavigate} from "react-router-dom";
+import {Dialog, DialogContent, DialogTitle, IconButton, Pagination, Stack} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import PostStore from "../../../store/postStore";
 import ModalAddPost from "../../../components/modalAddPost/ModalAddPost";
 import {Post} from "../../../types/postType";
 import EditPost from "./editPost/EditPost";
+import Spinner from "../../../components/Spinner";
 
 const ProfileItem = observer(() => {
-    const navigate = useNavigate();
     const [modalAddPost, setModalAddPost] = React.useState(false);
     const [isEditPost, setIsEditPost] = React.useState(false);
     const [editedPost, setEditedPost] = React.useState<Post>();
     const [postId, setPostId] = React.useState<number | null>(null);
     const [posts, setPosts] = React.useState<Post[]>([]);
+    const [page, setPage] = React.useState(1);
+    const [pageSize, setPageSize] = React.useState(4);
+    const [loading, setLoading] = useState(true);
+    const [refresh, setRefresh] = useState(0);
 
     useEffect(() => {
+        console.log('111')
         const fetchPosts = async () => {
-            await PostStore.getPosts();
+            await PostStore.getPosts(page, pageSize);
 
             const userId = Number(localStorage.getItem("userId"));
             const userPosts = PostStore.posts.filter(post => post.user_id === userId);
@@ -28,13 +31,27 @@ const ProfileItem = observer(() => {
         };
 
         fetchPosts();
-    }, [PostStore.posts.length]);
+    }, [refresh]);
+
 
     const editPost = (post: Post, event: React.MouseEvent) => {
         event.preventDefault();
         setIsEditPost(true);
         setEditedPost({...post});
         setPostId(post.id);
+        setRefresh(prev => prev + 1);
+    }
+
+    const deletePost = (e: React.MouseEvent, id: number | null) => {
+        e.preventDefault();
+        PostStore.deletePostById(id)
+        setRefresh(prev => prev + 1);
+    }
+
+    const nextPost = () => {
+        setLoading(false)
+        setPageSize(pageSize + 5);
+        PostStore.getPosts(page, pageSize).then(() => setLoading(true));
     }
 
     return (
@@ -46,7 +63,7 @@ const ProfileItem = observer(() => {
                     <S.ModalAddPost>
                         <DialogContent onClick={(e) => e.stopPropagation()}>
                             <DialogTitle style={{marginTop: -25}} align="center">Добавить пост</DialogTitle>
-                            <ModalAddPost setModalAddPost={setModalAddPost}/>
+                            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh}/>
                         </DialogContent>
                     </S.ModalAddPost>
                 </Dialog>
@@ -62,16 +79,17 @@ const ProfileItem = observer(() => {
                             <S.Edit/>
                         </S.Icon>
                         <IconButton onClick={(e) => {
-                            e.preventDefault();
-                            PostStore.deletePostById(post.id)
+                            deletePost(e, post?.id)
                         }}>
                             <S.Delete/>
                         </IconButton>
                     </S.ProfileItemBtnContainer>
                 </> : postId === post.id ?
                     <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost}
-                              setIsEditPost={setIsEditPost}/> : null}
+                              setIsEditPost={setIsEditPost} setRefresh={setRefresh}/> : null}
             </S.ProfileItemPostContainer>))}
+            {!loading ? <Spinner size={60} color="secondary"/> :
+                <S.ProfileItemButton onClick={() => nextPost()}>Загрузить еще</S.ProfileItemButton>}
         </S.ProfileItem>
     );
 });

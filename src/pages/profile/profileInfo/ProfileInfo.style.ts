@@ -15,6 +15,7 @@ export const ProfileInfo = styled.div`
 export const ProfilePhoto = styled.img`
     border-radius: 100%;
     max-width: 200px;
+    max-height: 200px;
     margin: 20px 72px`
 
 export const ProfileName = styled.h2`

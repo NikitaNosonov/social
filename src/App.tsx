@@ -16,7 +16,7 @@ function App() {
 
     return (
         <S.App>
-            {isDark ? <GlobalStyleDark/> : <GlobalStyleLight/>}
+            {!isDark ? <GlobalStyleDark/> : <GlobalStyleLight/>}
             <RouterProvider router={router}/>
             <S.SwitchThemeContainer>
                 <Switch

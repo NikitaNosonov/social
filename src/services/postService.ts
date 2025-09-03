@@ -6,7 +6,24 @@ class PostService {
         try {
             let {data} = await supabase
                 .from('posts')
-                .select('*');
+                .select('*')
+                .order('id', { ascending: false })
+            return data;
+        } catch (error) {
+            console.error("Error fetching get posts.", error);
+            return null;
+        }
+    }
+
+    getPostsByMainPage = async (page: number, pageSize: number) => {
+        try {
+            console.log(pageSize)
+            let {data} = await supabase
+                .from('posts')
+                .select('*')
+                .order('id', { ascending: false })
+                .limit(pageSize)
+                .range((page - 1), pageSize)
             return data;
         } catch (error) {
             console.error("Error fetching get posts.", error);
@@ -42,7 +59,6 @@ class PostService {
             return null;
         }
     }
-
 
     addPost = async (post: Post) => {
         try {

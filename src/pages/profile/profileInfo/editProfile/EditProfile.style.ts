@@ -11,6 +11,7 @@ export const ProfileInfo = styled.div`
     position: fixed;
     padding: 15px;
     height: fit-content;
+    gap: 5px
 `
 
 export const Input = styled(TextField)`

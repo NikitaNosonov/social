@@ -7,9 +7,11 @@ import CredentialService from "../../../services/credentialService";
 import supabase from "../../../supabaseClient";
 import UserService from "../../../services/userService";
 import avatar from "../../../нетфото.jpg"
+import InputError from "../../../components/inputError/InputError";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
+    const [errorSt, setErrorSt] = useState(false);
 
     const [userData, setUserData] = useState<Partial<User>>({
         name: "",
@@ -25,43 +27,80 @@ const RegisterPage = () => {
     })
 
     const register = async () => {
-        CredentialService.addCredential(credential)
-            .then(() => supabase.auth.getSession())
-            .then(session => {
-                const updatedUserData = {
-                    ...userData,
-                    user_id: session.data.session?.user.id
-                };
-                setUserData(updatedUserData);
-                console.log(updatedUserData)
-                return UserService.addUser(updatedUserData);
-            })
-            .then(() => navigate('/feed'))
+        if (credential.email === '' ||
+            credential.password === '' ||
+            userData.name === '' ||
+            userData.surname === '' ||
+            userData.city === '') {
+            setErrorSt(true);
+        } else {
+            CredentialService.addCredential(credential)
+                .then(() => supabase.auth.getSession())
+                .then(session => {
+                    const updatedUserData = {
+                        ...userData,
+                        user_id: session.data.session?.user.id
+                    };
+                    setUserData(updatedUserData);
+                    console.log(updatedUserData)
+                    return UserService.addUser(updatedUserData);
+                })
+                .then(() => navigate('/feed'))
+        }
     }
 
     return (
         <S.RegisterPageContainer>
             <S.RegisterTitle>Заполните форму регистрации</S.RegisterTitle>
-            <S.RegisterInput value={userData?.name}
-                             type='text'
-                             onChange={e => setUserData({...userData, name: e.target.value})}
-                             placeholder="Имя"/>
-            <S.RegisterInput value={userData?.surname}
-                             type='text'
-                             onChange={e => setUserData({...userData, surname: e.target.value})}
-                             placeholder="Фамилия"/>
-            <S.RegisterInput value={userData?.city}
-                             type='text'
-                             onChange={e => setUserData({...userData, city: e.target.value})}
-                             placeholder="Город"/>
-            <S.RegisterInput value={credential.email}
-                             type='email'
-                             onChange={e => setCredential({...credential, email: e.target.value})}
-                             placeholder="Адрес электронной почты"/>
-            <S.RegisterInput value={credential.password}
-                             type='password'
-                             onChange={e => setCredential({...credential, password: e.target.value})}
-                             placeholder="Пароль"/>
+            <InputError errorSt={errorSt}><S.RegisterInput value={userData?.name}
+                                                           type='text'
+                                                           onChange={e => {
+                                                               setErrorSt(false)
+                                                               setUserData({
+                                                                   ...userData,
+                                                                   name: e.target.value
+                                                               })
+                                                           }}
+                                                           placeholder="Имя"/></InputError>
+            <InputError errorSt={errorSt}><S.RegisterInput value={userData?.surname}
+                                                           type='text'
+                                                           onChange={e => {
+                                                               setErrorSt(false)
+                                                               setUserData({
+                                                                   ...userData,
+                                                                   surname: e.target.value})
+                                                           }}
+                                                           placeholder="Фамилия"/></InputError>
+            <InputError errorSt={errorSt}><S.RegisterInput value={userData?.city}
+                                                           type='text'
+                                                           onChange={e => {
+                                                               setErrorSt(false)
+                                                               setUserData({
+                                                                   ...userData,
+                                                                   city: e.target.value
+                                                               })
+                                                           }}
+                                                           placeholder="Город"/></InputError>
+            <InputError errorSt={errorSt}><S.RegisterInput value={credential.email}
+                                                           type='email'
+                                                           onChange={e => {
+                                                               setErrorSt(false)
+                                                               setCredential({
+                                                                   ...credential,
+                                                                   email: e.target.value
+                                                               })
+                                                           }}
+                                                           placeholder="Адрес электронной почты"/></InputError>
+            <InputError errorSt={errorSt}><S.RegisterInput value={credential.password}
+                                                           type='password'
+                                                           onChange={e => {
+                                                               setErrorSt(false)
+                                                               setCredential({
+                                                                   ...credential,
+                                                                   password: e.target.value
+                                                               })
+                                                           }}
+                                                           placeholder="Пароль"/></InputError>
             <S.RegisterButtonContainer>
                 <S.RegisterButton variant="contained"
                                   color="primary"

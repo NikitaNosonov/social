@@ -3,26 +3,36 @@ import * as S from './EditPost.style'
 import {Post} from "../../../../types/postType";
 import {Button} from "@mui/material";
 import PostStore from "../../../../store/postStore";
+import InputError from "../../../../components/inputError/InputError";
 
 interface EditPostProps {
     editedPost?: Post,
     setIsEditPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
-    setEditedPost?: (value: (((prevState: (Post | undefined)) => (Post | undefined)) | Post | undefined)) => void
+    setEditedPost?: (value: (((prevState: (Post | undefined)) => (Post | undefined)) | Post | undefined)) => void,
+    setRefresh?: (value: (((prevState: number) => number) | number)) => void
 }
 
-const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost}) => {
+const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost, setRefresh}) => {
     const [isEditPhoto, setIsEditPhoto] = useState(false);
+    const [errorSt, setErrorSt] = useState(false);
 
     const editPhoto = () => {
         setIsEditPhoto(true);
     }
 
-    const editPost = () => {
-        if (editedPost) {
-            PostStore.setPostById(editedPost)
-        }
-        if (setIsEditPost) {
-            setIsEditPost(false)
+    const editPost = async () => {
+        if (editedPost?.description === '') {
+            setErrorSt(true);
+        } else {
+            if (editedPost) {
+                await PostStore.setPostById(editedPost)
+            }
+            if (setIsEditPost) {
+                setIsEditPost(false)
+            }
+            if (setRefresh) {
+                setRefresh(prev => prev + 1)
+            }
         }
     }
 
@@ -45,17 +55,22 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
     return (
         <div style={{display: "flex", justifyContent: "center", flexDirection: "column"}}>
             <S.ProfileItemPhoto src={editedPost?.photo}/>
-            <S.Input
+            <InputError errorSt={errorSt}><S.Input
                 multiline
                 minRows={3}
                 maxRows={6}
                 value={editedPost?.description}
                 type="text"
                 placeholder="Описание"
-                onChange={e => setEditedPost ? setEditedPost(editedPost ? {
-                    ...editedPost,
-                    description: e.target.value
-                } : undefined) : null}/>
+                onChange={e => {
+                    setErrorSt(false)
+                    if (setEditedPost) {
+                        setEditedPost(editedPost ? {
+                            ...editedPost,
+                            description: e.target.value
+                        } : undefined)
+                    }
+                }}/></InputError>
             <S.ButtonContainer>
                 {!isEditPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"

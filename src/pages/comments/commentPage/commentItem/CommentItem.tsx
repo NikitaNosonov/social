@@ -1,35 +1,67 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import CommentStore from "../../../../store/commentStore";
 import {IconButton, Table, TableBody, TableCell, TableContainer, TableRow} from "@mui/material";
 import * as S from "./CommentItem.style";
 import UserStore from "../../../../store/userStore";
 import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
-import {Comment} from "../../../../types/commentType"
+import {ProfileItemButton} from "../../../profile/profileItem/ProfileItem.style";
+import Spinner from "../../../../components/Spinner";
+import PostStore from "../../../../store/postStore";
+import {Comment} from "../../../../types/commentType";
 
-const CommentItem = () => {
-    const postId = Number(localStorage.getItem('postId'));
-    const [comments, setComments] = React.useState<Comment[]>([]);
+interface CommentItemProps {
+    postId?: number,
+    refreshComments?: number,
+    setRefreshComments?: (value: (((prevState: number) => number) | number)) => void
+}
+
+const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRefreshComments}) => {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(4);
+    const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState<Comment[]>([]);
 
     useEffect(() => {
-        const fetchComments = async () => {
-            await CommentStore.getComments(postId)
-                .then(() => {
-                    console.log(CommentStore.comments)
-                    setComments(CommentStore.comments)
-                    comments.map((comment) => findUserByCommentId(comment.user_id))
-                })
+        const getData = async () => {
+            await Promise.all([
+                CommentStore.getComments(postId || null, page, pageSize),
+                UserStore.getUsers()
+            ]);
+            setComments(CommentStore.comments);
         }
-        fetchComments()
-    }, [])
+
+        getData()
+    }, [refreshComments || pageSize])
+
+    const nextComments = async () => {
+        setLoading(false);
+        setPageSize(pageSize + 5);
+        await CommentStore.getComments(postId || null, page, pageSize);
+        setComments(CommentStore.comments);
+        setLoading(true);
+    }
+
+    const deleteComment = async (e: React.MouseEvent, id: number | null) => {
+        e.preventDefault();
+        await CommentStore.deleteComment(id);
+        if (setRefreshComments) {
+            setRefreshComments(prev => prev + 1)
+        }
+    }
+
 
     const findUserByCommentId = (userId: number | null) => {
         return UserStore.allUsers.find(user => user.id === userId);
     }
 
+    if (!PostStore.postById || UserStore.user === null) return (
+        <Spinner size={60} color="secondary"/>
+    )
     return (
         <>
             {comments.map((comment) => {
                 const user = findUserByCommentId(comment.user_id);
+                console.log(user)
                 return (
                     <TableContainer key={comment.id}>
                         <Table>
@@ -46,9 +78,7 @@ const CommentItem = () => {
                                         <S.TableCell2>
                                             <IconButton>
                                                 <S.DeleteButton onClick={async (e) => {
-                                                    e.preventDefault();
-                                                    await CommentStore.deleteComment(comment.id || null);
-                                                    await CommentStore.getComments(postId);
+                                                    deleteComment(e, comment.id || null)
                                                 }}/>
                                             </IconButton>
                                         </S.TableCell2>
@@ -59,6 +89,8 @@ const CommentItem = () => {
                     </TableContainer>
                 );
             })}
+            {(!loading) ? <Spinner size={60} color="secondary"/> :
+                <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton>}
         </>
     );
 };

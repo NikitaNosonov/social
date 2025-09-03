@@ -3,13 +3,19 @@ import {Comment} from "../types/commentType";
 
 class CommentService {
 
-    getCommentByPostId = async (postId: number | null) => {
+    getCommentByPostId = async (postId: number | null, page: number, pageSize: number) => {
         try {
             let {data} = await supabase
                 .from('comments')
                 .select('*')
                 .eq('post_id', postId)
-            return data || [];
+                .order('id', {ascending: false})
+                .limit(pageSize)
+                .range((page - 1), pageSize)
+            if (data && data.length > 0) {
+                return data || [];
+            }
+            return []
         } catch (error) {
             console.error("Error fetching post by id.", error);
             return null;

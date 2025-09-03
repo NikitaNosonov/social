@@ -32,6 +32,22 @@ class UserService {
         }
     }
 
+    getUsersByPagination = async (page: number, pageSize: number) => {
+        try {
+            console.log(pageSize)
+            let {data} = await supabase
+                .from('users')
+                .select('*')
+                .order('id', { ascending: false })
+                .limit(pageSize)
+                .range((page - 1), pageSize)
+            return data;
+        } catch (error) {
+            console.error("Error fetching get users.", error);
+            return null;
+        }
+    }
+
     addUser = async (user: Partial<User>) => {
         try {
             await supabase
@@ -60,11 +76,6 @@ class UserService {
                 .eq('id', user?.id)
                 .select()
                 .limit(1)
-
-            console.log('✅ Supabase status:', status);
-            console.log('📊 Response data:', data);
-            console.log('❌ Error:', error);
-            console.log('🔢 Affected rows:', count);
             return data ;
         } catch (error) {
             console.error("Error fetching edit user by id.", error);
