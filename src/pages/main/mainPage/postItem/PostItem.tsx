@@ -14,10 +14,11 @@ import {ProfileItemButton} from "../../../profile/profileItem/ProfileItem.style"
 interface PostItemProps {
     posts?: Post[],
     nextPosts?: () => void,
-    loading?: boolean
+    loading?: boolean,
+    morePost?: boolean
 }
 
-const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading}) => {
+const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, morePost}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -75,7 +76,8 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading})
                 );
             })}
             {(!loading) ? <Spinner size={60} color="secondary"/> :
-                <ProfileItemButton onClick={() => nextPosts ? nextPosts() : null}>Загрузить еще</ProfileItemButton>}
+                ((morePost) ? <ProfileItemButton onClick={() => nextPosts ? nextPosts() : null}>Загрузить
+                    еще</ProfileItemButton> : null)}
         </>
     );
 });

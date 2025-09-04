@@ -18,9 +18,10 @@ const ProfileItem = observer(() => {
     const [pageSize, setPageSize] = React.useState(4);
     const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(0);
+    const [morePost, setMorePost] = useState(true);
 
     useEffect(() => {
-        console.log('111')
+        console.log(refresh)
         const fetchPosts = async () => {
             await PostStore.getPosts(page, pageSize);
 
@@ -31,11 +32,11 @@ const ProfileItem = observer(() => {
         };
 
         fetchPosts();
-    }, [refresh]);
-
+    }, [refresh || pageSize]);
 
     const editPost = (post: Post, event: React.MouseEvent) => {
         event.preventDefault();
+        setMorePost(false);
         setIsEditPost(true);
         setEditedPost({...post});
         setPostId(post.id);
@@ -45,7 +46,7 @@ const ProfileItem = observer(() => {
     const deletePost = (e: React.MouseEvent, id: number | null) => {
         e.preventDefault();
         PostStore.deletePostById(id)
-        setRefresh(prev => prev + 1);
+        setRefresh(refresh + 1);
     }
 
     const nextPost = () => {
@@ -86,10 +87,10 @@ const ProfileItem = observer(() => {
                     </S.ProfileItemBtnContainer>
                 </> : postId === post.id ?
                     <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost}
-                              setIsEditPost={setIsEditPost} setRefresh={setRefresh}/> : null}
+                              setIsEditPost={setIsEditPost} setRefresh={setRefresh} setMorePost={setMorePost}/> : null}
             </S.ProfileItemPostContainer>))}
             {!loading ? <Spinner size={60} color="secondary"/> :
-                <S.ProfileItemButton onClick={() => nextPost()}>Загрузить еще</S.ProfileItemButton>}
+                (morePost) ? <S.ProfileItemButton onClick={() => nextPost()}>Загрузить еще</S.ProfileItemButton> : null}
         </S.ProfileItem>
     );
 });

@@ -6,6 +6,7 @@ import PostStore from "../../store/postStore";
 import PostService from "../../services/postService";
 import {observer} from "mobx-react-lite";
 import InputError from "../inputError/InputError";
+import DragAndDrop from "../dragAndDrop/DragAndDrop";
 
 interface ModalAddPostProps {
     setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
@@ -69,13 +70,8 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
             <S.ButtonContainer>
                 {!isAddPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => setIsAddPhoto(true)}>Добавить фото</Button> : <input
-                        type="file"
-                        name="image"
-                        id="file"
-                        accept=".jpg, .jpeg, .png"
-                        onChange={e => onChange(e)}
-                    />}
+                            onClick={() => setIsAddPhoto(true)}>Добавить фото</Button> :
+                    <DragAndDrop post={post} setPost={setPost}/>}
                 <Button variant="contained" color="primary" type="submit" size="small" onClick={() => addPost()}>
                     Добавить пост
                 </Button>

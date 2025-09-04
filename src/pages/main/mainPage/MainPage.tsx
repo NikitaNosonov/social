@@ -13,6 +13,7 @@ const MainPage = observer(() => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(4);
     const [loading, setLoading] = useState(true);
+    const [morePost, setMorePost] = useState(true);
 
     useEffect(() => {
         UserStore.getUserById().then(() => console.log(UserStore.user?.id))
@@ -22,8 +23,10 @@ const MainPage = observer(() => {
         const timer = setTimeout(async () => {
                 try {
                     if (search) {
+                        setMorePost(false)
                         PostStore.searchPosts(search).then(() => setPosts(PostStore.posts));
                     } else {
+                        setMorePost(true)
                         PostStore.getPosts(page, pageSize).then(() => setPosts(PostStore.posts));
                     }
                 } catch (error) {
@@ -50,7 +53,7 @@ const MainPage = observer(() => {
                     onChange={(e) => setSearch(e.target.value)}/>
             </S.SearchContainer>
             <S.PostsContainer>
-                <PostItem posts={posts} nextPosts={nextPosts} loading={loading}/>
+                <PostItem posts={posts} nextPosts={nextPosts} loading={loading} morePost={morePost}/>
             </S.PostsContainer>
         </S.MainPage>
     );

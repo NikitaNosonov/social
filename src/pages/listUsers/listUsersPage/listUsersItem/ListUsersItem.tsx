@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Pagination, Stack, Table, TableBody, TableContainer, TableRow} from "@mui/material";
+import {Pagination, Stack, Table, TableBody, TableContainer, TableRow} from "@mui/material";
 import * as S from "./ListUsersItem.style";
 import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
@@ -112,11 +112,11 @@ const ListUsersItem = () => {
                     ))}
                 </TableBody>
             </Table>
-            <Stack spacing={2}>
+            {(count > 1) ? <Stack spacing={2}>
                 <Pagination count={count}
                             shape="rounded"
                             onChange={handlePageChange}/>
-            </Stack>
+            </Stack> : null}
         </TableContainer>
     );
 };

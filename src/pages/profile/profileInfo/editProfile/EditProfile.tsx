@@ -5,6 +5,7 @@ import {User} from "../../../../types/userType";
 import {Button} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import InputError from "../../../../components/inputError/InputError";
+import DragAndDrop from "../../../../components/dragAndDrop/DragAndDrop";
 
 interface EditProfileProps {
     setIsEditProfile?: (value: (((prevState: boolean) => boolean) | boolean)) => void
@@ -36,22 +37,6 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
             }
         }
     }
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = _handleReaderLoaded;
-            reader.readAsBinaryString(file);
-        }
-    };
-
-    const _handleReaderLoaded = (e: ProgressEvent<FileReader>) => {
-        const binaryString = e.target?.result;
-        if (profileEdit && setProfileEdit) {
-            setProfileEdit({...profileEdit, avatar: "data:image;base64," + btoa(binaryString as string)});
-        }
-    };
 
     return (
         <S.ProfileInfo>
@@ -88,13 +73,9 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
             <S.ButtonContainer>
                 {!isAddPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => editPhoto()}>Изменить фото</Button> : <input
-                        type="file"
-                        name="image"
-                        id="file"
-                        accept=".jpg, .jpeg, .png"
-                        onChange={e => onChange(e)}
-                    />}
+                            onClick={() => editPhoto()}>Изменить фото</Button>
+                    :
+                    <DragAndDrop profileEdit={profileEdit} setProfileEdit={setProfileEdit}/>}
                 <Button variant="contained" color="primary" type="submit" size="small"
                         onClick={() => editUser()}>Завершить редактирование</Button>
             </S.ButtonContainer>

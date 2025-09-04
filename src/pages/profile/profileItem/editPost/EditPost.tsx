@@ -4,15 +4,17 @@ import {Post} from "../../../../types/postType";
 import {Button} from "@mui/material";
 import PostStore from "../../../../store/postStore";
 import InputError from "../../../../components/inputError/InputError";
+import DragAndDrop from "../../../../components/dragAndDrop/DragAndDrop";
 
 interface EditPostProps {
     editedPost?: Post,
     setIsEditPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
     setEditedPost?: (value: (((prevState: (Post | undefined)) => (Post | undefined)) | Post | undefined)) => void,
-    setRefresh?: (value: (((prevState: number) => number) | number)) => void
+    setRefresh?: (value: (((prevState: number) => number) | number)) => void,
+    setMorePost?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
 
-const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost, setRefresh}) => {
+const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost, setRefresh, setMorePost}) => {
     const [isEditPhoto, setIsEditPhoto] = useState(false);
     const [errorSt, setErrorSt] = useState(false);
 
@@ -32,6 +34,9 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
             }
             if (setRefresh) {
                 setRefresh(prev => prev + 1)
+            }
+            if (setMorePost) {
+                setMorePost(true)
             }
         }
     }
@@ -74,13 +79,9 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
             <S.ButtonContainer>
                 {!isEditPhoto ?
                     <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => editPhoto()}>Изменить фото</Button> : <input
-                        type="file"
-                        name="image"
-                        id="file"
-                        accept=".jpg, .jpeg, .png"
-                        onChange={e => onChange(e)}
-                    />}
+                            onClick={() => editPhoto()}>Изменить фото</Button>
+                    :
+                    <DragAndDrop editedPost={editedPost} setEditedPost={setEditedPost}/>}
                 <Button variant="contained" color="primary" type="submit" size="small"
                         onClick={() => editPost()}>Завершить редактирование</Button>
             </S.ButtonContainer>
