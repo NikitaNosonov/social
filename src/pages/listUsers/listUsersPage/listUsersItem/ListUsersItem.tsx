@@ -3,6 +3,7 @@ import {Pagination, Stack, Table, TableBody, TableContainer, TableRow} from "@mu
 import * as S from "./ListUsersItem.style";
 import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
+import Spinner from "../../../../components/Spinner";
 
 const ListUsersItem = () => {
     const [users, setUsers] = useState<Partial<User>[]>([]);
@@ -67,6 +68,10 @@ const ListUsersItem = () => {
         setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u))
     }
 
+
+    if (users.length === 0) {
+        return (<Spinner size={60} color="secondary"/>)
+    }
     return (
         <TableContainer>
             <Table>
@@ -103,10 +108,10 @@ const ListUsersItem = () => {
                                             e.preventDefault();
                                             upRole(user);
                                         }}>Повысить роль</S.Btn> :
-                                    <S.Btn onClick={(e) => {
-                                        e.preventDefault();
-                                        downRole(user);
-                                    }}>Понизить роль</S.Btn>}
+                                        <S.Btn onClick={(e) => {
+                                            e.preventDefault();
+                                            downRole(user);
+                                        }}>Понизить роль</S.Btn>}
                                 </S.TableCell2>
                             </TableRow> : null
                     ))}

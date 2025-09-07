@@ -1,7 +1,6 @@
 import supabase from "../supabaseClient";
 import {User} from "../types/userType";
 import nonAvatar from "../нетфото.jpg"
-import {Post} from "../types/postType";
 
 class UserService {
 

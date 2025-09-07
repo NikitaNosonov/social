@@ -9,10 +9,11 @@ const NavBar = observer(() => {
         <S.Nav>
            <EnableProfileByNav><S.NavLink to={R.mainRoute}>Новости</S.NavLink></EnableProfileByNav>
             <S.NavLink to={R.profileRoute}>Профиль</S.NavLink>
+            <EnableProfileByNav><S.NavLink to={R.messagesRoute}>Сообщения</S.NavLink></EnableProfileByNav>
 
             <AdditionalFeaturesAdmin>
                 <S.NavLinkAdmContainer>
-                    <S.NavLinkAdm to={R.listUsersRoute}>Список пользователей</S.NavLinkAdm>
+                    <S.NavLink to={R.listUsersRoute}>Список пользователей</S.NavLink>
                 </S.NavLinkAdmContainer>
             </AdditionalFeaturesAdmin>
         </S.Nav>

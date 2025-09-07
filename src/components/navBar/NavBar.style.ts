@@ -9,7 +9,7 @@ export const Nav = styled.div`
 
 export const NavLink = styled(RouterLink)`
     text-decoration: none;
-    width: 90px;
+    min-width: 90px;
     display: block;
     margin-top: 10px;
     font-family: "Roboto", sans-serif;
@@ -33,19 +33,3 @@ export const NavLinkAdmContainer = styled.div`
         background: var(--color-navLink-text-hover);
         transform: scale(1);
         border-radius: 5px;}`
-
-export const NavLinkAdm = styled(RouterLink)`
-    text-decoration: none;
-    width: 7.5vw;
-    display: block;
-    font-family: "Roboto", sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    color: var(--color-text);
-    transition: all 500ms ease;
-
-    &:hover {
-        background: var(--color-navLink-text-hover);
-        transform: scale(1);
-        border-radius: 5px;
-    }`

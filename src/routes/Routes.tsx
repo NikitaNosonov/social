@@ -7,6 +7,7 @@ import LoginPage from "../pages/login/loginPage/LoginPage";
 import RegisterPage from "../pages/login/registerPage/RegisterPage";
 import ListUsersPage from "../pages/listUsers/listUsersPage/ListUsersPage";
 import {RouteGuards, RoleGuards, EnableGuards} from "../guards/routeGuards";
+import MessagesPage from "../pages/messages/messagesPage/MessagesPage";
 
 export const mainRoute = '/feed';
 export const profileRoute = '/profile';
@@ -14,6 +15,7 @@ export const commentRoute = 'comment';
 export const loginRoute = '/login';
 export const registerRoute = '/register';
 export const listUsersRoute = '/users';
+export const messagesRoute = '/messages';
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +48,10 @@ export const router = createBrowserRouter([
             {
                 path: listUsersRoute,
                 element: <RouteGuards><RoleGuards><ListUsersPage/></RoleGuards></RouteGuards>
+            },
+            {
+                path: messagesRoute,
+                element: <RouteGuards><EnableGuards><MessagesPage/></EnableGuards></RouteGuards>
             }
         ],
     },
