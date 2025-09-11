@@ -4,6 +4,7 @@ import ChatItem from "./chat/ChatItem";
 import UserStore from '../../../store/userStore'
 import Spinner from "../../../components/Spinner";
 import ChatStore from "../../../store/chatStore";
+import Skeleton from "@mui/material/Skeleton";
 
 const MessagesPage = () => {
     const user = UserStore.user
@@ -14,8 +15,7 @@ const MessagesPage = () => {
         const fetch = async () => {
             try {
                 await UserStore.getUsers()
-                await UserStore.getUserById()
-
+                console.log('111', user)
                 if (UserStore.user?.id) {
                     await ChatStore.getChats(UserStore.user.id)
                 }
@@ -33,19 +33,23 @@ const MessagesPage = () => {
         return UserStore.allUsers.find(user => user.id === userId);
     }
 
-    if (!loading) {
         return (
             <S.Container>
                 <S.MessagesPage>
                     <S.Title>Ваши диалоги</S.Title>
                     <S.Underline/>
-                    {ChatStore.chats.map(chat => {
-                        const partnerId = chat.sender_user_id === Number(localStorage.getItem("userId"))
+                    {loading ? (<S.MessagesPageSkeleton>
+                            <Skeleton animation='wave' variant='circular' width='20%' height='8vh'/>
+                            <Skeleton animation='wave' variant='rectangular' width='100%' height='8vh'/>
+                        </S.MessagesPageSkeleton>)
+                        :
+                        (ChatStore.chats.map(chat => {
+                        const partnerId = chat.sender_user_id === UserStore.user.id
                             ? chat.recipient_user_id
                             : chat.sender_user_id;
                         const partnerUser = findUser(partnerId);
 
-                        if (partnerUser && partnerId !== Number(localStorage.getItem("userId"))) {
+                        if (partnerUser && partnerId !== UserStore.user.id) {
                             return (
                                 <div key={chat.roomname}>
                                     <S.SwitchUser onClick={() => {
@@ -56,15 +60,12 @@ const MessagesPage = () => {
                                 </div>
                             )
                         } else return null
-                    })}
+                    }))}
                 </S.MessagesPage>
                 {roomname ?
                     <ChatItem roomname={roomname} user={user} sender_user_id={1} recipient_user_id={1}/> : null}
             </S.Container>
         )
-    } else {
-        return <Spinner size={60} color="secondary"/>
-    }
 };
 
 export default MessagesPage;

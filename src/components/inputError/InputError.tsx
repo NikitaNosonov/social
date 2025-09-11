@@ -7,15 +7,12 @@ interface InputErrorProps {
 }
 
 const InputError: React.FC<InputErrorProps> = ({children, errorSt}) => {
-    if (!errorSt) {
-        return <>{children}</>;
-    } else {
-        return <>
-            <>{children}</>
-            <S.ErrorText>**Поле обязательно для заполнения**</S.ErrorText>
-        </>;
-    }
-
+    return (
+        <>
+            {children}
+            {errorSt && <S.ErrorText>**Поле обязательно для заполнения**</S.ErrorText>}
+        </>
+    )
 };
 
 export default InputError;

@@ -2,19 +2,12 @@ import React, {useEffect, useState} from 'react';
 import * as S from '../pages/profile/profileItem/ProfileItem.style'
 
 interface roleGuardProps {
-    children: React.ReactNode
+    children: React.ReactNode,
+    role?: string | null,
+    unlocked?: null | boolean
 }
 
-export const AdditionalFeaturesAdmin: React.FC<roleGuardProps> = ({children}) => {
-    const [role, setRole] = React.useState<string | null>(null)
-
-    useEffect(() => {
-        setTimeout(() => {
-            const userRole = localStorage.getItem("userRole");
-            setRole(userRole)
-        }, 500)
-    }, [])
-
+export const AdditionalFeaturesAdmin: React.FC<roleGuardProps> = ({children, role}) => {
     if (role === 'admin') {
         return <>{children}</>
     } else {
@@ -22,16 +15,7 @@ export const AdditionalFeaturesAdmin: React.FC<roleGuardProps> = ({children}) =>
     }
 }
 
-export const AdditionalFeaturesModerator: React.FC<roleGuardProps> = ({children}) => {
-    const [role, setRole] = useState<string | null>(null)
-
-    useEffect(() => {
-        setTimeout(() => {
-            const userRole = localStorage.getItem("userRole");
-            setRole(userRole)
-        }, 500)
-    }, [])
-
+export const AdditionalFeaturesModerator: React.FC<roleGuardProps> = ({children, role}) => {
     if (role === 'admin' || role === 'moderator') {
         return <>{children}</>
     } else {
@@ -39,16 +23,7 @@ export const AdditionalFeaturesModerator: React.FC<roleGuardProps> = ({children}
     }
 }
 
-export const EnableProfile: React.FC<roleGuardProps> = ({children}) => {
-    const [unlocked, setUnlocked] = useState<boolean | null>(null)
-
-    useEffect(() => {
-        setTimeout(() => {
-            const userEnable = JSON.parse(localStorage.getItem('unlockedAccount') || 'true')
-            setUnlocked(userEnable)
-        }, 200)
-    }, []);
-
+export const EnableProfile: React.FC<roleGuardProps> = ({children, unlocked}) => {
     if (unlocked) {
         return <>{children}</>
     } else {
@@ -56,16 +31,7 @@ export const EnableProfile: React.FC<roleGuardProps> = ({children}) => {
     }
 }
 
-export const EnableProfileByNav: React.FC<roleGuardProps> = ({children}) => {
-    const [unlocked, setUnlocked] = useState<boolean | null>(null)
-
-    useEffect(() => {
-        setTimeout(() => {
-            const userEnable = JSON.parse(localStorage.getItem('unlockedAccount') || 'true')
-            setUnlocked(userEnable)
-        }, 200)
-    }, []);
-
+export const EnableProfileByNav: React.FC<roleGuardProps> = ({children, unlocked}) => {
     if (unlocked) {
         return <>{children}</>
     } else {

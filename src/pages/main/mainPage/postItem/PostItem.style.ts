@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {Button, TableCell} from "@mui/material";
 import CommentIcon from '@mui/icons-material/Comment';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Skeleton from "@mui/material/Skeleton";
 
 export const PostItem = styled.div`
     transition: all 500ms ease;
@@ -24,6 +25,9 @@ export const PostItemPhoto = styled.img`
     width: 350px;
     height: 270px;`
 
+export const SkeletonPhoto = styled(Skeleton) `
+`
+
 export const PostItemText = styled.p`
     color: var(--color-text);
     font-size: 16px;
@@ -35,6 +39,13 @@ export const AvatarComment = styled.img`
     border-radius: 50%;
     width: 3vw;
     margin-right: 10px`
+
+export const SkeletonAvatar = styled(Skeleton) `
+ &&{
+    width: 2.5vw;
+    margin-right: 10px;
+    height: 4vh;
+}`
 
 export const TableCell1 = styled(TableCell)`
     && {

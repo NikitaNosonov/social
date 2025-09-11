@@ -19,7 +19,14 @@ export const ContentContainer = styled.div`
     margin-bottom: 25px;
     display: flex;
     flex-direction: row;
-    max-height: 40vh`
+    max-height: 40vh;
+    overflow: auto;`
+
+export const ContentTextBySkeleton = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 10px;`
 
 export const ContentPhoto = styled.img`
     max-width: 320px;

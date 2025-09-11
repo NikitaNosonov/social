@@ -4,22 +4,41 @@ import {Table, TableBody, TableContainer, TableRow} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import * as R from "../../../../routes/Routes";
 import PostStore from "../../../../store/postStore";
-import Spinner from "../../../../components/Spinner";
 import {observer} from "mobx-react-lite";
 import {Post} from "../../../../types/postType";
 import UserStore from "../../../../store/userStore";
 import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
 import {ProfileItemButton} from "../../../profile/profileItem/ProfileItem.style"
+import Skeleton from "@mui/material/Skeleton";
 
 interface PostItemProps {
     posts?: Post[],
     nextPosts?: () => void,
     loading?: boolean,
-    morePost?: boolean
+    morePostBySearch?: boolean,
+    setLoading?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
 
-const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, morePost}) => {
+const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, morePostBySearch, setLoading}) => {
     const navigate = useNavigate();
+    const [role, setRole] = useState<string | null>(null)
+
+    useEffect(() => {
+        const check = () => {
+            try {
+                const userRole = UserStore.user.role;
+                if (userRole)
+                    setRole(userRole)
+            } catch (e) {
+                console.error(e)
+            } finally {
+                if (setLoading) {
+                    setLoading(false);
+                }
+            }
+        }
+        check()
+    }, [])
 
     useEffect(() => {
         UserStore.getUsers()
@@ -34,9 +53,26 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
         return UserStore.allUsers.find(user => user.id === userId);
     }
 
-    if (posts?.length === 0) return (
-        <Spinner size={60} color="secondary"/>
-    )
+    if (posts?.length === 0) {
+        return (
+            <S.PostItem>
+                <S.TableCell2>
+                    <S.SkeletonAvatar animation='wave' variant='circular'/>
+                    <Skeleton animation='wave' variant='rounded' width={350} height={30}/>
+                </S.TableCell2>
+                <S.TableCell1>
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
+                    <Skeleton animation='wave' variant='rounded' width={350} height={250}/>
+
+                </S.TableCell1>
+            </S.PostItem>
+        )
+    }
     return (
         <>
             {posts?.map((post) => {
@@ -58,7 +94,7 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
                                             <S.IconContainer>
                                                 <S.CommnetIcon
                                                     onClick={() => switchingToCommentPage(post.id || null)}/>
-                                                <AdditionalFeaturesModerator>
+                                                <AdditionalFeaturesModerator role={role}>
                                                     <S.Delete onClick={(e) => {
                                                         e.preventDefault();
                                                         PostStore.deletePostById(post.id)
@@ -75,9 +111,8 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
                     </S.PostItem>
                 );
             })}
-            {(!loading) ? <Spinner size={60} color="secondary"/> :
-                ((morePost) ? <ProfileItemButton onClick={() => nextPosts ? nextPosts() : null}>Загрузить
-                    еще</ProfileItemButton> : null)}
+            {morePostBySearch ? <ProfileItemButton onClick={() => nextPosts ? nextPosts() : null}>
+                Загрузить еще</ProfileItemButton> : null}
         </>
     );
 });

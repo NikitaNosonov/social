@@ -2,6 +2,7 @@ import React from 'react';
 import * as R from '../routes/Routes'
 import {Navigate} from "react-router-dom";
 import supabase from "../supabaseClient";
+import UserStore from "../store/userStore";
 
 interface authGuardsProps {
     children: React.ReactNode;
@@ -20,7 +21,7 @@ export const RouteGuards: React.FC<authGuardsProps> = ({children}) => {
 };
 
 export const RoleGuards: React.FC<authGuardsProps> = ({children}) => {
-    const role = localStorage.getItem('userRole')
+    const role = UserStore.user.role
     if (role !== 'admin') {
         alert('У вас нет доступа к этой странице!')
         return <Navigate to={R.loginRoute} replace/> ;
@@ -29,7 +30,7 @@ export const RoleGuards: React.FC<authGuardsProps> = ({children}) => {
 };
 
 export const EnableGuards: React.FC<authGuardsProps> = ({children}) => {
-    const userEnable = JSON.parse(localStorage.getItem('unlockedAccount') || 'true')
+    const userEnable = UserStore.user.unlocked
     if (!userEnable) {
         alert('У вас нет доступа к этой странице!')
         return <Navigate to={R.loginRoute} replace/> ;

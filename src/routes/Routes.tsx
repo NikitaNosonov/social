@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: messagesRoute,
-                element: <RouteGuards><EnableGuards><MessagesPage/></EnableGuards></RouteGuards>
+                element: <MessagesPage/>
             }
         ],
     },

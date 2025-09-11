@@ -6,7 +6,8 @@ import PostStore from "../../../store/postStore";
 import ModalAddPost from "../../../components/modalAddPost/ModalAddPost";
 import {Post} from "../../../types/postType";
 import EditPost from "./editPost/EditPost";
-import Spinner from "../../../components/Spinner";
+import UserStore from "../../../store/userStore";
+import Skeleton from "@mui/material/Skeleton";
 
 const ProfileItem = observer(() => {
     const [modalAddPost, setModalAddPost] = React.useState(false);
@@ -18,41 +19,51 @@ const ProfileItem = observer(() => {
     const [pageSize, setPageSize] = React.useState(4);
     const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(0);
-    const [morePost, setMorePost] = useState(true);
+    const [morePostByEdit, setMorePostByEdit] = useState(true);
 
     useEffect(() => {
-        console.log(refresh)
         const fetchPosts = async () => {
-            await PostStore.getPosts(page, pageSize);
+            try {
+                await PostStore.getPosts(page, pageSize);
 
-            const userId = Number(localStorage.getItem("userId"));
-            const userPosts = PostStore.posts.filter(post => post.user_id === userId);
+                const userId = UserStore.user.id;
+                const userPosts = PostStore.posts.filter(post => post.user_id === userId);
 
-            setPosts(userPosts);
+                setPosts(userPosts);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoading(false);
+            }
         };
-
         fetchPosts();
     }, [refresh || pageSize]);
 
     const editPost = (post: Post, event: React.MouseEvent) => {
         event.preventDefault();
-        setMorePost(false);
+        setMorePostByEdit(false);
         setIsEditPost(true);
         setEditedPost({...post});
         setPostId(post.id);
         setRefresh(prev => prev + 1);
     }
 
-    const deletePost = (e: React.MouseEvent, id: number | null) => {
-        e.preventDefault();
-        PostStore.deletePostById(id)
-        setRefresh(refresh + 1);
+    const deletePost = async (e: React.MouseEvent, id: number | null) => {
+        try {
+            setLoading(true);
+            e.preventDefault();
+            await PostStore.deletePostById(id)
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+            setRefresh(refresh + 1);
+        }
     }
 
     const nextPost = () => {
-        setLoading(false)
         setPageSize(pageSize + 5);
-        PostStore.getPosts(page, pageSize).then(() => setLoading(true));
+        PostStore.getPosts(page, pageSize);
     }
 
     return (
@@ -69,30 +80,56 @@ const ProfileItem = observer(() => {
                     </S.ModalAddPost>
                 </Dialog>
             </div>
-            <S.ProfileItemButton onClick={() => setModalAddPost(true)}>Добавить пост</S.ProfileItemButton>
+            <S.ProfileItemButton onClick={() => setModalAddPost(true)}>
+                Добавить пост
+            </S.ProfileItemButton>
             <S.Underline/>
             <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
-            {posts.map(post => (<S.ProfileItemPostContainer key={post.id}>
-                {!isEditPost ? <> <S.ProfileItemPhoto src={post?.photo}/>
-                    <S.ProfileItemText>{post.description}</S.ProfileItemText>
-                    <S.ProfileItemBtnContainer>
-                        <S.Icon onClick={(e) => editPost(post, e)}>
-                            <S.Edit/>
-                        </S.Icon>
-                        <IconButton onClick={(e) => {
-                            deletePost(e, post?.id)
-                        }}>
-                            <S.Delete/>
-                        </IconButton>
-                    </S.ProfileItemBtnContainer>
-                </> : postId === post.id ?
-                    <EditPost key={post.id} editedPost={editedPost} setEditedPost={setEditedPost}
-                              setIsEditPost={setIsEditPost} setRefresh={setRefresh} setMorePost={setMorePost}/> : null}
-            </S.ProfileItemPostContainer>))}
-            {!loading ? <Spinner size={60} color="secondary"/> :
-                (morePost) ? <S.ProfileItemButton onClick={() => nextPost()}>Загрузить еще</S.ProfileItemButton> : null}
+            {loading ? (
+                <>
+                    <S.SkeletonPhoto animation='wave' variant='rounded' height={250} width={350}/>
+                    <Skeleton animation='wave' variant='rounded' width='39vw'/>
+                </>
+            ) : (
+                posts.map(post => (
+                    <S.ProfileItemPostContainer key={post.id}>
+                        {!isEditPost ? (
+                            <>
+                                <S.ProfileItemPhoto
+                                    src={post?.photo}
+                                />
+                                <S.ProfileItemText>{post.description}</S.ProfileItemText>
+                                <S.ProfileItemBtnContainer>
+                                    <S.Icon onClick={(e) => editPost(post, e)}>
+                                        <S.Edit/>
+                                    </S.Icon>
+                                    <IconButton onClick={(e) => deletePost(e, post?.id)}>
+                                        <S.Delete/>
+                                    </IconButton>
+                                </S.ProfileItemBtnContainer>
+                            </>
+                        ) : (
+                            postId === post.id ? (
+                                <EditPost
+                                    key={post.id}
+                                    editedPost={editedPost}
+                                    setEditedPost={setEditedPost}
+                                    setIsEditPost={setIsEditPost}
+                                    setRefresh={setRefresh}
+                                    setMorePost={setMorePostByEdit}
+                                />
+                            ) : null
+                        )}
+                    </S.ProfileItemPostContainer>
+                ))
+            )}
+            {morePostByEdit ? (
+                <S.ProfileItemButton onClick={() => nextPost()}>
+                    Загрузить еще
+                </S.ProfileItemButton>
+            ) : null}
         </S.ProfileItem>
     );
-});
+})
 
 export default ProfileItem;

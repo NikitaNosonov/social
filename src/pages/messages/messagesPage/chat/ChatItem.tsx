@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import {User} from '../../../../types/userType'
 import SendIcon from '@mui/icons-material/Send';
 import MessageStore from "../../../../store/messageStore";
+import Spinner from "../../../../components/Spinner";
 
 interface RealtimeChatProps {
     roomname: string
@@ -27,24 +28,32 @@ interface RealtimeChatProps {
  * @param messages - The messages to display in the chat. Useful if you want to display messages from a database.
  * @returns The chat component
  */
-export const ChatItem = ({roomname, user, sender_user_id, recipient_user_id, onMessage, messages: initialMessages = []}: RealtimeChatProps) => {
+export const ChatItem = ({
+                             roomname,
+                             user,
+                             sender_user_id,
+                             recipient_user_id,
+                             onMessage,
+                             messages: initialMessages = []
+                         }: RealtimeChatProps) => {
     const {containerRef, scrollToBottom} = useChatScroll()
     const [messages, setMessages] = useState<Message[]>([])
-    const [loading, setLoading] = useState(false)
-    const {messages: realtimeMessages, sendMessage, isConnected,} = useRealtimeChat({roomname, sender_user_id, recipient_user_id}, user)
+    const [loading, setLoading] = useState(true)
+    const {messages: realtimeMessages, sendMessage, isConnected,} = useRealtimeChat({
+        roomname,
+        sender_user_id,
+        recipient_user_id
+    }, user)
     const [newMessage, setNewMessage] = useState('')
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                setLoading(true)
                 await MessageStore.getMessages(roomname)
                 setMessages(MessageStore.messages)
-            }
-            catch (e) {
+            } catch (e) {
                 console.error('Сообщения не загрузились:', e)
-            }
-            finally {
+            } finally {
                 setLoading(false)
             }
         }
@@ -86,52 +95,63 @@ export const ChatItem = ({roomname, user, sender_user_id, recipient_user_id, onM
         [newMessage, isConnected, sendMessage]
     )
 
-    return (
-        <S.ChatItem>
-            <S.ChatItemContainer>
-                <S.ChatItemContent ref={containerRef}>
-                    {allMessages.length === 0 ? (
-                        <S.NonMessageTitle>
-                            Сообщений пока нет. Начинайте диалог!
-                        </S.NonMessageTitle>
-                    ) : null}
-                    <S.MessageItem>
-                        {allMessages.map((message, index) => {
-                            const prevMessage = index > 0 ? allMessages[index - 1] : null
-                            const showHeader = !prevMessage || prevMessage.username !== user.name
+    if (loading) {
+        return (
+            <S.ChatItem>
+                <S.ChatItemContainer>
+                    <S.ChatItemContent ref={containerRef}>
+                        <Spinner size={60} color="secondary"/>
+                    </S.ChatItemContent>
+                </S.ChatItemContainer>
+            </S.ChatItem>)
+    } else {
+        return (
+            <S.ChatItem>
+                <S.ChatItemContainer>
+                    <S.ChatItemContent ref={containerRef}>
+                        {messages.length === 0 ? (
+                            <S.NonMessageTitle>
+                                Сообщений пока нет. Начинайте диалог!
+                            </S.NonMessageTitle>
+                        ) : null}
+                        <S.MessageItem>
+                            {allMessages.map((message, index) => {
+                                const prevMessage = index > 0 ? allMessages[index - 1] : null
+                                const showHeader = !prevMessage || prevMessage.username !== user.name
 
-                            if (message.chatname === roomname)
-                            return (
-                                <S.MessageAnimation key={message.id}>
-                                    <MessageItem
-                                        message={message}
-                                        isOwnMessage={message.username === user.name}
-                                        showHeader={showHeader}
-                                    />
-                                </S.MessageAnimation>
-                            )
-                        })}
-                    </S.MessageItem>
-                </S.ChatItemContent>
+                                if (message.chatname === roomname)
+                                    return (
+                                        <S.MessageAnimation key={message.id}>
+                                            <MessageItem
+                                                message={message}
+                                                isOwnMessage={message.username === user.name}
+                                                showHeader={showHeader}
+                                            />
+                                        </S.MessageAnimation>
+                                    )
+                            })}
+                        </S.MessageItem>
+                    </S.ChatItemContent>
 
-                <S.SendContainer onSubmit={handleSendMessage}>
-                    <S.InputMessage
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Напишите сообщение..."
-                        disabled={!isConnected}
-                    />
-                    {isConnected && newMessage.trim() && (
-                        <S.SubmitButtonContainer>
-                        <Button type="submit" disabled={!isConnected}>
-                            <SendIcon/>
-                        </Button>
-                        </S.SubmitButtonContainer>
-                    )}
-                </S.SendContainer>
-            </S.ChatItemContainer>
-        </S.ChatItem>
-    )
+                    <S.SendContainer onSubmit={handleSendMessage}>
+                        <S.InputMessage
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Напишите сообщение..."
+                            disabled={!isConnected}
+                        />
+                        {isConnected && newMessage.trim() && (
+                            <S.SubmitButtonContainer>
+                                <Button type="submit" disabled={!isConnected}>
+                                    <SendIcon/>
+                                </Button>
+                            </S.SubmitButtonContainer>
+                        )}
+                    </S.SendContainer>
+                </S.ChatItemContainer>
+            </S.ChatItem>
+        )
+    }
 }
 export default ChatItem;

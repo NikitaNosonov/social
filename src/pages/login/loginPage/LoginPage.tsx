@@ -10,7 +10,7 @@ import InputError from "../../../components/inputError/InputError";
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    const [errorSt, setErrorSt] = React.useState(false);
+    const [errorSt, setErrorSt] = useState(false);
 
     const [credential, setCredential] = useState<Credential>({
         email: "nikitanosonov93@gmail.com",
@@ -25,7 +25,6 @@ const Login: React.FC = () => {
             setErrorSt(true)
         }
         else {
-            setErrorSt(false)
             if (!session.data.session?.user.id) {
                 alert("Неправильный логин или пароль")
                 setCredential(c => ({...c, password: ""}))
@@ -45,14 +44,17 @@ const Login: React.FC = () => {
                 value={credential.email}
                 type='email'
                 onChange={e => {
-                    setErrorSt(true)
+                    setErrorSt(false)
                     setCredential({...credential, email: e.target.value})
                 }}
                 placeholder="Адрес электронной почты"/></InputError>
             <InputError errorSt={errorSt}><S.LoginInput
                 value={credential.password}
                 type='password'
-                onChange={e => setCredential({...credential, password: e.target.value})}
+                onChange={e => {
+                    setErrorSt(false)
+                    setCredential({...credential, password: e.target.value})
+                }}
                 placeholder="Пароль"/></InputError>
             <S.LoginButton variant="contained"
                            color="primary"

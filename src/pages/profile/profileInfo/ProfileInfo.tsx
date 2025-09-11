@@ -8,13 +8,13 @@ import EditProfile from "./editProfile/EditProfile";
 import CredentialService from "../../../services/credentialService";
 import {useNavigate} from "react-router-dom";
 import * as R from "../../../routes/Routes"
+import Skeleton from "@mui/material/Skeleton";
 
-const ProfileInfo = observer(() => {
+interface ProfileInfoProps {
+    loading?: boolean
+}
 
-    useEffect(() => {
-        UserStore.getUserById()
-    }, [])
-
+const ProfileInfo: React.FC<ProfileInfoProps> = observer(({loading}) => {
     const navigate = useNavigate();
     const [isEditProfile, setIsEditProfile] = useState(false);
 
@@ -26,15 +26,16 @@ const ProfileInfo = observer(() => {
         navigate(R.loginRoute)
     }
 
-    if (!UserStore.user) return (
-        <Spinner size={60} color="secondary"/>)
     return (isEditProfile ? (
             <EditProfile setIsEditProfile={setIsEditProfile}/>
         ) : (
             <S.ProfileInfo>
-                <S.ProfilePhoto src={UserStore.user.avatar}/>
-                <S.ProfileName>{UserStore.user.name} {UserStore.user.surname}</S.ProfileName>
-                <S.ProfileNameText>{UserStore.user.city}</S.ProfileNameText>
+                {loading ? <S.SkeletonPhoto animation='wave' variant='circular' width={200} height={200}/>
+                    : <S.ProfilePhoto src={UserStore.user.avatar}/>}
+                {loading ? <Skeleton animation='wave' variant='rectangular' width='100%'/>
+                    : <S.ProfileName>{UserStore.user.name} {UserStore.user.surname}</S.ProfileName>}
+                {loading ? <Skeleton animation='wave' variant='rectangular' width='100%'/>
+                    : <S.ProfileNameText>{UserStore.user.city}</S.ProfileNameText>}
                 <S.ProfileButtonContainer>
                     <Button variant="contained"
                             color="primary"
@@ -49,7 +50,8 @@ const ProfileInfo = observer(() => {
                 </S.ProfileButtonContainer>
             </S.ProfileInfo>
         )
-    );
+    )
+        ;
 });
 
 export default ProfileInfo;

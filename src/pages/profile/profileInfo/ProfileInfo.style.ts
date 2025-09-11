@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Skeleton from "@mui/material/Skeleton";
 
 export const ProfileInfo = styled.div`
     display: flex;
@@ -17,6 +18,9 @@ export const ProfilePhoto = styled.img`
     max-width: 200px;
     max-height: 200px;
     margin: 20px 72px`
+
+export const SkeletonPhoto = styled(Skeleton)`
+    margin: 20px 72px `
 
 export const ProfileName = styled.h2`
     font-family: "Roboto", sans-serif;

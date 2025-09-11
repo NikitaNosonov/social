@@ -32,10 +32,16 @@ class UserStore {
         const data = await UserService.getUserById();
 
         runInAction(() => {
-            this._user = data || null;
-            localStorage.setItem('userId', String(this._user.id))
-            localStorage.setItem('userRole', String(this._user.role))
-            localStorage.setItem('unlockedAccount', String(this._user.unlocked))
+            try {
+                this._user = data || null;
+            } catch (e) {
+                console.error(e);
+            } finally {
+                // localStorage.setItem('userId', String(this._user.id))
+                // localStorage.setItem('userRole', String(this._user.role))
+                // localStorage.setItem('unlockedAccount', String(this._user.unlocked))
+                console.log("Данные загружены")
+            }
         })
     };
 

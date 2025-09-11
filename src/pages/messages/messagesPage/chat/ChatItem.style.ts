@@ -33,6 +33,7 @@ export const ChatItemContainer = styled.div`
     display: flex;
     width: 100%;
     height: 100%;
+    overflow-x: hidden;
     flex-direction: column;
     color: var(--color-text);
     padding: 2vw;`
@@ -40,8 +41,10 @@ export const ChatItemContainer = styled.div`
 export const ChatItemContent = styled.div`
     display: flex;
     overflow-y: auto;
+    overflow-x: hidden;
     gap: 2vh;
     border-radius: 10px;
+    width: 30vw;
     height: 81%;
     padding: 10px;
     background: var(--background-comment-container);`

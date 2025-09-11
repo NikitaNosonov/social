@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {IconButton} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Skeleton from "@mui/material/Skeleton";
 
 
 export const ProfileItem = styled.div`
@@ -10,7 +11,7 @@ export const ProfileItem = styled.div`
     flex-direction: column;
     background: var(--background-container);
     border-radius: 25px;
-    min-width: 39vw;
+    width: 39vw;
     margin-left: calc(24vw + 30px);
     margin-right: 14.5vw;
     padding: 15px;`
@@ -50,6 +51,10 @@ export const ProfileItemPostContainer = styled.div`
 export const ProfileItemPhoto = styled.img`
     max-width: 350px;
     align-self: center;`
+
+export const SkeletonPhoto = styled(Skeleton)`
+    align-self: center;
+    margin-bottom: 10px`
 
 export const ProfileItemText = styled.p`
     color: var(--color-text);

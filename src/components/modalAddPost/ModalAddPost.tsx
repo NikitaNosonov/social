@@ -7,6 +7,7 @@ import PostService from "../../services/postService";
 import {observer} from "mobx-react-lite";
 import InputError from "../inputError/InputError";
 import DragAndDrop from "../dragAndDrop/DragAndDrop";
+import UserStore from "../../store/userStore";
 
 interface ModalAddPostProps {
     setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
@@ -18,11 +19,11 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
         id: Date.now(),
         description: "",
         photo: "",
-        user_id: Number(localStorage.getItem("userId")),
+        user_id: UserStore.user.id || 0,
     });
 
-    const [isAddPhoto, setIsAddPhoto] = useState<boolean>(false)
-    const [errorSt, setErrorSt] = useState<boolean>(false)
+    const [isAddPhoto, setIsAddPhoto] = useState(false)
+    const [errorSt, setErrorSt] = useState(false)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -46,13 +47,17 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
             setErrorSt(true);
         }
         else {
-            setErrorSt(false);
-            if (setModalAddPost) {
-                setModalAddPost(false);
-            }
-            await PostStore.setPosts(post)
-            if (setRefresh) {
-                setRefresh(prev => prev + 1)
+            try {
+                if (setModalAddPost) {
+                    setModalAddPost(false);
+                }
+                await PostStore.setPosts(post)
+            } catch (e) {
+                console.error(e);
+            } finally {
+                if (setRefresh) {
+                    setRefresh(prev => prev + 1)
+                }
             }
         }
     }
@@ -65,7 +70,10 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
                 value={post.description}
                 type="text"
                 placeholder="Описание"
-                onChange={e => setPost({...post, description: e.target.value})}
+                onChange={e => {
+                    setErrorSt(false);
+                    setPost({...post, description: e.target.value})
+                }}
             /></InputError>
             <S.ButtonContainer>
                 {!isAddPhoto ?

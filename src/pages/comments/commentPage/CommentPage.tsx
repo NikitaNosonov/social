@@ -8,6 +8,7 @@ import UserStore from "../../../store/userStore";
 import Spinner from "../../../components/Spinner";
 import CommentItem from "./commentItem/CommentItem";
 import CommentStore from "../../../store/commentStore";
+import Skeleton from "@mui/material/Skeleton";
 
 const CommentPage = observer(() => {
     const postId = Number(localStorage.getItem('postId'));
@@ -31,17 +32,23 @@ const CommentPage = observer(() => {
         setRefreshComments(prev => prev + 1);
     }
 
-    if (!PostStore.postById || UserStore.user === null) return (
-        <Spinner size={60} color="secondary"/>
-    )
     return (
         <S.CommentPage>
-            <S.ContentContainer>
-                <S.ContentPhoto src={PostStore.postById?.photo}/>
-                <S.ContentText>{PostStore.postById?.description}</S.ContentText>
-            </S.ContentContainer>
+            {(!PostStore.postById || UserStore.user === null) ?
+                <S.ContentContainer>
+                    <Skeleton animation='wave' variant='rounded' width={320} height={270}/>
+                    <S.ContentTextBySkeleton>
+                        <Skeleton animation='wave' variant='rounded' width={330} height={20}/>
+                        <Skeleton animation='wave' variant='rounded'/>
+                        <Skeleton animation='wave' variant='rounded'/>
+                    </S.ContentTextBySkeleton>
+                </S.ContentContainer> :
+                <S.ContentContainer>
+                    <S.ContentPhoto src={PostStore.postById?.photo}/>
+                    <S.ContentText>{PostStore.postById?.description}</S.ContentText>
+                </S.ContentContainer>}
             <S.CommentContainer>
-                <CommentItem postId={postId} refreshComments={refreshComments} setRefreshComments={setRefreshComments} />
+                <CommentItem postId={postId} refreshComments={refreshComments} setRefreshComments={setRefreshComments}/>
             </S.CommentContainer>
             <S.InputContainer>
                 <S.InputComment value={comment.text}
