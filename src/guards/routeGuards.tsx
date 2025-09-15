@@ -21,7 +21,7 @@ export const RouteGuards: React.FC<authGuardsProps> = ({children}) => {
 };
 
 export const RoleGuards: React.FC<authGuardsProps> = ({children}) => {
-    const role = UserStore.user.role
+    const role = localStorage.getItem("userRole");
     if (role !== 'admin') {
         alert('У вас нет доступа к этой странице!')
         return <Navigate to={R.loginRoute} replace/> ;
@@ -30,7 +30,7 @@ export const RoleGuards: React.FC<authGuardsProps> = ({children}) => {
 };
 
 export const EnableGuards: React.FC<authGuardsProps> = ({children}) => {
-    const userEnable = UserStore.user.unlocked
+    const userEnable = localStorage.getItem("unlockedAccount");
     if (!userEnable) {
         alert('У вас нет доступа к этой странице!')
         return <Navigate to={R.loginRoute} replace/> ;

@@ -5,12 +5,11 @@ import SendIcon from '@mui/icons-material/Send';
 export const CommentPage = styled.div`
     background: var(--background-container);
     margin-top: 30px;
-    margin-left: 10px;
+    margin-left: 31vh;
     max-width: 67vw;
     min-width: 64vw;
     min-height: 85vh;
-    max-height: 85vh;
-    border-radius: 25px;
+    border-radius: 15px;
     padding: 25px;
     display: flex;
     flex-direction: column;`
@@ -18,9 +17,9 @@ export const CommentPage = styled.div`
 export const ContentContainer = styled.div`
     margin-bottom: 25px;
     display: flex;
-    flex-direction: row;
-    max-height: 40vh;
-    overflow: auto;`
+    flex-direction: column;
+    gap: 10px;
+    height: auto`
 
 export const ContentTextBySkeleton = styled.div`
     display: flex;
@@ -29,14 +28,15 @@ export const ContentTextBySkeleton = styled.div`
     margin-left: 10px;`
 
 export const ContentPhoto = styled.img`
-    max-width: 320px;
-    align-self: center;`
+    max-width: 600px;
+    min-width: 320px;`
 
 export const ContentText = styled.p`
     color: var(--color-text);
     font-size: 14px;
     padding: 5px 10px;
-    margin-top: -7px;`
+    margin-top: -7px;
+    margin-bottom: -7px;`
 
 export const CommentContainer = styled.div`
     min-width: 65vw;

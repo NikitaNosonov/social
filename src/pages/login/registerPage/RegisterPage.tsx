@@ -12,6 +12,8 @@ import InputError from "../../../components/inputError/InputError";
 const RegisterPage = () => {
     const navigate = useNavigate();
     const [errorSt, setErrorSt] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
+    const [errorEmail, setErrorEmail] = useState(false);
 
     const [userData, setUserData] = useState<Partial<User>>({
         name: "",
@@ -33,7 +35,14 @@ const RegisterPage = () => {
             userData.surname === '' ||
             userData.city === '') {
             setErrorSt(true);
-        } else {
+        }
+        else if (!(credential.email.includes('@' || '.', 0))) {
+            setErrorEmail(true);
+        }
+        else if (credential.password.length < 6) {
+            setErrorPassword(true);
+        }
+        else {
             CredentialService.addCredential(credential)
                 .then(() => supabase.auth.getSession())
                 .then(session => {
@@ -81,20 +90,22 @@ const RegisterPage = () => {
                                                                })
                                                            }}
                                                            placeholder="Город"/></InputError>
-            <InputError errorSt={errorSt}><S.RegisterInput value={credential.email}
+            <InputError errorSt={errorSt} errorEmail={errorEmail}><S.RegisterInput value={credential.email}
                                                            type='email'
                                                            onChange={e => {
                                                                setErrorSt(false)
+                                                               setErrorEmail(false)
                                                                setCredential({
                                                                    ...credential,
                                                                    email: e.target.value
                                                                })
                                                            }}
                                                            placeholder="Адрес электронной почты"/></InputError>
-            <InputError errorSt={errorSt}><S.RegisterInput value={credential.password}
+            <InputError errorSt={errorSt} errorPassword={errorPassword}><S.RegisterInput value={credential.password}
                                                            type='password'
                                                            onChange={e => {
                                                                setErrorSt(false)
+                                                               setErrorPassword(false)
                                                                setCredential({
                                                                    ...credential,
                                                                    password: e.target.value

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Button} from "@mui/material";
 import * as S from "./ModalAddPost.style"
+import * as ProfileItemStl from "../../pages/profile/profileItem/ProfileItem.style"
 import {Post} from "../../types/postType";
 import PostStore from "../../store/postStore";
-import PostService from "../../services/postService";
 import {observer} from "mobx-react-lite";
 import InputError from "../inputError/InputError";
 import DragAndDrop from "../dragAndDrop/DragAndDrop";
@@ -11,10 +11,11 @@ import UserStore from "../../store/userStore";
 
 interface ModalAddPostProps {
     setModalAddPost?: (value: (((prevState: boolean) => boolean) | boolean)) => void,
-    setRefresh?: (value: (((prevState: number) => number) | number)) => void
+    setRefresh?: (value: (((prevState: number) => number) | number)) => void,
+    setLoading?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
 
-const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, setRefresh}) => {
+const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, setRefresh, setLoading}) => {
     const [post, setPost] = useState<Post>({
         id: Date.now(),
         description: "",
@@ -22,7 +23,6 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
         user_id: UserStore.user.id || 0,
     });
 
-    const [isAddPhoto, setIsAddPhoto] = useState(false)
     const [errorSt, setErrorSt] = useState(false)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +45,11 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
     const addPost = async () => {
         if (post.description === '') {
             setErrorSt(true);
-        }
-        else {
+        } else {
             try {
+                if (setLoading) {
+                    setLoading(true)
+                }
                 if (setModalAddPost) {
                     setModalAddPost(false);
                 }
@@ -55,6 +57,10 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
             } catch (e) {
                 console.error(e);
             } finally {
+                await PostStore.getPosts(1, 4)
+                if (setLoading) {
+                    setLoading(false)
+                }
                 if (setRefresh) {
                     setRefresh(prev => prev + 1)
                 }
@@ -64,25 +70,25 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
 
     return (
         <div>
-            <InputError errorSt={errorSt}><S.Input
-                minRows={3}
-                maxRows={6}
-                value={post.description}
-                type="text"
-                placeholder="Описание"
-                onChange={e => {
-                    setErrorSt(false);
-                    setPost({...post, description: e.target.value})
-                }}
-            /></InputError>
+            <S.DragContainer>
+                <DragAndDrop post={post} setPost={setPost}/>
+            </S.DragContainer>
             <S.ButtonContainer>
-                {!isAddPhoto ?
-                    <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => setIsAddPhoto(true)}>Добавить фото</Button> :
-                    <DragAndDrop post={post} setPost={setPost}/>}
-                <Button variant="contained" color="primary" type="submit" size="small" onClick={() => addPost()}>
+                <InputError errorSt={errorSt}><S.Input
+                    minRows={3}
+                    maxRows={6}
+                    value={post.description}
+                    type="text"
+                    placeholder="Расскажите что-нибудь..."
+                    onChange={e => {
+                        setErrorSt(false);
+                        setPost({...post, description: e.target.value})
+                    }}
+                /></InputError>
+                <ProfileItemStl.ProfileItemButton style={{height: '7vh', marginInline: '0px'}}
+                                                  onClick={() => addPost()}>
                     Добавить пост
-                </Button>
+                </ProfileItemStl.ProfileItemButton>
             </S.ButtonContainer>
         </div>
     );

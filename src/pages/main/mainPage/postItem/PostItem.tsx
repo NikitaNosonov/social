@@ -89,21 +89,26 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
                                         </S.TableCell2>
                                     </TableRow>
                                     <TableRow>
+                                        {post.photo ?
+                                            <S.PhotoContainer>
+                                                <S.PostItemPhoto src={post.photo}/>
+                                            </S.PhotoContainer> : null}
+                                    </TableRow>
+                                    <TableRow>
                                         <S.TableCell1>
                                             <S.PostItemText>{post.description}</S.PostItemText>
-                                            <S.IconContainer>
-                                                <S.CommnetIcon
-                                                    onClick={() => switchingToCommentPage(post.id || null)}/>
-                                                <AdditionalFeaturesModerator role={role}>
-                                                    <S.Delete onClick={(e) => {
-                                                        e.preventDefault();
-                                                        PostStore.deletePostById(post.id)
-                                                    }}/></AdditionalFeaturesModerator>
-                                            </S.IconContainer>
                                         </S.TableCell1>
-                                        <S.PhotoContainer>
-                                            <S.PostItemPhoto src={post.photo}/>
-                                        </S.PhotoContainer>
+                                    </TableRow>
+                                    <TableRow>
+                                        <S.IconContainer>
+                                            <S.CommnetIcon
+                                                onClick={() => switchingToCommentPage(post.id || null)}/>
+                                            <AdditionalFeaturesModerator role={role}>
+                                                <S.Delete onClick={(e) => {
+                                                    e.preventDefault();
+                                                    PostStore.deletePostById(post.id)
+                                                }}/></AdditionalFeaturesModerator>
+                                        </S.IconContainer>
                                     </TableRow>
                                 </TableBody>
                             </Table>

@@ -14,5 +14,10 @@ export const Input = styled(TextField)`
 
 export const ButtonContainer = styled.div`
     display: flex;
-    flex-direction: column;
-    gap: 10px;`
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;`
+
+export const DragContainer = styled.div`
+display: flex;
+justify-content: center;`

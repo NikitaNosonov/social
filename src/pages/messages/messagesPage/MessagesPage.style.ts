@@ -10,8 +10,8 @@ export const MessagesPage = styled.div`
     flex-direction: column;
     background: var(--background-container);
     width: 30vw;
-    margin-left: 10px;
-    border-radius: 25px;
+    margin-left: 31vh;
+    border-radius: 15px;
     margin-top: 30px;
     min-height: 89vh;
     overflow-y: hidden;`

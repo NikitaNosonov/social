@@ -6,9 +6,8 @@ export const ProfileInfo = styled.div`
     justify-content: center;
     flex-direction: column;
     background: var(--background-container);
-    border-radius: 25px;
+    border-radius: 15px;
     min-width: 24vw;
-    position: fixed;
     padding-bottom: 15px;
     height: fit-content;
 `

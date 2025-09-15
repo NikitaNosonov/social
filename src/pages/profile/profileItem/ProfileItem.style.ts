@@ -10,10 +10,8 @@ export const ProfileItem = styled.div`
     justify-content: center;
     flex-direction: column;
     background: var(--background-container);
-    border-radius: 25px;
+    border-radius: 15px;
     width: 39vw;
-    margin-left: calc(24vw + 30px);
-    margin-right: 14.5vw;
     padding: 15px;`
 
 export const ProfileItemButton = styled.button`

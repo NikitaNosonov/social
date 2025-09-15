@@ -3,6 +3,7 @@ import * as S from './NavBar.style'
 import * as R from '../../routes/Routes'
 import {observer} from "mobx-react-lite";
 import {AdditionalFeaturesAdmin, EnableProfileByNav} from "../../guards/roleGuards";
+
 import UserStore from "../../store/userStore";
 
 const NavBar = observer(() => {

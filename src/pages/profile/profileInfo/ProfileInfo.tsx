@@ -37,12 +37,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = observer(({loading}) => {
                 {loading ? <Skeleton animation='wave' variant='rectangular' width='100%'/>
                     : <S.ProfileNameText>{UserStore.user.city}</S.ProfileNameText>}
                 <S.ProfileButtonContainer>
-                    <Button variant="contained"
-                            color="primary"
+                    <Button variant='outlined'
+                            style={{color: 'var(--background-add-button)', borderColor: 'var(--background-add-button)'}}
                             type="submit"
                             size="small"
                             onClick={() => setIsEditProfile(true)}>Редактировать</Button>
-                    <Button variant="contained"
+                    <Button variant="outlined"
                             color="error"
                             type="submit"
                             size="small"

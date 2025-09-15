@@ -37,9 +37,9 @@ class UserStore {
             } catch (e) {
                 console.error(e);
             } finally {
-                // localStorage.setItem('userId', String(this._user.id))
-                // localStorage.setItem('userRole', String(this._user.role))
-                // localStorage.setItem('unlockedAccount', String(this._user.unlocked))
+                localStorage.setItem('userId', String(this._user.id))
+                localStorage.setItem('userRole', String(this._user.role))
+                localStorage.setItem('unlockedAccount', String(this._user.unlocked))
                 console.log("Данные загружены")
             }
         })

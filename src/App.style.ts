@@ -17,12 +17,12 @@ export const GlobalStyleDark = createGlobalStyle`
     }
 
     :root {
-        --background: #262D35;
-        --background-container: #344E69;
+        --background: #134080;
+        --background-container: #262D35;
         --background-modal: #395475;
         --background-comment-container: #283d51;
-        --background-add-button: #3a5673;
-        --background-add-button-hover: #406183;
+        --background-add-button: #2066ca;
+        --background-add-button-hover: #3d78ae;
         --background-input: #d5d5d5;
         --color-underline: #223459;
         --color-title: #ededed;
@@ -47,16 +47,16 @@ export const GlobalStyleLight = createGlobalStyle`
     }
 
     :root {
-        --background: #dcdcdc;
-        --background-container: #bababa;
+        --background: #f1ded9;
+        --background-container: #6491da;
         --background-modal: #d6d6d6;
         --background-comment-container: #dfdfdf;
-        --background-add-button: #aeaeae;
-        --background-add-button-hover: #e1e1e1;
+        --background-add-button: #3d619f;
+        --background-add-button-hover: #234063;
         --background-input: #d5d5d5;
         --color-underline: #7b7b80;
-        --color-title: #292929;
-        --color-text: #424242;
+        --color-title: #e4e4e4;
+        --color-text: #ffffff;
         --color-navLink-text-hover: #ededed;
         --color-text-hover: coral;
     }`
@@ -71,7 +71,7 @@ export const App = styled.div`
 
 export const SwitchThemeContainer = styled.div`
     display: flex;
-    width: 20vw;
+    width: 13.5vw;
     margin-top: 95vh;
     justify-content: center;
     position: fixed`

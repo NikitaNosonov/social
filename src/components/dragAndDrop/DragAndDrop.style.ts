@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const DragAndDrop = styled.div`
-    width: 21.9vw;
+    width: 100%;
     height: 10vh;
-    background: var(--background);
+    background: var(--background-add-button);
     display: flex;
     align-items: center;
     justify-content: center;

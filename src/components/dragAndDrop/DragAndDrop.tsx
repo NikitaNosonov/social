@@ -100,11 +100,11 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
                                          onDragLeave={e => dragLeaveHandler(e)}
                                          onDragOver={e => dragStartHandler(e)}
                                          onDrop={e => onDragHundler(e)}>
-                    Отпустите файл для загрузки</S.DragAndDropText> :
+                    Отпустите фото для загрузки</S.DragAndDropText> :
                 <S.DragAndDropText onDragStart={e => dragStartHandler(e)}
                                    onDragLeave={e => dragLeaveHandler(e)}
                                    onDragOver={e => dragStartHandler(e)}>
-                    Перетащите файл для загрузки или <S.DragAndDropTextInput onClick={handleClick}>выберите
+                    Перетащите фото для загрузки или <S.DragAndDropTextInput onClick={handleClick}>выберите
                     сами</S.DragAndDropTextInput>
                 </S.DragAndDropText>}
         </S.DragAndDrop>

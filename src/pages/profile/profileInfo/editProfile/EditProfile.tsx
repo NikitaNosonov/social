@@ -71,12 +71,8 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
                 }}
             /></InputError>
             <S.ButtonContainer>
-                {!isAddPhoto ?
-                    <Button variant="contained" color="primary" type="submit" size="small"
-                            onClick={() => editPhoto()}>Изменить фото</Button>
-                    :
-                    <DragAndDrop profileEdit={profileEdit} setProfileEdit={setProfileEdit}/>}
-                <Button variant="contained" color="primary" type="submit" size="small"
+                    <DragAndDrop profileEdit={profileEdit} setProfileEdit={setProfileEdit}/>
+                <Button variant="outlined" color="primary" type="submit" size="small"
                         onClick={() => editUser()}>Завершить редактирование</Button>
             </S.ButtonContainer>
         </S.ProfileInfo>

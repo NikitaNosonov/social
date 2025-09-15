@@ -68,21 +68,7 @@ const ProfileItem = observer(() => {
 
     return (
         <S.ProfileItem>
-            <div onClick={() => {
-                setModalAddPost(false)
-            }}>
-                <Dialog open={modalAddPost}>
-                    <S.ModalAddPost>
-                        <DialogContent onClick={(e) => e.stopPropagation()}>
-                            <DialogTitle style={{marginTop: -25}} align="center">Добавить пост</DialogTitle>
-                            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh}/>
-                        </DialogContent>
-                    </S.ModalAddPost>
-                </Dialog>
-            </div>
-            <S.ProfileItemButton onClick={() => setModalAddPost(true)}>
-                Добавить пост
-            </S.ProfileItemButton>
+            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh} setLoading={setLoading} />
             <S.Underline/>
             <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
             {loading ? (

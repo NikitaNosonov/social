@@ -26,7 +26,7 @@ export const ChatItem = styled.div`
     height: 93vh;
     width: 35vw;
     margin-top: 30px;
-    border-radius: 25px;
+    border-radius: 15px;
     overflow-y: hidden;`
 
 export const ChatItemContainer = styled.div`

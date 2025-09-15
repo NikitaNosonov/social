@@ -2,16 +2,19 @@ import styled from "styled-components";
 import { NavLink as RouterLink } from "react-router-dom";
 
 export const Nav = styled.div`
-    margin-left: 125px;
-    padding-top: 20px;
+    padding-top: 4vh;
     display: flex;
-    flex-direction: column`
+    flex-direction: column;
+    height: 100vh;
+    background: var(--background-container);
+    position: fixed;`
 
 export const NavLink = styled(RouterLink)`
     text-decoration: none;
-    min-width: 90px;
+    width: 13.1vw;
     display: block;
-    margin-top: 10px;
+    padding-left: 10px;
+    padding-block: 7px;
     font-family: "Roboto", sans-serif;
     font-weight: 600;
     font-size: 18px;
@@ -19,17 +22,17 @@ export const NavLink = styled(RouterLink)`
     transition: all 500ms ease;
 
     &:hover {
-        background: var(--color-navLink-text-hover);
+        background: var(--background-add-button-hover);
         transform: scale(1);
-        border-radius: 5px;
+        padding-block: 7px
     }`
 
 export const NavLinkAdmContainer = styled.div`
-    width: 10vw;
+    width: 13.8vw;
     justify-content: end;
-    margin-top: 20px;
+    margin-top: 5px;
     border-top: 1px solid var(--color-text);
     &:hover {
-        background: var(--color-navLink-text-hover);
+        background: var(--background-add-button-hover);
         transform: scale(1);
-        border-radius: 5px;}`
+    }`

@@ -24,7 +24,7 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
     const [loading1, setLoading1] = useState(true);
 
     useEffect(() => {
-        const check = async() => {
+        const check = async () => {
             try {
                 await UserStore.getUserById()
                 const userRole = UserStore.user.role;
@@ -83,34 +83,38 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
             <>
                 {comments.map((comment) => {
                     const user = findUserByCommentId(comment.user_id);
-                    console.log(user)
-                    return (
-                        <TableContainer key={comment.id}>
-                            <Table>
-                                <TableBody>
-                                    <TableRow>
-                                        <S.TableCell1 rowSpan={2}>
-                                            <S.AvatarComment src={user?.avatar}/>
-                                        </S.TableCell1>
-                                        <TableCell>
-                                            <S.NameProfile>{user?.name} {user?.surname}</S.NameProfile>
-                                            <S.Comment>{comment.text}</S.Comment>
-                                        </TableCell>
-                                        {!loading1 ?
-                                        <AdditionalFeaturesModerator role={role}>
-                                            <S.TableCell2>
-                                                <IconButton>
-                                                    <S.DeleteButton onClick={async (e) => {
-                                                        deleteComment(e, comment.id || null)
-                                                    }}/>
-                                                </IconButton>
-                                            </S.TableCell2>
-                                        </AdditionalFeaturesModerator> : null}
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    );
+                    if (user) {
+                        console.log(user)
+                        return (
+                            <TableContainer key={comment.id}>
+                                <Table>
+                                    <TableBody>
+                                        <TableRow>
+                                            <S.TableCell1 rowSpan={2}>
+                                                <S.AvatarComment src={user?.avatar}/>
+                                            </S.TableCell1>
+                                            <TableCell>
+                                                <S.NameProfile>{user?.name} {user?.surname}</S.NameProfile>
+                                                <S.Comment>{comment.text}</S.Comment>
+                                            </TableCell>
+                                            {!loading1 ?
+                                                <AdditionalFeaturesModerator role={role}>
+                                                    <S.TableCell2>
+                                                        <IconButton>
+                                                            <S.DeleteButton onClick={async (e) => {
+                                                                deleteComment(e, comment.id || null)
+                                                            }}/>
+                                                        </IconButton>
+                                                    </S.TableCell2>
+                                                </AdditionalFeaturesModerator> : null}
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        )
+                    } else {
+                        setLoading(true);
+                    };
                 })}
                 {(comments.length !== 0) ?
                     <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :

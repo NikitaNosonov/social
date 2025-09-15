@@ -22,8 +22,10 @@ export const PhotoContainer = styled(TableCell)`
     }`
 
 export const PostItemPhoto = styled.img`
-    width: 350px;
-    height: 270px;`
+    min-width: 350px;
+    min-height: 270px;
+    max-width: 600px;
+    text-align: center;`
 
 export const SkeletonPhoto = styled(Skeleton) `
 `
@@ -52,7 +54,7 @@ export const TableCell1 = styled(TableCell)`
         border: none;
         display: flex;
         flex-direction: column;
-        height: 34vh;
+        height: auto;
     }`
 
 export const TableCell2 = styled(TableCell)`
@@ -70,9 +72,8 @@ export const Btn1 = styled(Button)`
     }`
 
 export const IconContainer = styled.div`
-    align-self: flex-end;
-    margin-top: auto;
-`
+    margin-inline: 10px;
+    display: flex;`
 
 export const CommnetIcon = styled(CommentIcon)`
     && {

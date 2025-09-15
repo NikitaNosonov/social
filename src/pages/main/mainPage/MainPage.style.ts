@@ -1,17 +1,16 @@
 import styled from "styled-components";
 
 export const MainPage = styled.div`
-    margin-left: 10px;
     width: 67vw;
     padding-top: 30px;
-`
+    margin-left: 31vh;`
 
 export const SearchContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 10vh;
-    border-radius: 25px;
+    border-radius: 12px;
     background: var(--background-container);`
 
 export const SearchInput = styled.input`
@@ -31,6 +30,6 @@ export const PostsContainer = styled.div`
     flex: 1;
     justify-content: space-between;
     margin-top: 15px;
-    border-radius: 45px;
+    border-radius: 15px;
     min-height: 0;
     background: var(--background-container);`
