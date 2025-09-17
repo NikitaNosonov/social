@@ -11,6 +11,7 @@ import InputError from "../../../components/inputError/InputError";
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [errorSt, setErrorSt] = useState(false);
+    const [wrongPass, setWrongPass] = useState(false);
 
     const [credential, setCredential] = useState<Credential>({
         email: "nikitanosonov93@gmail.com",
@@ -18,18 +19,18 @@ const Login: React.FC = () => {
     })
 
     const login = async () => {
-        await CredentialService.login(credential)
-        const session = await supabase.auth.getSession()
-        console.log("session", session)
         if (credential.email === '' || credential.password === '') {
             setErrorSt(true)
-        }
-        else {
+        } else {
+            await CredentialService.login(credential)
+            await UserStore.getUserById()
+            const session = await supabase.auth.getSession()
+            console.log("session", session)
             if (!session.data.session?.user.id) {
-                alert("Неправильный логин или пароль")
+                setWrongPass(true)
+                setTimeout(() => setWrongPass(false), 5000)
                 setCredential(c => ({...c, password: ""}))
-            }
-            else {
+            } else {
                 UserStore.getUsers();
                 localStorage.getItem("userRole")
                 navigate(R.profileRoute)
@@ -40,6 +41,8 @@ const Login: React.FC = () => {
     return (
         <S.LoginPageContainer>
             <S.LoginTitle>Вход</S.LoginTitle>
+            {wrongPass ? <S.WrongContainer>Неправильный логин или пароль</S.WrongContainer> :
+                <S.WrongContainer></S.WrongContainer>}
             <InputError errorSt={errorSt}><S.LoginInput
                 value={credential.email}
                 type='email'
@@ -60,7 +63,8 @@ const Login: React.FC = () => {
                            color="primary"
                            size="small"
                            onClick={() => login()}>Войти</S.LoginButton>
-            <S.LoginRegText>Нет аккаунта? <S.LoginReg href='/register'>Зарегистрируйся!</S.LoginReg></S.LoginRegText>
+            <S.LoginRegText>Нет аккаунта? <S.LoginReg
+                to={R.registerRoute}>Зарегистрируйся!</S.LoginReg></S.LoginRegText>
         </S.LoginPageContainer>
 
     );

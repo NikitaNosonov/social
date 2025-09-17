@@ -1,9 +1,10 @@
+import supabase from "../../supabaseClient";
+
 import React, {useEffect, useState} from 'react';
 import * as S from './NavBar.style'
 import * as R from '../../routes/Routes'
 import {observer} from "mobx-react-lite";
 import {AdditionalFeaturesAdmin, EnableProfileByNav} from "../../guards/roleGuards";
-
 import UserStore from "../../store/userStore";
 
 const NavBar = observer(() => {
@@ -17,21 +18,16 @@ const NavBar = observer(() => {
             try {
                 await UserStore.getUserById()
                 const userRole = UserStore.user.role;
-                if (userRole)
-                    setRole(userRole)
-                console.log("userRole", userRole)
+                if (userRole) setRole(userRole)
                 const userEnable = UserStore.user.unlocked
-                if (userEnable) {
-                    setUnlocked(userEnable)
-                }
-                console.log("userEnable", userEnable)
+                if (userEnable) setUnlocked(userEnable)
             } catch (e) {
                 console.error(e)
             } finally {
                 setLoading(false);
             }
         }
-        check().then(() => console.log('Загрузилось!'))
+        check()
     }, [])
 
     if (loading) {

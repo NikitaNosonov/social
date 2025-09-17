@@ -8,7 +8,6 @@ export const ProfileInfo = styled.div`
     background: var(--background-container);
     border-radius: 25px;
     min-width: 21.9vw;
-    position: fixed;
     padding: 15px;
     height: fit-content;
     gap: 5px

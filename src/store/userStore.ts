@@ -37,10 +37,11 @@ class UserStore {
             } catch (e) {
                 console.error(e);
             } finally {
-                localStorage.setItem('userId', String(this._user.id))
-                localStorage.setItem('userRole', String(this._user.role))
-                localStorage.setItem('unlockedAccount', String(this._user.unlocked))
-                console.log("Данные загружены")
+                if (data) {
+                    sessionStorage.setItem('userId', String(this._user.id))
+                    sessionStorage.setItem('userRole', String(this._user.role))
+                    sessionStorage.setItem('unlockedAccount', String(this._user.unlocked))
+                }
             }
         })
     };

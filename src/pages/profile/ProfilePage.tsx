@@ -22,7 +22,7 @@ const ProfilePage = () => {
                 setLoading(false)
             }
         }
-        check().then(() => console.log('Загрузилось!'))
+        check()
     }, [])
 
     return (

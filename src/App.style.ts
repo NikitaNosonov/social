@@ -19,15 +19,15 @@ export const GlobalStyleDark = createGlobalStyle`
     :root {
         --background: #134080;
         --background-container: #262D35;
-        --background-modal: #395475;
+        //--background-modal: #395475;
         --background-comment-container: #283d51;
-        --background-add-button: #2066ca;
-        --background-add-button-hover: #3d78ae;
+        --background-add-button: #ff6527;
+        --background-add-button-hover: #cd511f;
         --background-input: #d5d5d5;
         --color-underline: #223459;
         --color-title: #ededed;
         --color-text: #d5d5d5;
-        --color-navLink-text-hover: #353f4a;
+        //--color-navLink-text-hover: #353f4a;
         --color-text-hover: coral;
     }`
 
@@ -49,15 +49,15 @@ export const GlobalStyleLight = createGlobalStyle`
     :root {
         --background: #f1ded9;
         --background-container: #6491da;
-        --background-modal: #d6d6d6;
-        --background-comment-container: #dfdfdf;
-        --background-add-button: #3d619f;
-        --background-add-button-hover: #234063;
+        //--background-modal: #d6d6d6;
+        --background-comment-container: #3d619f;
+        --background-add-button: #007a8f;
+        --background-add-button-hover: #005f70;
         --background-input: #d5d5d5;
         --color-underline: #7b7b80;
         --color-title: #e4e4e4;
         --color-text: #ffffff;
-        --color-navLink-text-hover: #ededed;
+        //--color-navLink-text-hover: #ededed;
         --color-text-hover: coral;
     }`
 

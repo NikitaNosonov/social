@@ -16,7 +16,7 @@ class CredentialService {
 
     login = async (credential: Credential) => {
        try {
-            await supabase.auth.signInWithPassword({
+           await supabase.auth.signInWithPassword({
                 email: credential.email,
                 password: credential.password,
             })

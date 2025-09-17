@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import * as S from './InputError.style'
 
 interface InputErrorProps {
@@ -9,46 +9,39 @@ interface InputErrorProps {
 }
 
 const InputError: React.FC<InputErrorProps> = ({children, errorSt, errorPassword, errorEmail}) => {
-    if (errorSt) {
-        return (
-            <>
-                {children}
-                <S.Container>
-                    {errorSt && <S.ErrorPopup>
-                        <S.ErrorText>**Поле обязательно для заполнения**</S.ErrorText>
-                    </S.ErrorPopup>}
-                </S.Container>
-            </>
-        )
-    } else if (errorPassword) {
-        return (
-            <>
-                {children}
-                <S.Container>
-                    {errorPassword && <S.ErrorPopup>
-                        <S.ErrorText>**Длина пароля не должна быть меньше 6 символов**</S.ErrorText>
-                    </S.ErrorPopup>}
-                </S.Container>
-            </>
-        )
-    } else if (errorEmail) {
-        return (
-            <>
-                {children}
-                <S.Container>
-                    {errorEmail && <S.ErrorPopup>
-                        <S.ErrorText>**Email должен содержать символ @ и доменную часть (например,
-                            gmail.com)**</S.ErrorText>
-                    </S.ErrorPopup>}
-                </S.Container>
-            </>
-        )
-    } else {
-        return (
-            <>{children}</>
-        )
-    }
+    const [errorMessage, setErrorMessage] = useState('')
+    const [showError, setShowError] = useState(false)
 
+    useEffect(() => {
+        if (errorSt || errorEmail || errorPassword) {
+            if (errorSt) {
+                setErrorMessage('**Поле обязательно для заполнения**')
+            } else if (errorPassword) {
+                setErrorMessage('**Длина пароля не должна быть меньше 6 символов**')
+            } else if (errorEmail) {
+                setErrorMessage('**Email должен содержать символ @ и доменную часть (например, gmail.com)**')
+            }
+
+            setShowError(true)
+
+            const timer = setTimeout(() => {
+                setShowError(false)
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [errorSt, errorPassword, errorEmail])
+
+    return (
+        <>
+            {children}
+            <S.Container>
+                {showError && <S.ErrorPopup>
+                    <S.ErrorText>{errorMessage}</S.ErrorText>
+                </S.ErrorPopup>}
+            </S.Container>
+        </>
+    )
 };
 
 export default InputError;

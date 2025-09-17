@@ -7,7 +7,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 export const ProfileItem = styled.div`
     display: flex;
-    justify-content: center;
+    align-content: center;
     flex-direction: column;
     background: var(--background-container);
     border-radius: 15px;

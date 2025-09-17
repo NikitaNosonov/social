@@ -118,6 +118,7 @@ export const ChatItem = ({
                             {allMessages.map((message, index) => {
                                 const prevMessage = index > 0 ? allMessages[index - 1] : null
                                 const showHeader = !prevMessage || prevMessage.username !== user.name
+                                const showHeader1 = !prevMessage || prevMessage.username === user.name
 
                                 if (message.chatname === roomname)
                                     return (
@@ -126,6 +127,7 @@ export const ChatItem = ({
                                                 message={message}
                                                 isOwnMessage={message.username === user.name}
                                                 showHeader={showHeader}
+                                                showHeader1={showHeader1}
                                             />
                                         </S.MessageAnimation>
                                     )

@@ -66,18 +66,24 @@ const ProfileItem = observer(() => {
         PostStore.getPosts(page, pageSize);
     }
 
+    if (loading) {
+        return <S.ProfileItem>
+            <S.SkeletonPhoto animation='wave' variant='rounded' height={250} width={350}/>
+            <Skeleton animation='wave' variant='rounded' width='39vw'/>
+        </S.ProfileItem>
+    }
+    if (posts.length === 0) {
+        return (<S.ProfileItem>
+            <S.ProfileItemTitle>Добавьте ваш первый пост!</S.ProfileItemTitle>
+            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh} setLoading={setLoading}/>
+        </S.ProfileItem>)
+    }
     return (
         <S.ProfileItem>
-            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh} setLoading={setLoading} />
+            <ModalAddPost setModalAddPost={setModalAddPost} setRefresh={setRefresh} setLoading={setLoading}/>
             <S.Underline/>
             <S.ProfileItemTitle>Ваши посты</S.ProfileItemTitle>
-            {loading ? (
-                <>
-                    <S.SkeletonPhoto animation='wave' variant='rounded' height={250} width={350}/>
-                    <Skeleton animation='wave' variant='rounded' width='39vw'/>
-                </>
-            ) : (
-                posts.map(post => (
+            {posts.map(post => (
                     <S.ProfileItemPostContainer key={post.id}>
                         {!isEditPost ? (
                             <>
@@ -107,7 +113,7 @@ const ProfileItem = observer(() => {
                             ) : null
                         )}
                     </S.ProfileItemPostContainer>
-                ))
+                )
             )}
             {morePostByEdit ? (
                 <S.ProfileItemButton onClick={() => nextPost()}>

@@ -17,7 +17,6 @@ class PostService {
 
     getPostsByMainPage = async (page: number, pageSize: number) => {
         try {
-            console.log(pageSize)
             let {data} = await supabase
                 .from('posts')
                 .select('*')

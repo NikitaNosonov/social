@@ -5,7 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 export const CommentPage = styled.div`
     background: var(--background-container);
     margin-top: 30px;
-    margin-left: 31vh;
+    margin-left: 22vw;
     max-width: 67vw;
     min-width: 64vw;
     min-height: 85vh;

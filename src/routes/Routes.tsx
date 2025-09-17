@@ -1,4 +1,4 @@
-import {createBrowserRouter, Navigate} from "react-router-dom";
+import {createBrowserRouter, Navigate, useNavigate} from "react-router-dom";
 import NavBarLayout from "../components/navBar/NavBarLayout";
 import MainPage from "../pages/main/mainPage/MainPage";
 import ProfilePage from "../pages/profile/ProfilePage";
@@ -8,6 +8,8 @@ import RegisterPage from "../pages/login/registerPage/RegisterPage";
 import ListUsersPage from "../pages/listUsers/listUsersPage/ListUsersPage";
 import {RouteGuards, RoleGuards, EnableGuards} from "../guards/routeGuards";
 import MessagesPage from "../pages/messages/messagesPage/MessagesPage";
+import React, {useEffect} from "react";
+import NotFoundPage from "../pages/notFound/NotFoundPage";
 
 export const mainRoute = '/feed';
 export const profileRoute = '/profile';
@@ -31,7 +33,11 @@ export const router = createBrowserRouter([
         element: <RegisterPage/>
     },
     {
-        element: <NavBarLayout/>,
+        path: '*',
+        element: <NotFoundPage/>
+    },
+    {
+        element: <RouteGuards><NavBarLayout/></RouteGuards>,
         children: [
             {
                 path: mainRoute,

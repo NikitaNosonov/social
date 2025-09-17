@@ -61,14 +61,13 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
                     <Skeleton animation='wave' variant='rounded' width={350} height={30}/>
                 </S.TableCell2>
                 <S.TableCell1>
-                    <Skeleton animation='wave' variant='rounded'
-                              style={{marginBottom: '10px'}}/>
-                    <Skeleton animation='wave' variant='rounded'
-                              style={{marginBottom: '10px'}}/>
-                    <Skeleton animation='wave' variant='rounded'
-                              style={{marginBottom: '10px'}}/>
                     <Skeleton animation='wave' variant='rounded' width={350} height={250}/>
-
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
+                    <Skeleton animation='wave' variant='rounded'
+                              style={{marginBottom: '10px'}}/>
                 </S.TableCell1>
             </S.PostItem>
         )

@@ -3,7 +3,7 @@ import {TextField} from "@mui/material";
 
 export const Input = styled(TextField)`
     && {
-        width: 71vh;
+        width: 2050vw;
         margin-bottom: 10px;
         display: flex;
         justify-content: center;
@@ -15,7 +15,7 @@ export const Input = styled(TextField)`
 export const ButtonContainer = styled.div`
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 5px;
     margin-top: 10px;`
 
 export const DragContainer = styled.div`

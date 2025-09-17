@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import * as S from './App.style';
 import {router} from "./routes/Routes";
 import {RouterProvider} from "react-router-dom";
@@ -13,6 +13,12 @@ function App() {
     const handleToggle = () => {
         setIsDark(prev => !prev);
     }
+
+    useEffect(() => {
+        setInterval(() => {
+            sessionStorage.clear()
+        }, 3600000)
+    }, []);
 
     return (
         <S.App>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MainPage = styled.div`
     width: 67vw;
     padding-top: 30px;
-    margin-left: 31vh;`
+    margin-left: 22vw;`
 
 export const SearchContainer = styled.div`
     display: flex;
