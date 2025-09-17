@@ -60,7 +60,7 @@ const Login: React.FC = () => {
                 }}
                 placeholder="Пароль"/></InputError>
             <S.LoginButton variant="contained"
-                           color="primary"
+                           color="warning"
                            size="small"
                            onClick={() => login()}>Войти</S.LoginButton>
             <S.LoginRegText>Нет аккаунта? <S.LoginReg

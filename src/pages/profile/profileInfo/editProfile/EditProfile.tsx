@@ -71,8 +71,10 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
                 }}
             /></InputError>
             <S.ButtonContainer>
-                    <DragAndDrop profileEdit={profileEdit} setProfileEdit={setProfileEdit}/>
-                <Button variant="outlined" color="primary" type="submit" size="small"
+                <DragAndDrop profileEdit={profileEdit} setProfileEdit={setProfileEdit}/>
+                <Button variant="outlined"
+                        style={{color: 'var(--background-add-button)', borderColor: 'var(--background-add-button)'}}
+                        type="submit" size="small"
                         onClick={() => editUser()}>Завершить редактирование</Button>
             </S.ButtonContainer>
         </S.ProfileInfo>

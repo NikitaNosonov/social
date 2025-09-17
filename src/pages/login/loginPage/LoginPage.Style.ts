@@ -27,7 +27,8 @@ export const LoginInput = styled(TextField)`
 export const LoginButton = styled(Button)`
     align-self: center;
     width: 18vw;
-    top: 13px;`
+    top: 13px;
+    border-radius: 5px`
 
 export const LoginRegText = styled.p`
     color: var(--color-text);

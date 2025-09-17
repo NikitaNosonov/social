@@ -114,13 +114,13 @@ const RegisterPage = () => {
                                                            placeholder="Пароль"/></InputError>
             <S.RegisterButtonContainer>
                 <S.RegisterButton variant="contained"
-                                  color="primary"
+                                  color="warning"
                                   size="small"
                                   onClick={() => {
                                       register()
                                   }}>Зарегистрироваться</S.RegisterButton>
                 <S.RegisterButton variant="contained"
-                                  color="primary"
+                                  color="warning"
                                   size="small" onClick={() => navigate('/login')}>Назад</S.RegisterButton>
             </S.RegisterButtonContainer>
         </S.RegisterPageContainer>

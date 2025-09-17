@@ -13,6 +13,6 @@ export const SwitchUser = styled.div`
     }`
 
 export const AvatarUser = styled.img`
-border-radius: 50%;
-width: 4vw;
-height: 7vh;`
+    border-radius: 50%;
+    width: 4vw;
+    height: 7vh;`

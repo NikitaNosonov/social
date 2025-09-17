@@ -73,6 +73,7 @@ class PostService {
 
     deletePost = async (postId: number | null) => {
         try {
+            console.log(postId);
             await supabase
                 .from('posts')
                 .delete()

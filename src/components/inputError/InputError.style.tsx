@@ -5,7 +5,7 @@ export const Container = styled.div`
     display: inline-block;
     left: 5.5vw;
     width: 100%;
-    top: -10px
+    top: -10px;
 `;
 
 export const ErrorPopup = styled.div`
@@ -20,6 +20,19 @@ export const ErrorPopup = styled.div`
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     min-width: 200px;
+
+    animation: fadeIn 0.3s ease forwards;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
     &::before {
         content: '';

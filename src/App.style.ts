@@ -48,7 +48,7 @@ export const GlobalStyleLight = createGlobalStyle`
 
     :root {
         --background: #f1ded9;
-        --background-container: #6491da;
+        --background-container: #71b1f1;
         //--background-modal: #d6d6d6;
         --background-comment-container: #3d619f;
         --background-add-button: #007a8f;

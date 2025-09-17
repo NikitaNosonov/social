@@ -33,7 +33,7 @@ export const RegisterButtonContainer = styled.div`
 export const RegisterButton = styled(Button)`
  &&{
     align-self: center;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 16.6vw;
     height: 4.5vh;
 }`

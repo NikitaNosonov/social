@@ -19,5 +19,5 @@ export const ButtonContainer = styled.div`
     margin-top: 10px;`
 
 export const DragContainer = styled.div`
-display: flex;
-justify-content: center;`
+    display: flex;
+    justify-content: center;`
