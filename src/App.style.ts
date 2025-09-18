@@ -20,7 +20,7 @@ export const GlobalStyleDark = createGlobalStyle`
         --background: #dddddd;
         --background-container: #262D35;
         //--background-modal: #395475;
-        --background-comment-container: #bdcacc;
+        --background-comment-container: #979797;
         --background-add-button: #ff6527;
         --background-add-button-hover: #cd511f;
         --background-input: #d5d5d5;

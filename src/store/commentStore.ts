@@ -10,7 +10,6 @@ class CommentStore {
     }
 
     get comments(): Comment[] {
-        console.log('cccc', this._comments);
         return this._comments
     }
 
@@ -18,7 +17,7 @@ class CommentStore {
         const data = await CommentService.getCommentByPostId(postId, page, pageSize);
         runInAction(() => {
             this._comments = data || []
-        })
+         })
     };
 
     async setComments(comment: Comment) {

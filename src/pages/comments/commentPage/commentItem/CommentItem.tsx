@@ -80,8 +80,6 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
         <>
             {CommentStore.comments?.map((comment) => {
                 const user = findUserByCommentId(comment.user_id);
-                console.log(user)
-                if (user) {
                     return (
                         <TableContainer key={comment.id}>
                             <Table>
@@ -109,7 +107,6 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
                             </Table>
                         </TableContainer>
                     )
-                }
             })}
             {(CommentStore.comments.length !== 0) ?
                 <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :

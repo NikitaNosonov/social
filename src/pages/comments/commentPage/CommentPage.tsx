@@ -12,7 +12,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 const CommentPage = observer(() => {
     const postId = Number(localStorage.getItem('postId'));
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = Number(sessionStorage.getItem('userId'));
     const [refreshComments, setRefreshComments] = useState(0);
 
     const [comment, setComment] = useState<Comment>({
@@ -24,6 +24,7 @@ const CommentPage = observer(() => {
 
     useEffect(() => {
         PostStore.getPostById(postId)
+        console.log(userId);
     }, [postId]);
 
     const addComment = async () => {
