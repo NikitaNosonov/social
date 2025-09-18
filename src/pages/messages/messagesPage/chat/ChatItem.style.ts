@@ -76,7 +76,7 @@ export const InputMessage = styled(TextField)`
 export const SubmitButtonContainer = styled.div`
     display: flex;
     justify-content: center;
-    background: var(--background);
+    background: var(--background-add-button);
     border-radius: 10px;
     margin-left: 1vw;
     width: 15%;

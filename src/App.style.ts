@@ -17,10 +17,10 @@ export const GlobalStyleDark = createGlobalStyle`
     }
 
     :root {
-        --background: #134080;
+        --background: #dddddd;
         --background-container: #262D35;
         //--background-modal: #395475;
-        --background-comment-container: #283d51;
+        --background-comment-container: #bdcacc;
         --background-add-button: #ff6527;
         --background-add-button-hover: #cd511f;
         --background-input: #d5d5d5;
@@ -47,16 +47,16 @@ export const GlobalStyleLight = createGlobalStyle`
     }
 
     :root {
-        --background: #f1ded9;
-        --background-container: #71b1f1;
+        --background: #262D35;
+        --background-container: #dddddd;
         //--background-modal: #d6d6d6;
-        --background-comment-container: #3d619f;
-        --background-add-button: #007a8f;
-        --background-add-button-hover: #005f70;
+        --background-comment-container: #d8c8c8;
+        --background-add-button: #3783cf;
+        --background-add-button-hover: #3071b3;
         --background-input: #d5d5d5;
         --color-underline: #7b7b80;
-        --color-title: #e4e4e4;
-        --color-text: #ffffff;
+        --color-title: #0b0b0b;
+        --color-text: #202020;
         //--color-navLink-text-hover: #ededed;
         --color-text-hover: coral;
     }`

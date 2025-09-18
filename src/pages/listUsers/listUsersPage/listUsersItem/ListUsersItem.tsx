@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Pagination, Stack, Table, TableBody, TableContainer, TableRow} from "@mui/material";
+import {
+    MenuItem, Pagination, Stack, Table, TableBody,
+    TableContainer, TableRow, Select, FormControl, IconButton, SelectChangeEvent
+} from "@mui/material";
 import * as S from "./ListUsersItem.style";
 import UserStore from "../../../../store/userStore";
 import {User} from "../../../../types/userType";
 import Spinner from "../../../../components/Spinner";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from '@mui/icons-material/Lock';
 
 const ListUsersItem = () => {
     const [users, setUsers] = useState<Partial<User>[]>([]);
@@ -39,19 +44,13 @@ const ListUsersItem = () => {
         UserStore.getUsersPage(page, pageSize);
     }
 
-    const upRole = async (user: Partial<User>) => {
-        const updatedUser = {...user, role: 'moderator' as const};
-
-        await UserStore.setUser(updatedUser);
-        console.log(updatedUser);
-        setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
-    }
-
-    const downRole = async (user: Partial<User>) => {
-        const updatedUser = {...user, role: 'user' as const};
-
-        await UserStore.setUser(updatedUser);
-        setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
+    const handleRoleChange = async (event: any, user: Partial<User>) => {
+        const updatedUser = {...user, role: event.target.value as 'user' | 'moderator'};
+        if (updatedUser.role === 'moderator' || updatedUser.role === 'user') {
+            await UserStore.setUser(updatedUser);
+            console.log(updatedUser);
+            setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u))
+        }
     }
 
     const lockedUser = async (user: Partial<User>) => {
@@ -81,8 +80,7 @@ const ListUsersItem = () => {
                         <S.TableCell1>Фамилия</S.TableCell1>
                         <S.TableCell1>Город</S.TableCell1>
                         <S.TableCell1>Роль</S.TableCell1>
-                        <S.TableCell1></S.TableCell1>
-                        <S.TableCell1></S.TableCell1>
+                        <S.TableCell1>Статус аккаунта</S.TableCell1>
                     </TableRow>
                     {users.map((user) => (
                         (user?.role !== 'admin') ?
@@ -90,28 +88,24 @@ const ListUsersItem = () => {
                                 <S.TableCell2>{user?.name}</S.TableCell2>
                                 <S.TableCell2>{user?.surname}</S.TableCell2>
                                 <S.TableCell2>{user?.city}</S.TableCell2>
-                                <S.TableCell2>{user?.role}</S.TableCell2>
+                                <S.TableCell2><FormControl>
+                                    <S.SelectRole onChange={(e) => handleRoleChange(e, user)}
+                                                  value={user?.role}
+                                                  label={user?.role}>
+                                        <MenuItem value='user'>user</MenuItem>
+                                        <MenuItem value='moderator'>moderator</MenuItem>
+                                    </S.SelectRole>
+                                </FormControl></S.TableCell2>
                                 <S.TableCell2>
                                     {user?.unlocked ?
-                                        <S.Btn onClick={(e) => {
+                                        <IconButton color='warning' onClick={(e) => {
                                             e.preventDefault();
                                             lockedUser(user);
-                                        }}>Заблокировать</S.Btn> :
-                                        <S.Btn onClick={(e) => {
+                                        }}><LockIcon/></IconButton> :
+                                        <IconButton color='warning' onClick={(e) => {
                                             e.preventDefault();
                                             unlockedUser(user);
-                                        }}>Разблокировать</S.Btn>}
-                                </S.TableCell2>
-                                <S.TableCell2>
-                                    {(user?.role !== 'moderator') ?
-                                        <S.Btn onClick={(e) => {
-                                            e.preventDefault();
-                                            upRole(user);
-                                        }}>Повысить роль</S.Btn> :
-                                        <S.Btn onClick={(e) => {
-                                            e.preventDefault();
-                                            downRole(user);
-                                        }}>Понизить роль</S.Btn>}
+                                        }}><LockOpenIcon/></IconButton>}
                                 </S.TableCell2>
                             </TableRow> : null
                     ))}

@@ -10,12 +10,12 @@ class CommentStore {
     }
 
     get comments(): Comment[] {
+        console.log('cccc', this._comments);
         return this._comments
     }
 
     async getComments(postId: number | null, page: number, pageSize: number){
         const data = await CommentService.getCommentByPostId(postId, page, pageSize);
-
         runInAction(() => {
             this._comments = data || []
         })
@@ -25,14 +25,14 @@ class CommentStore {
         const data = await CommentService.addComment(comment);
 
         runInAction(() => {
-            this.comments.push(data)
+            this._comments.push(data)
             return this._comments
         })
     }
 
     async deleteComment(commentId: number | null)  {
         await CommentService.deleteComment(commentId);
-        const updateComments = this.comments.filter(p => p.id !== commentId);
+        const updateComments = this._comments.filter(p => p.id !== commentId);
 
         runInAction(() => {
             this._comments = updateComments;

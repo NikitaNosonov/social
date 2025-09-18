@@ -76,6 +76,7 @@ const PostItem: React.FC<PostItemProps> = observer(({posts, nextPosts, loading, 
         <>
             {posts?.map((post) => {
                 const user = findUserByCommentId(post.user_id);
+                console.log(user)
                 return (
                     <S.PostItem key={post.id}>
                         <TableContainer>

@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import {Button, TableCell} from "@mui/material";
+import {Button, Select, TableCell} from "@mui/material";
 
 export const TableCell1 = styled(TableCell)`
     && {
+        width: 90vw;
         color: var(--color-title);
         text-align: center;
         font-size: 18px;
@@ -18,12 +19,24 @@ export const TableCell2 = styled(TableCell)`
         border: none;
     }`
 
-export const Btn = styled(Button)`
+export const SelectRole = styled(Select)`
     && {
-        margin-left: -45px;
-        color: var(--color-text);
-        
-        &:hover {
-            background-color: var(--background-add-button-hover);
+        background: var(--background-input);
+        border: 1px solid var(--background-input);
+        width: 10vw;
+
+        &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+                border-color: var(--background-input);
+                border-width: 1px;
+
+            }
         }
-    }`
+        
+        .MuiOutlinedInput-notchedOutline {
+            border-color: var(--background-input); /* Обычный цвет границы */
+        }
+
+        &:hover .MuiOutlinedInput-notchedOutline {
+            border-color: var(--background-input); /* Цвет границы при наведении */
+        }`

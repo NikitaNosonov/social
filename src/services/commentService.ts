@@ -13,7 +13,7 @@ class CommentService {
                 .limit(pageSize)
                 .range((page - 1), pageSize)
             if (data && data.length > 0) {
-                return data || [];
+                return data;
             }
             return []
         } catch (error) {

@@ -7,7 +7,7 @@ import {AdditionalFeaturesModerator} from "../../../../guards/roleGuards";
 import {ProfileItemButton} from "../../../profile/profileItem/ProfileItem.style";
 import Spinner from "../../../../components/Spinner";
 import PostStore from "../../../../store/postStore";
-import {Comment} from "../../../../types/commentType";
+
 
 interface CommentItemProps {
     postId?: number,
@@ -19,7 +19,6 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(4);
     const [loading, setLoading] = useState(true);
-    const [comments, setComments] = useState<Comment[]>([]);
     const [role, setRole] = useState<string | null>(null)
     const [loading1, setLoading1] = useState(true);
 
@@ -43,15 +42,14 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
     useEffect(() => {
         const getData = async () => {
             try {
-                await Promise.all([
-                    CommentStore.getComments(postId || null, page, pageSize),
-                    UserStore.getUsers()
-                ]);
-                setComments(CommentStore.comments);
+                await CommentStore.getComments(postId || null, page, pageSize);
+                await UserStore.getUsers();
             } catch (e) {
                 console.error(e)
             } finally {
                 setLoading(false);
+                console.log('users', UserStore.allUsers)
+                console.log('comments', CommentStore.comments)
             }
         }
 
@@ -61,7 +59,6 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
     const nextComments = async () => {
         setPageSize(pageSize + 5);
         await CommentStore.getComments(postId || null, page, pageSize);
-        setComments(CommentStore.comments);
     }
 
     const deleteComment = async (e: React.MouseEvent, id: number | null) => {
@@ -78,50 +75,47 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
 
     if (loading) {
         return (<Spinner size={60} color="secondary"/>)
-    } else {
-        return (
-            <>
-                {comments.map((comment) => {
-                    const user = findUserByCommentId(comment.user_id);
-                    if (user) {
-                        console.log(user)
-                        return (
-                            <TableContainer key={comment.id}>
-                                <Table>
-                                    <TableBody>
-                                        <TableRow>
-                                            <S.TableCell1 rowSpan={2}>
-                                                <S.AvatarComment src={user?.avatar}/>
-                                            </S.TableCell1>
-                                            <TableCell>
-                                                <S.NameProfile>{user?.name} {user?.surname}</S.NameProfile>
-                                                <S.Comment>{comment.text}</S.Comment>
-                                            </TableCell>
-                                            {!loading1 ?
-                                                <AdditionalFeaturesModerator role={role}>
-                                                    <S.TableCell2>
-                                                        <IconButton>
-                                                            <S.DeleteButton onClick={async (e) => {
-                                                                deleteComment(e, comment.id || null)
-                                                            }}/>
-                                                        </IconButton>
-                                                    </S.TableCell2>
-                                                </AdditionalFeaturesModerator> : null}
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        )
-                    } else {
-                        setLoading(true);
-                    };
-                })}
-                {(comments.length !== 0) ?
-                    <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :
-                    null}
-            </>
-        );
     }
+    return (
+        <>
+            {CommentStore.comments?.map((comment) => {
+                const user = findUserByCommentId(comment.user_id);
+                console.log(user)
+                if (user) {
+                    return (
+                        <TableContainer key={comment.id}>
+                            <Table>
+                                <TableBody>
+                                    <TableRow>
+                                        <S.TableCell1 rowSpan={2}>
+                                            <S.AvatarComment src={user?.avatar}/>
+                                        </S.TableCell1>
+                                        <TableCell>
+                                            <S.NameProfile>{user?.name} {user?.surname}</S.NameProfile>
+                                            <S.Comment>{comment.text}</S.Comment>
+                                        </TableCell>
+                                        {!loading1 ?
+                                            <AdditionalFeaturesModerator role={role}>
+                                                <S.TableCell2>
+                                                    <IconButton>
+                                                        <S.DeleteButton onClick={async (e) => {
+                                                            deleteComment(e, comment.id || null)
+                                                        }}/>
+                                                    </IconButton>
+                                                </S.TableCell2>
+                                            </AdditionalFeaturesModerator> : null}
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )
+                }
+            })}
+            {(CommentStore.comments.length !== 0) ?
+                <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :
+                null}
+        </>
+    );
 };
 
 export default CommentItem;
