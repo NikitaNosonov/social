@@ -20,7 +20,7 @@ export const GlobalStyleDark = createGlobalStyle`
         --background: #dddddd;
         --background-container: #262D35;
         //--background-modal: #395475;
-        --background-comment-container: #979797;
+        //--background-comment-container: #4a5868;
         --background-add-button: #ff6527;
         --background-add-button-hover: #cd511f;
         --background-input: #d5d5d5;
@@ -50,7 +50,7 @@ export const GlobalStyleLight = createGlobalStyle`
         --background: #262D35;
         --background-container: #dddddd;
         //--background-modal: #d6d6d6;
-        --background-comment-container: #d8c8c8;
+        //--background-comment-container: #dddddd;
         --background-add-button: #3783cf;
         --background-add-button-hover: #3071b3;
         --background-input: #d5d5d5;

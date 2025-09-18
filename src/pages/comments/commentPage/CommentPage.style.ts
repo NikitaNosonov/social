@@ -43,11 +43,12 @@ export const CommentContainer = styled.div`
     max-width: 65vw;
     min-height: 32vh;
     max-height: 32vh;
-    background: var(--background-comment-container);
+    background: var(--background-container);
     color: white;
     padding: 10px;
     border-radius: 5px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     margin-top: auto;`
 
 export const InputContainer = styled.div`

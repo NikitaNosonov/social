@@ -109,7 +109,7 @@ const CommentItem: React.FC<CommentItemProps> = ({postId, refreshComments, setRe
                     )
             })}
             {(CommentStore.comments.length !== 0) ?
-                <ProfileItemButton onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :
+                <ProfileItemButton style={{width: '89.5%', marginTop: '1vh'}} onClick={() => nextComments()}>Загрузить еще</ProfileItemButton> :
                 null}
         </>
     );

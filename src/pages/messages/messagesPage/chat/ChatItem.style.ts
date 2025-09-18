@@ -47,7 +47,7 @@ export const ChatItemContent = styled.div`
     width: 30vw;
     height: 81%;
     padding: 10px;
-    background: var(--background-comment-container);`
+    background: var(--background-container);`
 
 export const NonMessageTitle = styled.h2`
     text-align: center`
