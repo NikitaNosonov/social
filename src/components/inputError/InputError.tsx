@@ -3,41 +3,29 @@ import * as S from './InputError.style'
 
 interface InputErrorProps {
     children: React.ReactNode,
-    errorSt?: boolean,
-    errorPassword?: boolean,
-    errorEmail?: boolean
+    error?: boolean,
+    textError?: string,
+    count?: number
 }
 
-const InputError: React.FC<InputErrorProps> = ({children, errorSt, errorPassword, errorEmail}) => {
-    const [errorMessage, setErrorMessage] = useState('')
+const InputError: React.FC<InputErrorProps> = ({children, error, textError, count}) => {
     const [showError, setShowError] = useState(false)
-
     useEffect(() => {
-        if (errorSt || errorEmail || errorPassword) {
-            if (errorSt) {
-                setErrorMessage('**Поле обязательно для заполнения**')
-            } else if (errorPassword) {
-                setErrorMessage('**Длина пароля не должна быть меньше 6 символов**')
-            } else if (errorEmail) {
-                setErrorMessage('**Email должен содержать символ @ и доменную часть (например, gmail.com)**')
-            }
-
+        if (error) {
             setShowError(true)
 
-            const timer = setTimeout(() => {
+            setTimeout(() => {
                 setShowError(false)
             }, 3000)
-
-            return () => clearTimeout(timer)
         }
-    }, [errorSt, errorPassword, errorEmail])
+    }, [count])
 
     return (
         <>
             {children}
             <S.Container>
                 {showError && <S.ErrorPopup>
-                    <S.ErrorText>{errorMessage}</S.ErrorText>
+                    <S.ErrorText>{textError}</S.ErrorText>
                 </S.ErrorPopup>}
             </S.Container>
         </>

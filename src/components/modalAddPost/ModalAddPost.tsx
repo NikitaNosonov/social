@@ -5,7 +5,6 @@ import * as ProfileItemStl from "../../pages/profile/profileItem/ProfileItem.sty
 import {Post} from "../../types/postType";
 import PostStore from "../../store/postStore";
 import {observer} from "mobx-react-lite";
-import InputError from "../inputError/InputError";
 import DragAndDrop from "../dragAndDrop/DragAndDrop";
 import UserStore from "../../store/userStore";
 
@@ -22,8 +21,6 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
         photo: "",
         user_id: UserStore.user.id || 0,
     });
-
-    const [errorSt, setErrorSt] = useState(false)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -43,27 +40,25 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
     };
 
     const addPost = async () => {
-        if (post.description === '') {
-            setErrorSt(true);
-        } else {
-            try {
-                if (setLoading) {
-                    setLoading(true)
-                }
-                if (setModalAddPost) {
-                    setModalAddPost(false);
-                }
+        try {
+            if (setLoading) {
+                setLoading(true)
+            }
+            if (setModalAddPost) {
+                setModalAddPost(false);
+            }
+            if (post.description !== "") {
                 await PostStore.setPosts(post)
-            } catch (e) {
-                console.error(e);
-            } finally {
-                await PostStore.getPosts(1, 4)
-                if (setLoading) {
-                    setLoading(false)
-                }
-                if (setRefresh) {
-                    setRefresh(prev => prev + 1)
-                }
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await PostStore.getPosts(1, 4)
+            if (setLoading) {
+                setLoading(false)
+            }
+            if (setRefresh) {
+                setRefresh(prev => prev + 1)
             }
         }
     }
@@ -74,24 +69,24 @@ const ModalAddPost: React.FC<ModalAddPostProps> = observer(({setModalAddPost, se
                 <DragAndDrop post={post} setPost={setPost}/>
             </S.DragContainer>
             <S.ButtonContainer>
-                <InputError errorSt={errorSt}><S.Input
+                <S.Input
                     minRows={3}
                     maxRows={6}
                     value={post.description}
                     type="text"
                     placeholder="Расскажите что-нибудь..."
                     onChange={e => {
-                        setErrorSt(false);
                         setPost({...post, description: e.target.value})
                     }}
-                /></InputError>
+                />
                 <ProfileItemStl.ProfileItemButton style={{height: '7vh', marginInline: '0px'}}
                                                   onClick={() => addPost()}>
                     Добавить пост
                 </ProfileItemStl.ProfileItemButton>
             </S.ButtonContainer>
         </div>
-    );
+    )
+        ;
 });
 
 export default ModalAddPost;

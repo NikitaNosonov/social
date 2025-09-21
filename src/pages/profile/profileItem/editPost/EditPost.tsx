@@ -16,7 +16,8 @@ interface EditPostProps {
 
 const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEditedPost, setRefresh, setMorePost}) => {
     const [isEditPhoto, setIsEditPhoto] = useState(false);
-    const [errorSt, setErrorSt] = useState(false);
+    const [error, setError] = useState(false);
+    const [textError, setTextError] = useState('');
 
     const editPhoto = () => {
         setIsEditPhoto(true);
@@ -24,7 +25,8 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
 
     const editPost = async () => {
         if (editedPost?.description === '') {
-            setErrorSt(true);
+            setError(true);
+            setTextError('Поле обязательно для заполнения');
         } else {
             if (editedPost) {
                 await PostStore.setPostById(editedPost)
@@ -60,7 +62,7 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
     return (
         <div style={{display: "flex", justifyContent: "center", flexDirection: "column"}}>
             <S.ProfileItemPhoto src={editedPost?.photo}/>
-            <InputError errorSt={errorSt}><S.Input
+            <InputError error={error} textError={textError}><S.Input
                 multiline
                 minRows={3}
                 maxRows={6}
@@ -68,7 +70,7 @@ const EditPost: React.FC<EditPostProps> = ({editedPost, setIsEditPost, setEdited
                 type="text"
                 placeholder="Описание"
                 onChange={e => {
-                    setErrorSt(false)
+                    setError(false)
                     if (setEditedPost) {
                         setEditedPost(editedPost ? {
                             ...editedPost,

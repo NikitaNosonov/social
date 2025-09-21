@@ -10,7 +10,15 @@ import InputError from "../../../components/inputError/InputError";
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    const [errorSt, setErrorSt] = useState(false);
+    const [counter, setCounter] = useState(0);
+    const [errors, setErrors] = useState({
+        email: {hasError: false, message: ""},
+        password: {hasError: false, message: ""},
+    });
+    const errorByFunc = {
+        email: {hasError: false, message: ""},
+        password: {hasError: false, message: ""},
+    }
     const [wrongPass, setWrongPass] = useState(false);
 
     const [credential, setCredential] = useState<Credential>({
@@ -18,10 +26,20 @@ const Login: React.FC = () => {
         password: "",
     })
 
+    const checkError = async () => {
+        if (credential.email === '')
+            errorByFunc.email = {hasError: true, message: "Поле обязательно для заполнения"}
+
+        if (credential.password === '')
+            errorByFunc.password = {hasError: true, message: "Поле обязательно для заполнения"}
+
+        setErrors(errorByFunc)
+        setCounter(counter + 1)
+    }
+
     const login = async () => {
-        if (credential.email === '' || credential.password === '') {
-            setErrorSt(true)
-        } else {
+        await checkError()
+        if (!errorByFunc.email.hasError && !errorByFunc.password.hasError) {
             await CredentialService.login(credential)
             await UserStore.getUserById()
             const session = await supabase.auth.getSession()
@@ -31,11 +49,11 @@ const Login: React.FC = () => {
                 setTimeout(() => setWrongPass(false), 5000)
                 setCredential(c => ({...c, password: ""}))
             } else {
-                UserStore.getUsers();
+                await UserStore.getUsers();
                 localStorage.getItem("userRole")
                 navigate(R.profileRoute)
             }
-        }
+        } else return
     }
 
     return (
@@ -43,19 +61,17 @@ const Login: React.FC = () => {
             <S.LoginTitle>Вход</S.LoginTitle>
             {wrongPass ? <S.WrongContainer>Неправильный логин или пароль</S.WrongContainer> :
                 <S.WrongContainer></S.WrongContainer>}
-            <InputError errorSt={errorSt}><S.LoginInput
+            <InputError error={errors.email.hasError} textError={errors.email.message} count={counter}><S.LoginInput
                 value={credential.email}
                 type='email'
                 onChange={e => {
-                    setErrorSt(false)
                     setCredential({...credential, email: e.target.value})
                 }}
                 placeholder="Адрес электронной почты"/></InputError>
-            <InputError errorSt={errorSt}><S.LoginInput
+            <InputError error={errors.password.hasError} textError={errors.password.message} count={counter}><S.LoginInput
                 value={credential.password}
                 type='password'
                 onChange={e => {
-                    setErrorSt(false)
                     setCredential({...credential, password: e.target.value})
                 }}
                 placeholder="Пароль"/></InputError>

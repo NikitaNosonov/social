@@ -28,7 +28,9 @@ const CommentPage = observer(() => {
     }, [postId]);
 
     const addComment = async () => {
-        await CommentStore.setComments(comment)
+        if (comment.text !== '') {
+            await CommentStore.setComments(comment)
+        }
         setComment({id: Date.now(), text: "", post_id: postId, user_id: userId})
         setRefreshComments(prev => prev + 1);
     }

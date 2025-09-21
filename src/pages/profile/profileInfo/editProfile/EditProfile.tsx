@@ -13,23 +13,32 @@ interface EditProfileProps {
 
 const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) => {
     const [profileEdit, setProfileEdit] = useState<Partial<User>>(UserStore.user);
-    const [isAddPhoto, setIsAddPhoto] = useState(false);
-    const [errorSt, setErrorSt] = useState(false);
-
-    const editPhoto = () => {
-        if (profileEdit) {
-            setProfileEdit({
-                ...profileEdit,
-                avatar: ""
-            });
-        }
-        setIsAddPhoto(true);
+    const [counter, setCounter] = useState(0);
+    const [errors, setErrors] = useState({
+        name: {hasError: false, message: ''},
+        surname: {hasError: false, message: ""},
+        city: {hasError: false, message: ""},
+    });
+    const errorByFunc = {
+        name: {hasError: false, message: ""},
+        surname: {hasError: false, message: ""},
+        city: {hasError: false, message: ""},
     }
 
+    const checkErrors = async () => {
+        if (profileEdit.name === '') errorByFunc.name = {hasError: true, message: 'Поле обязательно для заполнения'}
+        if (profileEdit.surname === '') errorByFunc.surname = {
+            hasError: true,
+            message: 'Поле обязательно для заполнения'
+        }
+        if (profileEdit.city === '') errorByFunc.city = {hasError: true, message: 'Поле обязательно для заполнения'}
+
+        setErrors(errorByFunc)
+        setCounter(counter + 1)
+    }
     const editUser = async () => {
-        if (profileEdit.name === '' || profileEdit.surname === '' || profileEdit.city === '') {
-            setErrorSt(true);
-        } else {
+        await checkErrors()
+        if (!errorByFunc.name.hasError && !errorByFunc.surname.hasError && !errorByFunc.city.hasError) {
             await UserStore.setUser(profileEdit)
             await UserStore.user
             if (setIsEditProfile) {
@@ -40,33 +49,30 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
 
     return (
         <S.ProfileInfo>
-            <InputError errorSt={errorSt}><S.Input
+            <InputError error={errors.name.hasError} textError={errors.name.message} count={counter}><S.Input
                 size="small"
                 value={profileEdit?.name}
                 type="text"
                 placeholder="Имя"
                 onChange={e => {
-                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, name: e.target.value})
                 }}
             /></InputError>
-            <InputError errorSt={errorSt}><S.Input
+            <InputError error={errors.surname.hasError} textError={errors.surname.message} count={counter}><S.Input
                 size="small"
                 value={profileEdit?.surname}
                 type="text"
                 placeholder="Фамилия"
                 onChange={e => {
-                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, surname: e.target.value})
                 }}
             /></InputError>
-            <InputError errorSt={errorSt}><S.Input
+            <InputError error={errors.city.hasError} textError={errors.city.message} count={counter}><S.Input
                 size="small"
                 value={profileEdit?.city}
                 type="text"
                 placeholder="Город"
                 onChange={e => {
-                    setErrorSt(false)
                     if (profileEdit) setProfileEdit({...profileEdit, city: e.target.value})
                 }}
             /></InputError>
