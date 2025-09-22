@@ -19,6 +19,7 @@ const Login: React.FC = () => {
         email: {hasError: false, message: ""},
         password: {hasError: false, message: ""},
     }
+    const er = {hasError: true, message: "Поле обязательно для заполнения"}
     const [wrongPass, setWrongPass] = useState(false);
 
     const [credential, setCredential] = useState<Credential>({
@@ -28,10 +29,10 @@ const Login: React.FC = () => {
 
     const checkError = async () => {
         if (credential.email === '')
-            errorByFunc.email = {hasError: true, message: "Поле обязательно для заполнения"}
+            errorByFunc.email = er
 
         if (credential.password === '')
-            errorByFunc.password = {hasError: true, message: "Поле обязательно для заполнения"}
+            errorByFunc.password = er
 
         setErrors(errorByFunc)
         setCounter(counter + 1)

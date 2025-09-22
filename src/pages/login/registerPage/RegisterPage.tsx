@@ -26,6 +26,7 @@ const RegisterPage = () => {
         email: {hasError: false, message: ""},
         password: {hasError: false, message: ""},
     };
+    const er = {hasError: true, message: 'Поле обязательно для заполнения'}
 
     const [userData, setUserData] = useState<Partial<User>>({
         name: "",
@@ -41,14 +42,11 @@ const RegisterPage = () => {
     })
 
     const checkError = async () => {
-        if (credential.email === '') errorByFunc.email = {hasError: true, message: 'Поле обязательно для заполнения'}
-        if (credential.password === '') errorByFunc.password = {
-            hasError: true,
-            message: 'Поле обязательно для заполнения'
-        }
-        if (userData.name === '') errorByFunc.name = {hasError: true, message: 'Поле обязательно для заполнения'}
-        if (userData.surname === '') errorByFunc.surname = {hasError: true, message: 'Поле обязательно для заполнения'}
-        if (userData.city === '') errorByFunc.city = {hasError: true, message: 'Поле обязательно для заполнения'}
+        if (credential.email === '') errorByFunc.email = er
+        if (credential.password === '') errorByFunc.password = er
+        if (userData.name === '') errorByFunc.name = er
+        if (userData.surname === '') errorByFunc.surname = er
+        if (userData.city === '') errorByFunc.city = er
 
         if (credential.email && credential.password) {
             if (!(credential.email.includes('@' || '.', 0)))

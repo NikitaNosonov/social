@@ -24,14 +24,12 @@ const EditProfile: React.FC<EditProfileProps> = observer(({setIsEditProfile}) =>
         surname: {hasError: false, message: ""},
         city: {hasError: false, message: ""},
     }
+    const er = {hasError: true, message: 'Поле обязательно для заполнения'}
 
     const checkErrors = async () => {
-        if (profileEdit.name === '') errorByFunc.name = {hasError: true, message: 'Поле обязательно для заполнения'}
-        if (profileEdit.surname === '') errorByFunc.surname = {
-            hasError: true,
-            message: 'Поле обязательно для заполнения'
-        }
-        if (profileEdit.city === '') errorByFunc.city = {hasError: true, message: 'Поле обязательно для заполнения'}
+        if (profileEdit.name === '') errorByFunc.name = er
+        if (profileEdit.surname === '') errorByFunc.surname = er
+        if (profileEdit.city === '') errorByFunc.city = er
 
         setErrors(errorByFunc)
         setCounter(counter + 1)
